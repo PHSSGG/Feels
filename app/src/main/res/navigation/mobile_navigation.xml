@@ -14,6 +14,6 @@
     <fragment
         android:id="@+id/nav_slideshow"
         android:name="phss.feelsapp.ui.songs.SongsFragment"
-        android:label="@string/menu_songs"
+        android:label="@string/menu_library"
         tools:layout="@layout/fragment_songs" />
 </navigation>

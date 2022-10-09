@@ -4,19 +4,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context=".ui.home.HomeFragment">
 
-    <TextView
-        android:id="@+id/text_home"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/searchSongEditText"
+        android:layout_width="350dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="27dp"
+        android:background="@drawable/edittext_state"
+        android:drawableStart="@drawable/ic_search_edittext_icon"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="@string/search_song"
+        android:textColor="@color/gray"
+        android:textColorHint="@color/gray"
+        android:padding="15dp"
+        android:drawablePadding="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/recentlyPlayedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:textColor="#FFFFFF"
+        android:text="@string/recently_played"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/searchSongEditText"
+        app:layout_constraintTop_toBottomOf="@+id/searchSongEditText" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recentlyHorizontalRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="30dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/recentlyPlayedText"
+        app:layout_constraintTop_toBottomOf="@+id/recentlyPlayedText" />
+
+    <TextView
+        android:id="@+id/recommendationsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/recommendations"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/recentlyPlayedText"
+        app:layout_constraintTop_toBottomOf="@+id/recentlyHorizontalRecyclerView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recommendationsText" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
