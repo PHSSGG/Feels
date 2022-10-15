@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".ui.search.SearchFragment">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/searchSongEditText"
+        android:layout_width="350dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="27dp"
+        android:background="@drawable/edittext_state"
+        android:drawableStart="@drawable/ic_search_edittext_icon"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="@string/search_song"
+        android:textColor="@color/gray"
+        android:textColorHint="@color/gray"
+        android:padding="15dp"
+        android:drawablePadding="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout
+        android:layout_width="409dp"
+        android:layout_height="530dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchSongEditText">
+
+        <TableRow
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <Button
+                android:id="@+id/genre_1"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:background="@drawable/genre_block_style"
+                android:text="@string/genre_1"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/genre_2"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/genre_block_style"
+                android:text="@string/genre_2"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/genre_3"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/genre_block_style"
+                android:text="@string/genre_3"
+                android:textColor="@color/white" />
+        </TableRow>
+
+        <TableRow
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp" >
+
+            <Button
+                android:id="@+id/genre_4"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:background="@drawable/genre_block_style"
+                android:text="@string/genre_4"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/genre_5"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/genre_block_style"
+                android:text="@string/genre_5"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/genre_6"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/genre_block_style"
+                android:text="@string/genre_6"
+                android:textColor="@color/white" />
+        </TableRow>
+
+        <TableRow
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp" >
+
+            <Button
+                android:id="@+id/genre_7"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:background="@drawable/genre_block_style"
+                android:text="@string/genre_7"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/genre_8"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/genre_block_style"
+                android:text="@string/genre_8"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/genre_9"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/genre_block_style"
+                android:text="@string/genre_9"
+                android:textColor="@color/white" />
+        </TableRow>
+
+        <TableRow
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp" >
+
+            <Button
+                android:id="@+id/genre_10"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:background="@drawable/genre_block_style"
+                android:text="@string/genre_10"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/genre_11"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/genre_block_style"
+                android:text="@string/genre_11"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/genre_12"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/genre_block_style"
+                android:text="@string/genre_12"
+                android:textColor="@color/white" />
+        </TableRow>
+
+        <TableRow
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp" >
+
+            <Button
+                android:id="@+id/genre_13"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:background="@drawable/genre_block_style"
+                android:text="@string/genre_13"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/genre_14"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/genre_block_style"
+                android:text="@string/genre_14"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/genre_15"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/genre_block_style"
+                android:text="@string/genre_15"
+                android:textColor="@color/white" />
+        </TableRow>
+
+        <TableRow
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp" >
+
+            <Button
+                android:id="@+id/genre_16"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:background="@drawable/genre_block_style"
+                android:text="@string/genre_16"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/genre_17"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/genre_block_style"
+                android:text="@string/genre_17"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/genre_18"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/genre_block_style"
+                android:text="@string/genre_18"
+                android:textColor="@color/white" />
+        </TableRow>
+
+    </TableLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
