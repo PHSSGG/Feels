@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
+
+    <ImageView
+        android:id="@+id/libraryPlaylistThumb"
+        android:layout_width="95dp"
+        android:layout_height="94dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_background" />
+
+    <TextView
+        android:id="@+id/libraryPlaylistTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:textColor="@color/light_gray_plus"
+        android:text="Playlist"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/libraryPlaylistThumb"
+        app:layout_constraintStart_toEndOf="@+id/libraryPlaylistThumb"
+        app:layout_constraintTop_toTopOf="@+id/libraryPlaylistThumb" />
+
+    <ImageButton
+        android:id="@+id/playlistGoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_playlist_go"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/libraryPlaylistTitle"
+        app:layout_constraintTop_toTopOf="@+id/libraryPlaylistTitle" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

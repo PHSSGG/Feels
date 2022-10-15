@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".ui.library.LibraryFragment">
+
+    <ImageView
+        android:id="@+id/libraryIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:src="@drawable/ic_library_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/libraryText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/light_gray_plus"
+        android:text="@string/your_library"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/libraryIcon"
+        app:layout_constraintStart_toEndOf="@+id/libraryIcon"
+        app:layout_constraintTop_toTopOf="@+id/libraryIcon" />
+
+    <ImageButton
+        android:id="@+id/playlistCreateButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="30dp"
+        android:src="@drawable/ic_playlist_create"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/libraryText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/libraryText" />
+
+    <View
+        android:id="@+id/libraryTopDivider"
+        android:layout_width="350dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/purple_primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/libraryText" />
+
+    <ImageView
+        android:id="@+id/allSongsIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/ic_song_icon"
+        app:layout_constraintStart_toStartOf="@+id/libraryTopDivider"
+        app:layout_constraintTop_toBottomOf="@+id/libraryTopDivider" />
+
+    <TextView
+        android:id="@+id/allSongsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="2dp"
+        android:textColor="@color/light_gray_plus"
+        android:text="@string/all_songs"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/allSongsIcon"
+        app:layout_constraintStart_toEndOf="@+id/allSongsIcon"
+        app:layout_constraintTop_toTopOf="@+id/allSongsIcon" />
+
+    <ImageButton
+        android:id="@+id/allSongsGoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_playlist_go"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/allSongsText"
+        app:layout_constraintEnd_toEndOf="@+id/libraryTopDivider"
+        app:layout_constraintTop_toTopOf="@+id/allSongsText" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlistsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintEnd_toEndOf="@+id/libraryTopDivider"
+        app:layout_constraintStart_toStartOf="@+id/libraryTopDivider"
+        app:layout_constraintTop_toBottomOf="@+id/allSongsText" />
+
+    <TextView
+        android:id="@+id/recentlyAddedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/recently_added"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/libraryTopDivider"
+        app:layout_constraintTop_toBottomOf="@+id/playlistsRecyclerView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="30dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/libraryTopDivider"
+        app:layout_constraintStart_toStartOf="@+id/libraryTopDivider"
+        app:layout_constraintTop_toBottomOf="@+id/recentlyAddedText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
