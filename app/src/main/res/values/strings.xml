@@ -35,4 +35,9 @@
     <string name="playlist_name">Insert the new playlist name</string>
     <string name="cancel_playlist_create">Cancel</string>
     <string name="create_playlist">Create</string>
+
+    <string name="songs_library_name">All songs</string>
+    <string name="songs_add_selection">Select the tracks you would like to add</string>
+    <string name="songs_add_done">Add</string>
+    <string name="songs_add_cancel">Cancel</string>
 </resources>
