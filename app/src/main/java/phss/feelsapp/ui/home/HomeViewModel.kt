@@ -1,13 +1,20 @@
 package phss.feelsapp.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.*
+import phss.feelsapp.data.repository.SongsRepository
+import phss.ytmusicwrapper.response.models.SongItem
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(
+    private val repository: SongsRepository
+) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+    fun getRecommendationsList(
+        onFinished: (List<SongItem>) -> Unit
+    ) {
+        GlobalScope.async {
+            onFinished(repository.retrieveRecommendationList())
+        }
     }
-    val text: LiveData<String> = _text
+
 }
