@@ -12,7 +12,19 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/nav_search"
+        android:name="phss.feelsapp.ui.search.SearchFragment"
+        android:label="@string/menu_search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/nav_library"
+        android:name="phss.feelsapp.ui.library.LibraryFragment"
+        android:label="@string/menu_library"
+        tools:layout="@layout/fragment_library" />
+
+    <fragment
+        android:id="@+id/nav_songs"
         android:name="phss.feelsapp.ui.songs.SongsFragment"
         android:label="@string/menu_library"
         tools:layout="@layout/fragment_songs" />
