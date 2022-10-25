@@ -1,17 +1,14 @@
 package phss.feelsapp.data.repository
 
-import android.util.Log
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.Flow
 import phss.feelsapp.data.DataResult
-import phss.feelsapp.data.source.local.SongsLocalDataSource
+import phss.feelsapp.data.dao.SongDao
+import phss.feelsapp.data.models.Song
 import phss.feelsapp.data.source.remote.SongsRemoteDataSource
 import phss.ytmusicwrapper.response.models.SongItem
 
 class SongsRepository(
-    private val songsLocalDataSource: SongsLocalDataSource,
+    private val songDao: SongDao,
     private val songsRemoteDataSource: SongsRemoteDataSource
 ) {
 
@@ -33,6 +30,10 @@ class SongsRepository(
 
         return if (result is DataResult.Success) result.data
         else listOf()
+    }
+
+    suspend fun getAllSongs(): List<Song> {
+        return songDao.loadSongs()
     }
 
 }
