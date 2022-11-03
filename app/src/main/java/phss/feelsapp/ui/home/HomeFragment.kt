@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateRecommendationsView() {
-        binding.recommendationsRecyclerView.loadSkeleton(R.layout.recommendations_view) {
+        binding.recommendationsRecyclerView.loadSkeleton(R.layout.song_item_download_view) {
             itemCount(4)
         }
 

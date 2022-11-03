@@ -15,7 +15,7 @@ class RecommendationsAdapter(
 ) : RecyclerView.Adapter<RecommendationsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.recommendations_view, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.song_item_download_view, parent, false)
         return ViewHolder(view)
     }
 
@@ -37,9 +37,9 @@ class RecommendationsAdapter(
     }
 
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        val imageView: ImageView = itemView.findViewById(R.id.recommendationThumb)
-        val title: TextView = itemView.findViewById(R.id.recommendationTitle)
-        val artist: TextView = itemView.findViewById(R.id.recommendationArtist)
+        val imageView: ImageView = itemView.findViewById(R.id.songItemThumb)
+        val title: TextView = itemView.findViewById(R.id.songItemTitle)
+        val artist: TextView = itemView.findViewById(R.id.songItemArtist)
     }
 
 }

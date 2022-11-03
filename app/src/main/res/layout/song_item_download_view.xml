@@ -6,7 +6,7 @@
     android:layout_height="80dp">
 
     <ImageView
-        android:id="@+id/recommendationThumb"
+        android:id="@+id/songItemThumb"
         android:layout_width="60dp"
         android:layout_height="60dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -14,7 +14,7 @@
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <TextView
-        android:id="@+id/recommendationTitle"
+        android:id="@+id/songItemTitle"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -24,11 +24,11 @@
         android:textSize="16sp"
         android:maxLines="1"
         android:maxLength="25"
-        app:layout_constraintStart_toEndOf="@+id/recommendationThumb"
-        app:layout_constraintTop_toTopOf="@+id/recommendationThumb" />
+        app:layout_constraintStart_toEndOf="@+id/songItemThumb"
+        app:layout_constraintTop_toTopOf="@+id/songItemThumb" />
 
     <TextView
-        android:id="@+id/recommendationArtist"
+        android:id="@+id/songItemArtist"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -37,17 +37,17 @@
         android:textColor="#9B9B9B"
         android:maxLines="1"
         android:maxLength="25"
-        app:layout_constraintBottom_toBottomOf="@+id/recommendationThumb"
-        app:layout_constraintStart_toEndOf="@+id/recommendationThumb" />
+        app:layout_constraintBottom_toBottomOf="@+id/songItemThumb"
+        app:layout_constraintStart_toEndOf="@+id/songItemThumb" />
 
     <ImageButton
-        android:id="@+id/recommendationDownloadButton"
+        android:id="@+id/songItemDownloadButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/recommendationThumb"
-        app:layout_constraintTop_toTopOf="@+id/recommendationThumb"
+        app:layout_constraintBottom_toBottomOf="@+id/songItemThumb"
+        app:layout_constraintTop_toTopOf="@+id/songItemThumb"
         app:srcCompat="@drawable/ic_download" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
