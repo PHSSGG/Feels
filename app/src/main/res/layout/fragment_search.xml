@@ -16,6 +16,7 @@
         android:drawableStart="@drawable/ic_search_edittext_icon"
         android:ems="10"
         android:inputType="text"
+        android:imeOptions="actionSend"
         android:hint="@string/search_song"
         android:textColor="@color/gray"
         android:textColorHint="@color/gray"
@@ -25,9 +26,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:visibility="invisible"
+        android:id="@+id/searchResultRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchSongEditText" />
+
     <TableLayout
+        android:id="@+id/searchTableLayout"
         android:layout_width="409dp"
-        android:layout_height="530dp"
+        android:layout_height="550dp"
         android:layout_marginTop="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,6 +57,7 @@
                 android:id="@+id/genre_1"
                 android:layout_width="100dp"
                 android:layout_height="80dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/genre_block_style"
                 android:text="@string/genre_1"
                 android:textColor="@color/white" />
@@ -51,6 +66,7 @@
                 android:id="@+id/genre_2"
                 android:layout_width="100dp"
                 android:layout_height="80dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginStart="20dp"
                 android:background="@drawable/genre_block_style"
                 android:text="@string/genre_2"
@@ -60,6 +76,7 @@
                 android:id="@+id/genre_3"
                 android:layout_width="100dp"
                 android:layout_height="80dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginStart="20dp"
                 android:background="@drawable/genre_block_style"
                 android:text="@string/genre_3"
