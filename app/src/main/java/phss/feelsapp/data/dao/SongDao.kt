@@ -15,11 +15,19 @@ interface SongDao {
     fun deleteSong(songEntity: Song)
 
     @Transaction
+    @Query("SELECT EXISTS(SELECT * FROM Song WHERE `key`=:songKey)")
+    fun checkIfSongAlreadyExists(songKey: String): Boolean
+
+    @Transaction
     @Query("SELECT * FROM Song")
     fun loadSongs(): Flow<List<Song>>
 
     @Transaction
     @Query("SELECT * FROM Song WHERE name=:songName")
     fun loadSongByName(songName: String): Song
+
+    @Transaction
+    @Query("SELECT * FROM Song WHERE `key`=:songKey")
+    fun loadSongByKey(songKey: String): Song
 
 }
