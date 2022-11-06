@@ -5,49 +5,86 @@
     android:layout_width="match_parent"
     android:layout_height="80dp">
 
-    <ImageView
-        android:id="@+id/songItemThumb"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/songItemView"
+        android:padding="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/songItemTitle"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:text="Title"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:maxLines="1"
-        android:maxLength="25"
-        app:layout_constraintStart_toEndOf="@+id/songItemThumb"
-        app:layout_constraintTop_toTopOf="@+id/songItemThumb" />
+        <ImageView
+            android:id="@+id/songItemThumb"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_launcher_background" />
 
-    <TextView
-        android:id="@+id/songItemArtist"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="5dp"
-        android:text="Artist"
-        android:textColor="#9B9B9B"
-        android:maxLines="1"
-        android:maxLength="25"
-        app:layout_constraintBottom_toBottomOf="@+id/songItemThumb"
-        app:layout_constraintStart_toEndOf="@+id/songItemThumb" />
+        <TextView
+            android:id="@+id/songItemTitle"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:text="Title"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:maxLines="1"
+            android:maxLength="25"
+            app:layout_constraintStart_toEndOf="@+id/songItemThumb"
+            app:layout_constraintTop_toTopOf="@+id/songItemThumb" />
+
+        <TextView
+            android:id="@+id/songItemArtist"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="5dp"
+            android:text="Artist"
+            android:textColor="#9B9B9B"
+            android:maxLines="1"
+            android:maxLength="25"
+            app:layout_constraintBottom_toBottomOf="@+id/songItemThumb"
+            app:layout_constraintStart_toEndOf="@+id/songItemThumb" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton
         android:id="@+id/songItemDownloadButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/black"
+        android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/songItemThumb"
-        app:layout_constraintTop_toTopOf="@+id/songItemThumb"
+        app:layout_constraintBottom_toBottomOf="@+id/songItemView"
+        app:layout_constraintTop_toTopOf="@+id/songItemView"
         app:srcCompat="@drawable/ic_download" />
+
+    <ProgressBar
+        android:id="@+id/downloadCircleProgressBar"
+        android:visibility="gone"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:indeterminate="false"
+        android:progressDrawable="@drawable/circular_progress_bar"
+        android:background="@drawable/circle_shape"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:max="100"
+        android:progress="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/songItemView"
+        app:layout_constraintTop_toTopOf="@+id/songItemView" />
+
+    <ImageButton
+        android:id="@+id/songItemDeleteButton"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/songItemView"
+        app:layout_constraintTop_toTopOf="@+id/songItemView"
+        app:srcCompat="@drawable/ic_downloaded" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

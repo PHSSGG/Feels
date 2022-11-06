@@ -15,6 +15,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+
+        ndk {
+            abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+        }
     }
 
     buildTypes {
@@ -33,14 +37,24 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+            universalApk true
+        }
+    }
 }
 
 dependencies {
     implementation 'phss.ytmusicwrapper:ytmusic:1.0'
     implementation 'com.squareup.picasso:picasso:2.8'
     implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation("io.insert-koin:koin-android:3.2.2")
-    implementation("com.ericktijerou.koleton:koleton:1.0.0-beta01")
+    implementation 'io.insert-koin:koin-android:3.2.2'
+    implementation 'com.ericktijerou.koleton:koleton:1.0.0-beta01'
+    implementation 'com.github.yausername.youtubedl-android:library:master-SNAPSHOT'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.lifecycle:lifecycle-livedata:2.5.1'
