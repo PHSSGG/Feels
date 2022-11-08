@@ -19,6 +19,7 @@ import phss.feelsapp.ui.download.viewmodel.DownloadViewModel
 import phss.feelsapp.ui.home.HomeViewModel
 import phss.feelsapp.ui.library.LibraryViewModel
 import phss.feelsapp.ui.search.SearchViewModel
+import phss.feelsapp.ui.songs.SongsViewModel
 import phss.ytmusicwrapper.YTMusicAPIWrapper
 
 val databaseModule = module {
@@ -50,6 +51,7 @@ val appModule = module {
     viewModel { SearchViewModel(get()) }
     viewModel { DownloadViewModel(get(), get()) }
     viewModel { LibraryViewModel(get(), get()) }
+    viewModel { SongsViewModel(get(), get()) }
 }
 
 class FeelsApplication : Application() {
