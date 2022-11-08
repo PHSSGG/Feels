@@ -47,37 +47,49 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="107dp" />
 
-    <ImageView
-        android:id="@+id/allSongsIcon"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/libraryAllSongsView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:src="@drawable/ic_song_icon"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         app:layout_constraintStart_toStartOf="@+id/libraryIcon"
-        app:layout_constraintTop_toBottomOf="@+id/libraryTopGuideline" />
+        app:layout_constraintStart_toEndOf="@+id/playlistCreateButton"
+        app:layout_constraintTop_toBottomOf="@+id/libraryTopGuideline">
 
-    <TextView
-        android:id="@+id/allSongsText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginBottom="2dp"
-        android:textColor="@color/light_gray_plus"
-        android:text="@string/all_songs"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/allSongsIcon"
-        app:layout_constraintStart_toEndOf="@+id/allSongsIcon"
-        app:layout_constraintTop_toTopOf="@+id/allSongsIcon" />
+        <ImageView
+            android:id="@+id/allSongsIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_song_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/allSongsGoButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_playlist_go"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/allSongsText"
-        app:layout_constraintEnd_toEndOf="@+id/playlistCreateButton"
-        app:layout_constraintTop_toTopOf="@+id/allSongsText" />
+        <TextView
+            android:id="@+id/allSongsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="2dp"
+            android:textColor="@color/light_gray_plus"
+            android:text="@string/all_songs"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/allSongsIcon"
+            app:layout_constraintStart_toEndOf="@+id/allSongsIcon"
+            app:layout_constraintTop_toTopOf="@+id/allSongsIcon" />
+
+        <ImageButton
+            android:id="@+id/allSongsGoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_playlist_go"
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/allSongsText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/allSongsText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/playlistsRecyclerViewGuideline"
@@ -95,7 +107,7 @@
         android:layout_marginEnd="30dp"
         app:layout_constraintEnd_toEndOf="@id/playlistCreateButton"
         app:layout_constraintStart_toStartOf="@+id/libraryIcon"
-        app:layout_constraintTop_toBottomOf="@+id/allSongsText" />
+        app:layout_constraintTop_toBottomOf="@+id/libraryAllSongsView" />
 
     <TextView
         android:id="@+id/recentlyAddedText"

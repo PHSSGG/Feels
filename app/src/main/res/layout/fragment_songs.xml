@@ -40,23 +40,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/songsLibraryText" />
 
-    <View
-        android:id="@+id/songsTopDivider"
-        android:layout_width="350dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="30dp"
-        android:background="@color/purple_primary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/songsLibraryText" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/songsRecyclerView"
         android:layout_width="350dp"
-        android:layout_height="530dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/songsTopDivider" />
+        app:layout_constraintTop_toBottomOf="@+id/songsLibraryText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
