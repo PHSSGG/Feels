@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import phss.feelsapp.R
-import phss.feelsapp.ui.home.adapters.recommendations.RecommendationsAdapter
 import phss.ytmusicwrapper.response.models.SongItem
 
 class RecentlyAdapter(
