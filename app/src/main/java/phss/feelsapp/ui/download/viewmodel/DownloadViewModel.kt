@@ -1,6 +1,8 @@
 package phss.feelsapp.ui.download.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import phss.feelsapp.data.models.RemoteSong
@@ -31,7 +33,7 @@ class DownloadViewModel(
     }
 
     fun deleteSong(remoteSong: RemoteSong) {
-        GlobalScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val localSong = songsRepository.getLocalSongByKey(remoteSong.item.key)
 
             remoteSong.alreadyDownloaded = false
