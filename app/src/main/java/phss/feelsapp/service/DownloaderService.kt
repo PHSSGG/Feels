@@ -18,6 +18,7 @@ import phss.feelsapp.constants.YOUTUBE_VIDEO_URL
 import phss.feelsapp.data.models.RemoteSong
 import phss.feelsapp.data.models.Song
 import phss.feelsapp.data.repository.SongsRepository
+import phss.feelsapp.utils.getSongArtists
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -54,7 +55,7 @@ class DownloaderService(
                     Song(
                         songId = 0,
                         name = song.item.info?.name ?: "Null",
-                        artist = song.item.authors?.joinToString(" ") ?: "Null",
+                        artist = song.item.getSongArtists(),
                         album = song.item.album?.name ?: "Null",
                         duration = song.item.durationText ?: "0:00",
                         key = song.item.key,
