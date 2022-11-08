@@ -34,7 +34,8 @@
     <string name="your_library">Your library</string>
     <string name="all_songs">All songs</string>
     <string name="recently_added">Recently added</string>
-    <string name="playlist_name">Insert the new playlist name</string>
+    <string name="playlist_create">Create playlist</string>
+    <string name="playlist_name">New playlist name</string>
     <string name="cancel_playlist_create">Cancel</string>
     <string name="create_playlist">Create</string>
 
