@@ -10,7 +10,7 @@ import phss.feelsapp.data.models.Song
 @Dao
 interface PlaylistDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun createPlaylist(playlistEntity: Playlist): Long
 
     @Delete
@@ -29,6 +29,10 @@ interface PlaylistDao {
     @Transaction
     @Query("SELECT * FROM Playlist WHERE playlistName=:playlistName")
     fun loadPlaylistWithSongsByName(playlistName: String): Flow<PlaylistWithSongs>
+
+    @Transaction
+    @Query("SELECT * FROM Playlist WHERE playlistId=:playlistId")
+    fun loadPlaylistById(playlistId: Long): Playlist
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addSongsToPlaylist(songs: List<PlaylistSong>)
