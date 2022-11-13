@@ -7,6 +7,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import phss.feelsapp.data.models.Playlist
+import phss.feelsapp.data.models.Song
 import phss.feelsapp.data.repository.PlaylistsRepository
 import phss.feelsapp.data.repository.SongsRepository
 
@@ -33,6 +34,10 @@ class LibraryViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             playlistsRepository.deletePlaylist(playlist)
         }
+    }
+
+    fun getRecentlyAddedSongs(): Flow<List<Song>> {
+        return songsRepository.getRecentlyAdded()
     }
 
 }

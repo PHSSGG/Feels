@@ -1,4 +1,4 @@
-package phss.feelsapp.ui.home.adapters.recently
+package phss.feelsapp.ui.recently
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,30 +8,31 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import phss.feelsapp.R
-import phss.ytmusicwrapper.response.models.SongItem
+import phss.feelsapp.data.models.Song
+import java.io.File
 
 class RecentlyAdapter(
-    private var songsList: List<SongItem>
+    private var songsList: List<Song>
 ) : RecyclerView.Adapter<RecentlyAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.recently_played_view, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.recently_song_view, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = songsList[position]
 
-        if (item.thumbnail != null) Picasso.get().load(item.thumbnail?.setSize(150)).into(holder.imageView)
-        holder.title.text = item.info?.name ?: "Null"
-        holder.artist.text = item.authors?.firstOrNull()?.name ?: "Null"
+        Picasso.get().load(File(item.thumbnailPath)).into(holder.imageView)
+        holder.title.text = item.name
+        holder.artist.text = item.artist
     }
 
     override fun getItemCount(): Int {
         return songsList.size
     }
 
-    fun updateList(newList: List<SongItem>) {
+    fun updateList(newList: List<Song>) {
         songsList = newList
         notifyDataSetChanged()
     }

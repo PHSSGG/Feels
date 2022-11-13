@@ -13,12 +13,15 @@ import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.coroutineScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
+import koleton.api.hideSkeleton
+import koleton.api.loadSkeleton
 import org.koin.android.ext.android.inject
 import phss.feelsapp.R
 import phss.feelsapp.data.models.Playlist
 import phss.feelsapp.databinding.FragmentLibraryBinding
 import phss.feelsapp.ui.library.adapters.playlists.PlaylistAdapterItemInteractListener
 import phss.feelsapp.ui.library.adapters.playlists.PlaylistsAdapter
+import phss.feelsapp.ui.recently.RecentlyAdapter
 import phss.feelsapp.ui.songs.SongsFragment
 
 class LibraryFragment : Fragment() {
@@ -35,6 +38,7 @@ class LibraryFragment : Fragment() {
         _binding = FragmentLibraryBinding.inflate(inflater, container, false)
 
         setupPlaylistsView()
+        setupRecentlyAddedView()
         setupCreatePlaylistButton()
         setupAllSongsView()
 
@@ -66,6 +70,32 @@ class LibraryFragment : Fragment() {
 
             override fun onLongClick(playlist: Playlist) {
                 libraryViewModel.deletePlaylist(playlist)
+            }
+        }
+    }
+
+    private fun setupRecentlyAddedView() {
+        binding.libraryRecentlyRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        updateRecentlyAddedView()
+    }
+
+    private fun updateRecentlyAddedView() {
+        val recentlyAdapter = RecentlyAdapter(listOf())
+        binding.libraryRecentlyRecyclerView.adapter = recentlyAdapter
+
+        binding.libraryRecentlyRecyclerView.loadSkeleton(R.layout.recently_song_view) {
+            itemCount(3)
+        }
+
+        lifecycle.coroutineScope.launchWhenStarted {
+            libraryViewModel.getRecentlyAddedSongs().collect { songsList ->
+                binding.libraryRecentlyRecyclerView.hideSkeleton()
+
+                if (songsList.isEmpty()) binding.recentlyAddedNothingToShow.visibility = View.VISIBLE
+                else {
+                    binding.recentlyAddedNothingToShow.visibility = View.GONE
+                    recentlyAdapter.updateList(songsList)
+                }
             }
         }
     }

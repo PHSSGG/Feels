@@ -42,6 +42,10 @@ class SongsRepository(
         return songsLocalDataSource.getAllSongs()
     }
 
+    fun getRecentlyAdded(): Flow<List<Song>> {
+        return songsLocalDataSource.getRecentlyAdded()
+    }
+
     fun getLocalSongByKey(songKey: String): Song {
         return songsLocalDataSource.getSongByKey(songKey)
     }
