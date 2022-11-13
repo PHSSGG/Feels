@@ -24,7 +24,7 @@
 
         <TextView
             android:id="@+id/songItemTitle"
-            android:layout_width="250dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
@@ -32,20 +32,22 @@
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:maxLines="1"
-            android:maxLength="25"
+            android:maxLength="30"
+            android:ellipsize="end"
             app:layout_constraintStart_toEndOf="@+id/songItemThumb"
             app:layout_constraintTop_toTopOf="@+id/songItemThumb" />
 
         <TextView
             android:id="@+id/songItemArtist"
-            android:layout_width="250dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="5dp"
             android:text="Artist"
             android:textColor="#9B9B9B"
             android:maxLines="1"
-            android:maxLength="25"
+            android:maxLength="30"
+            android:ellipsize="end"
             app:layout_constraintBottom_toBottomOf="@+id/songItemThumb"
             app:layout_constraintStart_toEndOf="@+id/songItemThumb" />
 

@@ -3,7 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="180dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    >
 
     <ImageView
         android:id="@+id/recentlyThumbnail"
@@ -15,23 +19,29 @@
 
     <TextView
         android:id="@+id/recentlyTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Title"
         android:textColor="@color/white"
         android:textSize="18sp"
+        android:maxLines="1"
+        android:maxLength="22"
+        android:ellipsize="end"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recentlyThumbnail" />
 
     <TextView
         android:id="@+id/recentlyArtist"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:text="Artist"
         android:textColor="@color/light_gray"
         android:textSize="16sp"
+        android:maxLines="1"
+        android:maxLength="22"
+        android:ellipsize="end"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recentlyTitle" />
 

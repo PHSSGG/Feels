@@ -15,12 +15,15 @@
 
     <TextView
         android:id="@+id/libraryPlaylistTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:textColor="@color/light_gray_plus"
         android:text="Playlist"
         android:textSize="20sp"
+        android:maxLines="1"
+        android:maxLength="30"
+        android:ellipsize="end"
         app:layout_constraintBottom_toBottomOf="@+id/libraryPlaylistThumb"
         app:layout_constraintStart_toEndOf="@+id/libraryPlaylistThumb"
         app:layout_constraintTop_toTopOf="@+id/libraryPlaylistThumb" />
