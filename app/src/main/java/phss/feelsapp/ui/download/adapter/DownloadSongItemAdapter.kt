@@ -36,19 +36,16 @@ class DownloadSongItemAdapter(
         if (song.downloading) {
             if (song.downloadProgress == 0f) holder.downloadCircleProgressBar.progress = 0
 
+            holder.deleteButton.visibility = View.GONE
             holder.downloadButton.visibility = View.INVISIBLE
             holder.downloadCircleProgressBar.visibility = View.VISIBLE
         } else {
             if (!song.alreadyDownloaded) {
-                holder.downloadCircleProgressBar.visibility = View.GONE
                 holder.deleteButton.visibility = View.GONE
-
                 holder.downloadButton.visibility = View.VISIBLE
             }
             else {
-                holder.downloadCircleProgressBar.visibility = View.GONE
                 holder.downloadButton.visibility = View.GONE
-
                 holder.deleteButton.visibility = View.VISIBLE
             }
 

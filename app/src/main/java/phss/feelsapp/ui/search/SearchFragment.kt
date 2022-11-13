@@ -9,9 +9,13 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import koleton.api.hideSkeleton
 import koleton.api.loadSkeleton
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import phss.feelsapp.R
 import phss.feelsapp.data.models.RemoteSong
@@ -68,10 +72,13 @@ class SearchFragment : Fragment() {
                         requireActivity().runOnUiThread { downloadAdapter?.updateDownloadProgress(song, it) }
                     },
                     onDownloadFinish = {
-                        song.downloading = false
-                        song.alreadyDownloaded = it
+                        lifecycleScope.launch {
+                            delay(1000L)
+                            song.downloading = false
+                            song.alreadyDownloaded = it
 
-                        requireActivity().runOnUiThread { downloadAdapter?.updateDownloading(song, song.downloading) }
+                            requireActivity().runOnUiThread { downloadAdapter?.updateDownloading(song, song.downloading) }
+                        }
                     }
                 )
             }
