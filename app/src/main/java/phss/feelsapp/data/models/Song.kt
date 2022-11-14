@@ -16,8 +16,14 @@ data class Song(
     val filePath: String
 )
 
-@Entity(primaryKeys = ["playlistId", "songId"])
+@Entity
 data class PlaylistSong(
+    @PrimaryKey(autoGenerate = true) val idOnPlaylist: Long,
     val playlistId: Long,
     @ColumnInfo(index = true) val songId: Long
+)
+
+class PlaylistSongReference(
+    val playlistId: Long,
+    val songId: Long
 )
