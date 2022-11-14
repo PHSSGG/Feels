@@ -8,13 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
 import koleton.api.hideSkeleton
 import koleton.api.loadSkeleton
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import phss.feelsapp.R
 import phss.feelsapp.data.models.Playlist
@@ -69,7 +73,29 @@ class LibraryFragment : Fragment() {
             }
 
             override fun onLongClick(playlist: Playlist) {
-                libraryViewModel.deletePlaylist(playlist)
+                val deletePlaylistDialog = Dialog(requireContext()).also {
+                    it.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                    it.setCancelable(true)
+                    it.setContentView(R.layout.playlist_delete_confirm_dialog)
+                }
+
+                val playlistDeleteDialogInfo: TextView = deletePlaylistDialog.findViewById(R.id.playlistDeleteDialogInfoName)
+                lifecycleScope.launch {
+                    libraryViewModel.getPlaylistWithSongs(playlist).collectLatest {
+                        val amountOfSongs = if (it != null && it.songs != null) it.songs.size else 0
+                        playlistDeleteDialogInfo.text = playlistDeleteDialogInfo.text.toString().replace("{playlist}", playlist.playlistName).replace("{amount}", "$amountOfSongs")
+                    }
+                }
+
+                deletePlaylistDialog.findViewById<Button>(R.id.playlistDeleteDialogCancelButton).setOnClickListener {
+                    deletePlaylistDialog.dismiss()
+                }
+                deletePlaylistDialog.findViewById<Button>(R.id.playlistDeleteDialogDeleteButton).setOnClickListener {
+                    libraryViewModel.deletePlaylist(playlist)
+                    deletePlaylistDialog.dismiss()
+                }
+
+                deletePlaylistDialog.show()
             }
         }
     }

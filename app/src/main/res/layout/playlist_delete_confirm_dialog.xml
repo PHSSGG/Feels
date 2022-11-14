@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/dark_gray_secondary"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/playlistDeleteDialogTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/delete_playlist"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/playlistDeleteDialogInfo"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="@+id/playlistDeleteDialogTitle"
+        app:layout_constraintStart_toStartOf="@+id/playlistDeleteDialogTitle"
+        app:layout_constraintTop_toBottomOf="@+id/playlistDeleteDialogTitle">
+
+        <TextView
+            android:id="@+id/playlistDeleteDialogInfoName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/playlist_info"
+            android:textColor="@color/gray"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/playlistDeleteDialogDeleteButton"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/playlist_create_dialog_button_style"
+        android:text="@string/delete_playlist_confirm"
+        android:textColor="@color/light_gray_plus"
+        app:layout_constraintEnd_toEndOf="@+id/playlistDeleteDialogInfo"
+        app:layout_constraintTop_toBottomOf="@+id/playlistDeleteDialogInfo" />
+
+    <Button
+        android:id="@+id/playlistDeleteDialogCancelButton"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/playlist_create_dialog_button_style"
+        android:text="@string/cancel_delete"
+        android:textColor="@color/light_gray_plus"
+        app:layout_constraintStart_toStartOf="@+id/playlistDeleteDialogInfo"
+        app:layout_constraintTop_toBottomOf="@+id/playlistDeleteDialogInfo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

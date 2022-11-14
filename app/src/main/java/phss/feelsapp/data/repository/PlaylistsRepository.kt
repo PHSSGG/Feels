@@ -29,6 +29,8 @@ class PlaylistsRepository(
     }
 
     fun deletePlaylist(playlist: Playlist) {
+        val playlistSongs = playlistDao.loadPlaylistsSongsByPlaylistId(playlist.playlistId)
+        playlistDao.deletePlaylistSongs(playlistSongs)
         playlistDao.deletePlaylist(playlist)
     }
 
@@ -45,7 +47,7 @@ class PlaylistsRepository(
     }
 
     fun removeSongsFromPlaylist(songs: List<Song>, playlist: Playlist) {
-        playlistDao.removeSongsFromPlaylist(songs.map { it.toPlaylistSongReference(playlist) })
+        playlistDao.removeSongsFromPlaylistByReferences(songs.map { it.toPlaylistSongReference(playlist) })
     }
 
 }

@@ -31,6 +31,10 @@ interface PlaylistDao {
     fun loadPlaylistWithSongsByName(playlistName: String): Flow<PlaylistWithSongs>
 
     @Transaction
+    @Query("SELECT * FROM PlaylistSong WHERE playlistId=:playlistId")
+    fun loadPlaylistsSongsByPlaylistId(playlistId: Long): List<PlaylistSong>
+
+    @Transaction
     @Query("SELECT * FROM Playlist WHERE playlistId=:playlistId")
     fun loadPlaylistById(playlistId: Long): Playlist
 
@@ -38,6 +42,9 @@ interface PlaylistDao {
     fun addSongsToPlaylist(songs: List<PlaylistSongReference>)
 
     @Delete(entity = PlaylistSong::class)
-    fun removeSongsFromPlaylist(references: List<PlaylistSongReference>)
+    fun removeSongsFromPlaylistByReferences(references: List<PlaylistSongReference>)
+
+    @Delete
+    fun deletePlaylistSongs(songs: List<PlaylistSong>)
 
 }

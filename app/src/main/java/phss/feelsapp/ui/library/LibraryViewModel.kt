@@ -7,6 +7,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import phss.feelsapp.data.models.Playlist
+import phss.feelsapp.data.models.PlaylistWithSongs
 import phss.feelsapp.data.models.Song
 import phss.feelsapp.data.repository.PlaylistsRepository
 import phss.feelsapp.data.repository.SongsRepository
@@ -18,6 +19,10 @@ class LibraryViewModel(
 
     fun getPlaylists(): Flow<List<Playlist>> {
         return playlistsRepository.getAllPlaylists()
+    }
+
+    fun getPlaylistWithSongs(playlist: Playlist): Flow<PlaylistWithSongs> {
+        return playlistsRepository.getPlaylistSongs(playlist)
     }
 
     fun createPlaylist(newPlaylistName: String) {
