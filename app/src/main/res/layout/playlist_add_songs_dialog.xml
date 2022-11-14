@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/dark_gray_secondary"
+    android:layout_width="390dp"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/playlistAddSongsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/songs_add_selection"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/playlistAddSongsDivider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/dark_gray_primary"
+        app:layout_constraintEnd_toEndOf="@+id/playlistAddSongsTitle"
+        app:layout_constraintStart_toStartOf="@+id/playlistAddSongsTitle"
+        app:layout_constraintTop_toBottomOf="@+id/playlistAddSongsTitle" />
+
+    <TextView
+        android:id="@+id/playlistAddSongsEmpty"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/songs_empty"
+        android:textColor="@color/gray"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/playlistAddSongsDivider"
+        app:layout_constraintTop_toBottomOf="@+id/playlistAddSongsTitle" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlistAddSongsRecyclerView"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="@+id/playlistAddSongsDivider"
+        app:layout_constraintStart_toStartOf="@+id/playlistAddSongsDivider"
+        app:layout_constraintTop_toBottomOf="@+id/playlistAddSongsTitle" />
+
+    <Button
+        android:id="@+id/playlistAddSongsAddButton"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/playlist_create_dialog_button_style"
+        android:text="@string/songs_add_done"
+        android:textColor="@color/light_gray_plus"
+        app:layout_constraintEnd_toEndOf="@+id/playlistAddSongsRecyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/playlistAddSongsRecyclerView" />
+
+    <Button
+        android:id="@+id/playlistAddSongsCancelButton"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/playlist_create_dialog_button_style"
+        android:text="@string/songs_add_cancel"
+        android:textColor="@color/light_gray_plus"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playlistAddSongsRecyclerView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

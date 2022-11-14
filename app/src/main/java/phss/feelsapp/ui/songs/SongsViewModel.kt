@@ -33,6 +33,28 @@ class SongsViewModel(
         return playlistsRepository.getPlaylistSongs(playlist)
     }
 
+    fun loadPlaylists(): Flow<List<Playlist>> {
+        return playlistsRepository.getAllPlaylists()
+    }
+
+    fun addSongToPlaylist(song: Song, playlist: Playlist) {
+        viewModelScope.launch(Dispatchers.IO) {
+            playlistsRepository.addSongToPlaylist(song, playlist)
+        }
+    }
+
+    fun addSongsToPlaylist(song: List<Song>, playlist: Playlist) {
+        viewModelScope.launch(Dispatchers.IO) {
+            playlistsRepository.addSongsToPlaylist(song, playlist)
+        }
+    }
+
+    fun removeSongFromPlaylist(song: Song, playlist: Playlist) {
+        viewModelScope.launch(Dispatchers.IO) {
+            playlistsRepository.removeSongFromPlaylist(song, playlist)
+        }
+    }
+
     fun deleteSong(song: Song) {
         viewModelScope.launch(Dispatchers.IO) {
             songsRepository.deleteSong(song)

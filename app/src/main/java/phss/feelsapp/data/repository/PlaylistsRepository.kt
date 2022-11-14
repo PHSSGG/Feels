@@ -4,6 +4,8 @@ import kotlinx.coroutines.flow.Flow
 import phss.feelsapp.data.dao.PlaylistDao
 import phss.feelsapp.data.models.Playlist
 import phss.feelsapp.data.models.PlaylistWithSongs
+import phss.feelsapp.data.models.Song
+import phss.feelsapp.utils.toPlaylistSongReference
 
 class PlaylistsRepository(
     private val playlistDao: PlaylistDao
@@ -28,6 +30,22 @@ class PlaylistsRepository(
 
     fun deletePlaylist(playlist: Playlist) {
         playlistDao.deletePlaylist(playlist)
+    }
+
+    fun addSongToPlaylist(song: Song, playlist: Playlist) {
+        addSongsToPlaylist(listOf(song), playlist)
+    }
+
+    fun addSongsToPlaylist(songs: List<Song>, playlist: Playlist) {
+        playlistDao.addSongsToPlaylist(songs.map { it.toPlaylistSongReference(playlist) })
+    }
+
+    fun removeSongFromPlaylist(song: Song, playlist: Playlist) {
+        removeSongsFromPlaylist(listOf(song), playlist)
+    }
+
+    fun removeSongsFromPlaylist(songs: List<Song>, playlist: Playlist) {
+        playlistDao.removeSongsFromPlaylist(songs.map { it.toPlaylistSongReference(playlist) })
     }
 
 }

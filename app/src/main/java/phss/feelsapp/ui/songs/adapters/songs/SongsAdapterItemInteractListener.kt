@@ -1,4 +1,4 @@
-package phss.feelsapp.ui.songs.adapters
+package phss.feelsapp.ui.songs.adapters.songs
 
 import phss.feelsapp.data.models.Song
 

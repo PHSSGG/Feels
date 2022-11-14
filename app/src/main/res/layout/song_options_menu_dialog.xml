@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/dark_gray_secondary"
+    android:layout_width="310dp"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/songOptionsMenuSongThumb"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_background" />
+
+    <TextView
+        android:id="@+id/songOptionsMenuSongTitle"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:text="Title"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:maxLines="1"
+        android:maxLength="30"
+        android:ellipsize="end"
+        app:layout_constraintStart_toEndOf="@+id/songOptionsMenuSongThumb"
+        app:layout_constraintTop_toTopOf="@+id/songOptionsMenuSongThumb" />
+
+    <TextView
+        android:id="@+id/songOptionsMenuSongArtist"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="5dp"
+        android:text="Artista"
+        android:textColor="@color/light_gray"
+        android:maxLines="1"
+        android:maxLength="30"
+        android:ellipsize="end"
+        app:layout_constraintBottom_toBottomOf="@+id/songOptionsMenuSongThumb"
+        app:layout_constraintStart_toEndOf="@+id/songOptionsMenuSongThumb" />
+
+    <TextView
+        android:id="@+id/songOptionsMenuSongDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:text="3:00"
+        android:textColor="@color/light_gray"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/songOptionsMenuSongThumb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/songOptionsMenuSongThumb" />
+
+    <View
+        android:id="@+id/songOptionsSongDivider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/dark_gray_primary"
+        app:layout_constraintEnd_toEndOf="@+id/songOptionsMenuSongDuration"
+        app:layout_constraintStart_toStartOf="@+id/songOptionsMenuSongThumb"
+        app:layout_constraintTop_toBottomOf="@+id/songOptionsMenuSongThumb" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/songOptionsMenuAddToPlaylistButton"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="@+id/songOptionsMenuSongDuration"
+        app:layout_constraintStart_toStartOf="@+id/songOptionsMenuSongThumb"
+        app:layout_constraintTop_toBottomOf="@+id/songOptionsSongDivider">
+
+        <ImageView
+            android:id="@+id/songOptionsMenuAddToPlaylistImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_add_to_playlist" />
+
+        <TextView
+            android:id="@+id/songOptionsMenuAddToPlaylistText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/add_to_playlist"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/songOptionsMenuAddToPlaylistImage"
+            app:layout_constraintStart_toEndOf="@+id/songOptionsMenuAddToPlaylistImage"
+            app:layout_constraintTop_toTopOf="@+id/songOptionsMenuAddToPlaylistImage" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/songOptionsMenuRemoveFromPlaylistButton"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="@+id/songOptionsMenuSongDuration"
+        app:layout_constraintStart_toStartOf="@+id/songOptionsMenuSongThumb"
+        app:layout_constraintTop_toBottomOf="@+id/songOptionsMenuSongThumb">
+
+        <ImageView
+            android:id="@+id/songOptionsMenuRemoteFromPlaylistImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_remove_from_playlist" />
+
+        <TextView
+            android:id="@+id/songOptionsMenuRemoteFromPlaylistText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/remove_from_playlist"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/songOptionsMenuRemoteFromPlaylistImage"
+            app:layout_constraintStart_toEndOf="@+id/songOptionsMenuRemoteFromPlaylistImage"
+            app:layout_constraintTop_toTopOf="@+id/songOptionsMenuRemoteFromPlaylistImage" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/songOptionsMenuDeleteSongButton"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="130dp"
+        app:layout_constraintEnd_toEndOf="@+id/songOptionsMenuSongDuration"
+        app:layout_constraintStart_toStartOf="@+id/songOptionsMenuSongThumb"
+        app:layout_constraintTop_toBottomOf="@+id/songOptionsMenuSongThumb">
+
+        <ImageView
+            android:id="@+id/songOptionsMenuDeleteSongImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_delete_song" />
+
+        <TextView
+            android:id="@+id/songOptionsMenuDeleteSongText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/song_delete"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/songOptionsMenuDeleteSongImage"
+            app:layout_constraintStart_toEndOf="@+id/songOptionsMenuDeleteSongImage"
+            app:layout_constraintTop_toTopOf="@+id/songOptionsMenuDeleteSongImage" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/songOptionsMenuPlaylistsRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/songOptionsMenuSongDuration"
+        app:layout_constraintStart_toStartOf="@+id/songOptionsMenuSongThumb"
+        app:layout_constraintTop_toBottomOf="@+id/songOptionsSongDivider" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/songOptionsMenuPlaylistsEmptyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/playlists_empty"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/songOptionsMenuSongDuration"
+        app:layout_constraintStart_toStartOf="@+id/songOptionsMenuSongThumb"
+        app:layout_constraintTop_toBottomOf="@+id/songOptionsSongDivider" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
