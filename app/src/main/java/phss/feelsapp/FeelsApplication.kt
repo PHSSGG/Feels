@@ -14,6 +14,7 @@ import phss.feelsapp.data.repository.SongsRepository
 import phss.feelsapp.data.source.local.SongsLocalDataSource
 import phss.feelsapp.data.source.remote.SongsRemoteDataSource
 import phss.feelsapp.database.AppDatabase
+import phss.feelsapp.player.PlayerManager
 import phss.feelsapp.service.DownloaderService
 import phss.feelsapp.ui.download.viewmodel.DownloadViewModel
 import phss.feelsapp.ui.home.HomeViewModel
@@ -46,6 +47,7 @@ val appModule = module {
     ) }
     single { PlaylistsRepository(get()) }
     single { DownloaderService(get(), get()) }
+    single { PlayerManager() }
 
     viewModel { HomeViewModel(get()) }
     viewModel { SearchViewModel(get()) }

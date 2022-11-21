@@ -24,6 +24,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name="phss.feelsapp.service.PlayerService"
+            android:enabled="true" />
     </application>
 
 </manifest>

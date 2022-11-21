@@ -1,7 +1,12 @@
 package phss.feelsapp.ui.songs
 
 import android.app.Dialog
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
@@ -21,6 +26,7 @@ import phss.feelsapp.R
 import phss.feelsapp.data.models.Playlist
 import phss.feelsapp.data.models.Song
 import phss.feelsapp.databinding.FragmentSongsBinding
+import phss.feelsapp.service.PlayerService
 import phss.feelsapp.ui.songs.adapters.playlists.OptionsMenuPlaylistsAdapter
 import phss.feelsapp.ui.songs.adapters.playlists.OptionsMenuPlaylistsItemInteractListener
 import phss.feelsapp.ui.songs.adapters.playlists.songs.AddToPlaylistSongsAdapter
@@ -35,7 +41,22 @@ class SongsFragment : Fragment() {
     private var _binding: FragmentSongsBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var playerService: PlayerService
+
     var currentListOfSongs: List<Song> = ArrayList()
+        set(value) {
+            if (playerService.playerManager.getCurrentPlaying() != null) {
+                val currentPlaying = playerService.playerManager.getCurrentPlaying()!!
+                val playingFromPlaylist = playerService.playerManager.playingFromPlaylist
+                value.forEach {
+                    it.isPlaying = currentPlaying.songId == it.songId
+                            && if (playingFromPlaylist != null) playingFromPlaylist.playlistId == playlist?.playlistId
+                    else playlist == null
+                }
+            }
+
+            field = value
+        }
     var playlist: Playlist? = null
     var songsAdapter: SongsAdapter? = null
 
@@ -46,16 +67,19 @@ class SongsFragment : Fragment() {
     ): View {
         _binding = FragmentSongsBinding.inflate(inflater, container, false)
 
+        bindPlayerService()
         songsAdapter = SongsAdapter(listOf(), setupSongItemInteractListener())
         setupSongsView()
         setFragmentResultListener("requestKey") { _, bundle ->
             val playlistId = bundle.getLong("playlistId", -1L)
             if (playlistId != -1L) songsViewModel.getPlaylistById(playlistId) {
                 playlist = it
-                binding.songsLibraryText.text = playlist!!.playlistName
+                requireActivity().runOnUiThread {
+                    binding.songsLibraryText.text = playlist!!.playlistName
 
-                setupAddSongsButton()
-                updateSongsViewWithPlaylist()
+                    setupAddSongsButton()
+                    updateSongsViewWithPlaylist()
+                }
             }
             else {
                 binding.songsAddButton.visibility = View.INVISIBLE
@@ -64,6 +88,24 @@ class SongsFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private val playerServiceConnection = object : ServiceConnection {
+        override fun onServiceDisconnected(name: ComponentName?) {
+            // TODO: Unbind service stuff
+        }
+
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            val binder = service as PlayerService.LocalBinder
+            playerService = binder.getService()
+
+            val currentPlaying = playerService.playerManager.getCurrentPlaying()
+            if (currentPlaying != null) songsAdapter?.updateItems(currentPlaying)
+        }
+    }
+    private fun bindPlayerService() {
+        val playerServiceIntent = Intent(requireContext(), PlayerService::class.java)
+        requireActivity().bindService(playerServiceIntent, playerServiceConnection, Context.BIND_AUTO_CREATE)
     }
 
     private fun setupSongsView() {
@@ -78,7 +120,15 @@ class SongsFragment : Fragment() {
     private fun setupSongItemInteractListener(): SongsAdapterItemInteractListener {
         return object : SongsAdapterItemInteractListener {
             override fun onClick(song: Song) {
-                // TODO: Play song
+                val previousSong = playerService.playerManager.getCurrentPlaying()
+                if (previousSong != null && previousSong.songId == song.songId && song.isPlaying) {
+                    if (playerService.playerManager.isPlaying()) playerService.playerManager.pausePlayer()
+                    else playerService.playerManager.resumePlayer()
+                    return
+                }
+
+                playerService.playerManager.setupPlayer(currentListOfSongs, song, playlist)
+                songsAdapter?.updateItems(song, previousSong)
             }
             override fun onLongClick(song: Song) {
                 val songOptionsDialog = Dialog(requireContext()).also {

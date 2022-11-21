@@ -14,7 +14,11 @@ data class Song(
     val key: String,
     val thumbnailPath: String,
     val filePath: String
-)
+) {
+
+    var isPlaying = false
+
+}
 
 @Entity
 data class PlaylistSong(
