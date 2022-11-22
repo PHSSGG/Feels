@@ -1,30 +1,25 @@
 package phss.feelsapp.ui.library
 
-import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.Button
-import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.textfield.TextInputEditText
 import koleton.api.hideSkeleton
 import koleton.api.loadSkeleton
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import phss.feelsapp.R
 import phss.feelsapp.data.models.Playlist
 import phss.feelsapp.databinding.FragmentLibraryBinding
 import phss.feelsapp.ui.library.adapters.playlists.PlaylistAdapterItemInteractListener
 import phss.feelsapp.ui.library.adapters.playlists.PlaylistsAdapter
+import phss.feelsapp.ui.library.dialogs.CreatePlaylistDialog
+import phss.feelsapp.ui.library.dialogs.DeletePlaylistDialog
 import phss.feelsapp.ui.recently.RecentlyAdapter
 import phss.feelsapp.ui.songs.SongsFragment
 
@@ -73,29 +68,12 @@ class LibraryFragment : Fragment() {
             }
 
             override fun onLongClick(playlist: Playlist) {
-                val deletePlaylistDialog = Dialog(requireContext()).also {
-                    it.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                    it.setCancelable(true)
-                    it.setContentView(R.layout.playlist_delete_confirm_dialog)
-                }
-
-                val playlistDeleteDialogInfo: TextView = deletePlaylistDialog.findViewById(R.id.playlistDeleteDialogInfoName)
-                lifecycleScope.launch {
-                    libraryViewModel.getPlaylistWithSongs(playlist).collectLatest {
-                        val amountOfSongs = if (it != null && it.songs != null) it.songs.size else 0
-                        playlistDeleteDialogInfo.text = playlistDeleteDialogInfo.text.toString().replace("{playlist}", playlist.playlistName).replace("{amount}", "$amountOfSongs")
-                    }
-                }
-
-                deletePlaylistDialog.findViewById<Button>(R.id.playlistDeleteDialogCancelButton).setOnClickListener {
-                    deletePlaylistDialog.dismiss()
-                }
-                deletePlaylistDialog.findViewById<Button>(R.id.playlistDeleteDialogDeleteButton).setOnClickListener {
-                    libraryViewModel.deletePlaylist(playlist)
-                    deletePlaylistDialog.dismiss()
-                }
-
-                deletePlaylistDialog.show()
+                DeletePlaylistDialog(
+                    requireContext(),
+                    lifecycleScope,
+                    libraryViewModel,
+                    playlist
+                ).openDialog()
             }
         }
     }
@@ -141,26 +119,7 @@ class LibraryFragment : Fragment() {
 
     private fun setupCreatePlaylistButton() {
         binding.playlistCreateButton.setOnClickListener {
-            val dialog = Dialog(requireContext()).also {
-                it.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                it.setCancelable(true)
-                it.setContentView(R.layout.library_playlist_create_dialog)
-            }
-
-            val playlistEditText: TextInputEditText = dialog.findViewById(R.id.playlistCreateDialogPlaylistEditText)
-            val createButton: Button = dialog.findViewById(R.id.playlistCreateDialogCreateButton)
-            val cancelButton: Button = dialog.findViewById(R.id.playlistCreateDialogCancelButton)
-
-            createButton.setOnClickListener {
-                val playlistName = playlistEditText.text
-                if (playlistName.isNullOrBlank()) return@setOnClickListener
-
-                libraryViewModel.createPlaylist(playlistName.toString())
-                dialog.dismiss()
-            }
-            cancelButton.setOnClickListener { dialog.cancel() }
-
-            dialog.show()
+            CreatePlaylistDialog(requireContext(), libraryViewModel).openDialog()
         }
     }
 
