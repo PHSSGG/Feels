@@ -120,7 +120,10 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
         mediaPlayer.reset()
         alreadyPlayed.clear()
 
-        observablePlayerListener?.onStop(songs[currentPlaying])
+        getCurrentPlaying()?.isPlaying = false
+
+        playerStateChangeListener?.onStop()
+        observablePlayerListener?.onStop(getCurrentPlaying()!!)
     }
 
     fun seekTo(position: Int) {

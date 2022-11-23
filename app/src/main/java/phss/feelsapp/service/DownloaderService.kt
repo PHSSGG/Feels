@@ -35,7 +35,7 @@ class DownloaderService(
 
         val request = YoutubeDLRequest(YOUTUBE_VIDEO_URL.replace("{id}", song.item.key))
         request.addOption("-f", "m4a")
-        request.addOption("-o", "${directory.absolutePath}/%(title)s.%(ext)s")
+        request.addOption("-o", "${directory.absolutePath}/${song.item.key}.%(ext)s")
 
         val job = GlobalScope.launch (Dispatchers.IO) {
             try {
@@ -43,7 +43,7 @@ class DownloaderService(
 
                 var thumbnailPath = ""
                 if (song.item.thumbnail != null) {
-                    val (target, path) = getThumbnailTarget(song.item.info?.name ?: "Null")
+                    val (target, path) = getThumbnailTarget(song.item.key ?: "Null")
 
                     saveThumbnail(song, target)
                     thumbnailPath = path
@@ -60,12 +60,15 @@ class DownloaderService(
                         duration = song.item.durationText ?: "0:00",
                         key = song.item.key,
                         thumbnailPath = thumbnailPath,
-                        filePath = "${directory.absolutePath}/${song.item.info?.name ?: "Null"}.m4a"
+                        filePath = "${directory.absolutePath}/${song.item.key ?: "Null"}.m4a"
                     )
                 )
             } catch (ex: Exception) {
                 ex.printStackTrace()
             }
+
+            this.cancel()
+            downloading.remove(song.item.key)
         }
         downloading[song.item.key] = job
 
