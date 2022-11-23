@@ -19,6 +19,7 @@ import phss.feelsapp.R
 import phss.feelsapp.data.models.Playlist
 import phss.feelsapp.data.models.Song
 import phss.feelsapp.databinding.FragmentSongsBinding
+import phss.feelsapp.player.listeners.ObservablePlayerListener
 import phss.feelsapp.service.PlayerService
 import phss.feelsapp.ui.songs.adapters.songs.SongsAdapter
 import phss.feelsapp.ui.songs.adapters.songs.SongsAdapterItemInteractListener
@@ -83,7 +84,7 @@ class SongsFragment : Fragment() {
 
     private val playerServiceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
-            // TODO: Unbind service stuff
+            playerService.playerManager.observablePlayerListener = null
         }
 
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -92,6 +93,11 @@ class SongsFragment : Fragment() {
 
             val currentPlaying = playerService.playerManager.getCurrentPlaying()
             if (currentPlaying != null) songsAdapter?.updateItems(currentPlaying)
+
+            playerService.playerManager.observablePlayerListener = object : ObservablePlayerListener {
+                override fun onPlay(song: Song, previous: Song?) { songsAdapter?.updateItems(song, previous) }
+                override fun onStop(song: Song) { songsAdapter?.updateItems(song) }
+            }
         }
     }
     private fun bindPlayerService() {

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/dark_gray_secondary"
+        android:elevation="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:background="@drawable/curve_shape"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_arrow_down" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/playerCurrentPlayingThumb"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="150dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/playerNextPlayingThumb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        app:layout_constraintBottom_toBottomOf="@+id/playerCurrentPlayingThumb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/playerCurrentPlayingThumb"
+        app:layout_constraintTop_toTopOf="@+id/playerCurrentPlayingThumb"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/playerPreviousPlayingThumb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="80dp"
+        app:layout_constraintBottom_toBottomOf="@+id/playerCurrentPlayingThumb"
+        app:layout_constraintEnd_toStartOf="@+id/playerCurrentPlayingThumb"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/playerCurrentPlayingThumb"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/playerCurrentPlayingTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="Title"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playerCurrentPlayingThumb" />
+
+    <TextView
+        android:id="@+id/playerCurrentPlayingArtist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Artist"
+        android:textColor="@color/light_gray_plus"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/playerCurrentPlayingTitle"
+        app:layout_constraintStart_toStartOf="@+id/playerCurrentPlayingTitle"
+        app:layout_constraintTop_toBottomOf="@+id/playerCurrentPlayingTitle" />
+
+    <ImageButton
+        android:id="@+id/playerRepeatButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:layout_marginStart="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/playerCurrentPlayingArtist"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/playerCurrentPlayingTitle"
+        app:srcCompat="@drawable/ic_repeat_list" />
+
+    <ImageButton
+        android:id="@+id/playerShuffleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/playerCurrentPlayingArtist"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/playerCurrentPlayingTitle"
+        app:srcCompat="@drawable/ic_shuffle" />
+
+    <SeekBar
+        android:id="@+id/playerSeekBar"
+        style="@style/Widget.AppCompat.SeekBar"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:max="100"
+        android:progress="50"
+        android:progressDrawable="@drawable/player_seekbar_style"
+        android:thumb="@drawable/player_seekbar_thumb"
+        android:splitTrack="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playerCurrentPlayingArtist" />
+
+    <TextView
+        android:id="@+id/playerSeekBarSongDurationPosition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:text="1:00"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/playerSeekBar"
+        app:layout_constraintEnd_toStartOf="@+id/playerSeekBar"
+        app:layout_constraintTop_toTopOf="@+id/playerSeekBar" />
+
+    <TextView
+        android:id="@+id/playerSeekBarSongDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="3:00"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/playerSeekBar"
+        app:layout_constraintStart_toEndOf="@+id/playerSeekBar"
+        app:layout_constraintTop_toTopOf="@+id/playerSeekBar" />
+
+    <ImageButton
+        android:id="@+id/playerPauseResumeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playerSeekBar"
+        app:srcCompat="@drawable/ic_pause" />
+
+    <ImageButton
+        android:id="@+id/playerPreviousButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/playerPauseResumeButton"
+        app:layout_constraintEnd_toStartOf="@+id/playerPauseResumeButton"
+        app:layout_constraintTop_toTopOf="@+id/playerPauseResumeButton"
+        app:srcCompat="@drawable/ic_previous" />
+
+    <ImageButton
+        android:id="@+id/playerNextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/playerPauseResumeButton"
+        app:layout_constraintStart_toEndOf="@+id/playerPauseResumeButton"
+        app:layout_constraintTop_toTopOf="@+id/playerPauseResumeButton"
+        app:srcCompat="@drawable/ic_next" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
