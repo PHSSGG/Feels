@@ -4,27 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/dark_gray_secondary"
-    android:layout_width="310dp"
+    android:layout_width="@dimen/_238sdp"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:padding="@dimen/_8sdp">
 
     <ImageView
         android:id="@+id/songOptionsMenuSongThumb"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/_46sdp"
+        android:layout_height="@dimen/_46sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <TextView
         android:id="@+id/songOptionsMenuSongTitle"
-        android:layout_width="160dp"
+        android:layout_width="@dimen/_123sdp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:text="Title"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="@dimen/_12ssp"
         android:maxLines="1"
         android:maxLength="30"
         android:ellipsize="end"
@@ -33,10 +33,10 @@
 
     <TextView
         android:id="@+id/songOptionsMenuSongArtist"
-        android:layout_width="160dp"
+        android:layout_width="@dimen/_123sdp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_4sdp"
         android:text="Artista"
         android:textColor="@color/light_gray"
         android:maxLines="1"
@@ -49,10 +49,10 @@
         android:id="@+id/songOptionsMenuSongDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="@dimen/_8sdp"
         android:text="3:00"
         android:textColor="@color/light_gray"
-        android:textSize="18sp"
+        android:textSize="@dimen/_14sdp"
         app:layout_constraintBottom_toBottomOf="@+id/songOptionsMenuSongThumb"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/songOptionsMenuSongThumb" />
@@ -60,8 +60,8 @@
     <View
         android:id="@+id/songOptionsSongDivider"
         android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:background="@color/dark_gray_primary"
         app:layout_constraintEnd_toEndOf="@+id/songOptionsMenuSongDuration"
         app:layout_constraintStart_toStartOf="@+id/songOptionsMenuSongThumb"
@@ -70,8 +70,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/songOptionsMenuAddToPlaylistButton"
         android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_height="@dimen/_23sdp"
+        android:layout_marginTop="@dimen/_23sdp"
         app:layout_constraintEnd_toEndOf="@+id/songOptionsMenuSongDuration"
         app:layout_constraintStart_toStartOf="@+id/songOptionsMenuSongThumb"
         app:layout_constraintTop_toBottomOf="@+id/songOptionsSongDivider">
@@ -92,7 +92,7 @@
             android:layout_marginStart="10dp"
             android:text="@string/add_to_playlist"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="@dimen/_14ssp"
             app:layout_constraintBottom_toBottomOf="@+id/songOptionsMenuAddToPlaylistImage"
             app:layout_constraintStart_toEndOf="@+id/songOptionsMenuAddToPlaylistImage"
             app:layout_constraintTop_toTopOf="@+id/songOptionsMenuAddToPlaylistImage" />
@@ -102,8 +102,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/songOptionsMenuRemoveFromPlaylistButton"
         android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="80dp"
+        android:layout_height="@dimen/_23sdp"
+        android:layout_marginTop="@dimen/_61sdp"
         app:layout_constraintEnd_toEndOf="@+id/songOptionsMenuSongDuration"
         app:layout_constraintStart_toStartOf="@+id/songOptionsMenuSongThumb"
         app:layout_constraintTop_toBottomOf="@+id/songOptionsMenuSongThumb">
@@ -121,10 +121,10 @@
             android:id="@+id/songOptionsMenuRemoteFromPlaylistText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="@dimen/_8sdp"
             android:text="@string/remove_from_playlist"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="@dimen/_14sdp"
             app:layout_constraintBottom_toBottomOf="@+id/songOptionsMenuRemoteFromPlaylistImage"
             app:layout_constraintStart_toEndOf="@+id/songOptionsMenuRemoteFromPlaylistImage"
             app:layout_constraintTop_toTopOf="@+id/songOptionsMenuRemoteFromPlaylistImage" />
@@ -134,8 +134,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/songOptionsMenuDeleteSongButton"
         android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="130dp"
+        android:layout_height="@dimen/_23sdp"
+        android:layout_marginTop="@dimen/_100sdp"
         app:layout_constraintEnd_toEndOf="@+id/songOptionsMenuSongDuration"
         app:layout_constraintStart_toStartOf="@+id/songOptionsMenuSongThumb"
         app:layout_constraintTop_toBottomOf="@+id/songOptionsMenuSongThumb">
@@ -153,10 +153,10 @@
             android:id="@+id/songOptionsMenuDeleteSongText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="@dimen/_8sdp"
             android:text="@string/song_delete"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="@dimen/_14sdp"
             app:layout_constraintBottom_toBottomOf="@+id/songOptionsMenuDeleteSongImage"
             app:layout_constraintStart_toEndOf="@+id/songOptionsMenuDeleteSongImage"
             app:layout_constraintTop_toTopOf="@+id/songOptionsMenuDeleteSongImage" />
@@ -166,8 +166,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/songOptionsMenuPlaylistsRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="@dimen/_115sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/songOptionsMenuSongDuration"
         app:layout_constraintStart_toStartOf="@+id/songOptionsMenuSongThumb"
@@ -178,10 +178,10 @@
         android:id="@+id/songOptionsMenuPlaylistsEmptyText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:text="@string/playlists_empty"
         android:textColor="@color/white"
-        android:textSize="15sp"
+        android:textSize="@dimen/_11ssp"
         app:layout_constraintEnd_toEndOf="@+id/songOptionsMenuSongDuration"
         app:layout_constraintStart_toStartOf="@+id/songOptionsMenuSongThumb"
         app:layout_constraintTop_toBottomOf="@+id/songOptionsSongDivider" />

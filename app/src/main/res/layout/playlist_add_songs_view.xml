@@ -2,26 +2,26 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="320dp"
-    android:layout_height="70dp">
+    android:layout_width="@dimen/_246sdp"
+    android:layout_height="@dimen/_58sdp">
 
     <ImageView
         android:id="@+id/playlistAddSongsSongThumb"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/_46sdp"
+        android:layout_height="@dimen/_46sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <TextView
         android:id="@+id/playlistAddSongsSongTitle"
-        android:layout_width="150dp"
+        android:layout_width="@dimen/_115sdp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:text="Title"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="@dimen/_12ssp"
         android:maxLines="1"
         android:maxLength="30"
         android:ellipsize="end"
@@ -30,10 +30,10 @@
 
     <TextView
         android:id="@+id/playlistAddSongsSongArtist"
-        android:layout_width="150dp"
+        android:layout_width="@dimen/_115sdp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:text="Artist"
         android:textColor="@color/light_gray"
         android:maxLines="1"

@@ -11,8 +11,8 @@
         android:id="@+id/songsLibraryIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="30dp"
+        android:layout_marginTop="@dimen/_23sdp"
+        android:layout_marginStart="@dimen/_23sdp"
         android:src="@drawable/ic_library_icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,19 +21,19 @@
         android:id="@+id/songsLibraryText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="@dimen/_8sdp"
         android:textColor="@color/light_gray_plus"
         android:text="@string/songs_library_name"
-        android:textSize="24sp"
+        android:textSize="@dimen/_19ssp"
         app:layout_constraintBottom_toBottomOf="@+id/songsLibraryIcon"
         app:layout_constraintStart_toEndOf="@+id/songsLibraryIcon"
         app:layout_constraintTop_toTopOf="@+id/songsLibraryIcon" />
 
     <ImageButton
         android:id="@+id/songsAddButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="30dp"
+        android:layout_width="@dimen/_31sdp"
+        android:layout_height="@dimen/_31sdp"
+        android:layout_marginEnd="@dimen/_23sdp"
         android:src="@drawable/ic_playlist_create"
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/songsLibraryText"
@@ -42,12 +42,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/songsRecyclerView"
-        android:layout_width="350dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="@dimen/_31sdp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/songsAddButton"
+        app:layout_constraintStart_toStartOf="@+id/songsLibraryIcon"
         app:layout_constraintTop_toBottomOf="@+id/songsLibraryText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

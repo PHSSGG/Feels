@@ -71,6 +71,7 @@
             android:id="@+id/playingSongFabPaused"
             android:layout_width="56dp"
             android:layout_height="56dp"
+            android:background="#66393939"
             app:layout_constraintBottom_toBottomOf="@+id/playingSongFabHolder"
             app:layout_constraintEnd_toEndOf="@+id/playingSongFabHolder"
             app:layout_constraintStart_toStartOf="@+id/playingSongFabHolder"

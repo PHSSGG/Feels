@@ -4,7 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.content.res.ColorStateList
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.IBinder
 import android.view.Menu
@@ -150,8 +150,18 @@ class MainActivity : AppCompatActivity() {
                 setupBottomSheetImage(playerService.playerManager.getNextSong(), findViewById(R.id.playerNextPlayingThumb))
                 setupBottomSheetImage(playerService.playerManager.getPreviousSong(), findViewById(R.id.playerPreviousPlayingThumb))
 
-                findViewById<TextView>(R.id.playerCurrentPlayingTitle).text = song.name
-                findViewById<TextView>(R.id.playerCurrentPlayingArtist).text = song.artist
+                findViewById<TextView>(R.id.playerCurrentPlayingTitle).apply {
+                    text = song.name
+
+                    setHorizontallyScrolling(true)
+                    isSelected = true
+                }
+                findViewById<TextView>(R.id.playerCurrentPlayingArtist).apply {
+                    text = song.artist
+
+                    setHorizontallyScrolling(true)
+                    isSelected = true
+                }
                 findViewById<SeekBar>(R.id.playerSeekBar).apply {
                     progress = 0
                     max = playerService.playerManager.getSongDuration()

@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="@dimen/_61sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/songItemView"
-        android:padding="1dp"
+        android:padding="@dimen/_1sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -16,21 +16,21 @@
 
         <ImageView
             android:id="@+id/songItemThumb"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/_46sdp"
+            android:layout_height="@dimen/_46sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_launcher_background" />
 
         <TextView
             android:id="@+id/songItemTitle"
-            android:layout_width="200dp"
+            android:layout_width="@dimen/_154sdp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_3sdp"
             android:text="Title"
             android:textColor="#FFFFFF"
-            android:textSize="16sp"
+            android:textSize="@dimen/_12ssp"
             android:maxLines="1"
             android:maxLength="30"
             android:ellipsize="end"
@@ -39,10 +39,10 @@
 
         <TextView
             android:id="@+id/songItemArtist"
-            android:layout_width="200dp"
+            android:layout_width="@dimen/_154sdp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_3sdp"
             android:text="Artist"
             android:textColor="#9B9B9B"
             android:maxLines="1"
@@ -66,8 +66,8 @@
     <ProgressBar
         android:id="@+id/downloadCircleProgressBar"
         android:visibility="gone"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/_31sdp"
+        android:layout_height="@dimen/_31sdp"
         android:indeterminate="false"
         android:progressDrawable="@drawable/circular_progress_bar"
         android:background="@drawable/circle_shape"

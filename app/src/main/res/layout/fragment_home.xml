@@ -11,22 +11,21 @@
         android:id="@+id/recentlyPlayedText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="@dimen/_38sdp"
         android:text="@string/recently_played"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="@dimen/_19ssp"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/recentlyNothingToShow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/_16sdp"
         android:text="@string/nothing_to_show_yet"
         android:textColor="@color/light_gray"
-        android:textSize="22sp"
+        android:textSize="@dimen/_17ssp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/recentlyPlayedText"
         app:layout_constraintTop_toBottomOf="@+id/recentlyPlayedText" />
@@ -42,8 +41,8 @@
         android:id="@+id/recentlyHorizontalRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginStart="@dimen/_23sdp"
+        android:layout_marginTop="@dimen/_11sdp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/recentlyPlayedText"
@@ -53,10 +52,10 @@
         android:id="@+id/recommendationsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="@dimen/_31sdp"
         android:text="@string/recommendations"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:textSize="@dimen/_19ssp"
         app:layout_constraintStart_toStartOf="@+id/recentlyPlayedText"
         app:layout_constraintTop_toBottomOf="@+id/recentlyHorizontalRecyclerViewGuideline" />
 
@@ -64,10 +63,10 @@
         android:id="@+id/recommendationsNothingToShow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/_16sdp"
         android:text="@string/nothing_to_show_yet"
         android:textColor="@color/light_gray"
-        android:textSize="22sp"
+        android:textSize="@dimen/_17ssp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/recommendationsText"
         app:layout_constraintTop_toBottomOf="@+id/recommendationsText" />
@@ -76,12 +75,26 @@
         android:id="@+id/recommendationsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginStart="@dimen/_23sdp"
+        android:layout_marginTop="@dimen/_11sdp"
+        android:layout_marginEnd="@dimen/_23sdp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintTop_toBottomOf="@+id/recommendationsText" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/startGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".07" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/endGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".93" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,25 +6,24 @@
     android:background="@color/dark_gray_secondary"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    >
+    android:padding="@dimen/_8sdp">
 
     <TextView
         android:id="@+id/playlistCreateDialogTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:text="@string/playlist_create"
         android:textColor="#FFFFFF"
-        android:textSize="30sp"
+        android:textSize="@dimen/_23sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/playlistCreateDialogPlaylistEditText"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="25dp"
+        android:layout_width="@dimen/_231sdp"
+        android:layout_height="@dimen/_54sdp"
+        android:layout_marginTop="@dimen/_19sdp"
         android:backgroundTint="@color/purple_primary"
         android:ems="10"
         android:inputType="text"
@@ -32,15 +31,15 @@
         android:hint="@string/playlist_name"
         android:textColor="@color/gray"
         android:textColorHint="@color/gray"
-        android:drawablePadding="15dp"
+        android:drawablePadding="@dimen/_11sdp"
         app:layout_constraintStart_toStartOf="@+id/playlistCreateDialogTitle"
         app:layout_constraintTop_toBottomOf="@+id/playlistCreateDialogTitle" />
 
     <Button
         android:id="@+id/playlistCreateDialogCreateButton"
-        android:layout_width="130dp"
+        android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="@dimen/_38sdp"
         android:background="@drawable/playlist_create_dialog_button_style"
         android:text="@string/create_playlist"
         android:textColor="@color/light_gray_plus"
@@ -49,9 +48,9 @@
 
     <Button
         android:id="@+id/playlistCreateDialogCancelButton"
-        android:layout_width="130dp"
+        android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="@dimen/_38sdp"
         android:background="@drawable/playlist_create_dialog_button_style"
         android:text="@string/cancel_playlist_create"
         android:textColor="@color/light_gray_plus"
