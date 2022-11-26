@@ -180,7 +180,7 @@
         android:id="@+id/playerPreviousButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="@dimen/_11sdp"
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/playerPauseResumeButton"
         app:layout_constraintEnd_toStartOf="@+id/playerPauseResumeButton"
@@ -191,7 +191,7 @@
         android:id="@+id/playerNextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="@dimen/_11sdp"
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/playerPauseResumeButton"
         app:layout_constraintStart_toEndOf="@+id/playerPauseResumeButton"
@@ -211,5 +211,27 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent=".80" />
+
+    <ImageButton
+        android:id="@+id/playerBackwardButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:layout_marginEnd="@dimen/_3sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/playerPreviousButton"
+        app:layout_constraintEnd_toStartOf="@+id/playerPreviousButton"
+        app:layout_constraintTop_toTopOf="@+id/playerPreviousButton"
+        app:srcCompat="@drawable/ic_backward" />
+
+    <ImageButton
+        android:id="@+id/playerForwardButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:layout_marginStart="@dimen/_3sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/playerNextButton"
+        app:layout_constraintStart_toEndOf="@+id/playerNextButton"
+        app:layout_constraintTop_toTopOf="@+id/playerNextButton"
+        app:srcCompat="@drawable/ic_forward" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

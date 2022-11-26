@@ -230,6 +230,12 @@ class MainActivity : AppCompatActivity() {
         findViewById<ImageButton>(R.id.playerNextButton).setOnClickListener {
             playerService.playerManager.playNext(true)
         }
+        findViewById<ImageButton>(R.id.playerBackwardButton).setOnClickListener {
+            playerService.playerManager.backward5()
+        }
+        findViewById<ImageButton>(R.id.playerForwardButton).setOnClickListener {
+            playerService.playerManager.forward5()
+        }
     }
 
     private fun setupBottomSheetSeekBar() {

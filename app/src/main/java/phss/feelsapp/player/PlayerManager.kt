@@ -130,6 +130,14 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
         mediaPlayer.seekTo(position)
     }
 
+    fun backward5() {
+        mediaPlayer.seekTo(getProgress() - 5000)
+    }
+
+    fun forward5() {
+        mediaPlayer.seekTo(getProgress() + 5000)
+    }
+
     fun isPlaying(): Boolean {
         return mediaPlayer.isPlaying
     }
