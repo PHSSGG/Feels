@@ -4,7 +4,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.IBinder
 import android.view.Menu
@@ -43,14 +42,14 @@ class MainActivity : AppCompatActivity() {
 
     private val playerServiceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
-            playerService.playerManager.playerStateChangeListener = null
+            playerService.playerManager.unregisterPlayerStateChangeListener(this@MainActivity::class)
         }
 
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as PlayerService.LocalBinder
             playerService = binder.getService()
 
-            playerService.playerManager.playerStateChangeListener = setupPlayerStateChangeListener()
+            playerService.playerManager.registerPlayerStateChangeListener(this@MainActivity::class, setupPlayerStateChangeListener())
         }
     }
 

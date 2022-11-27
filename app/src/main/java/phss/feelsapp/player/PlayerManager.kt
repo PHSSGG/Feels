@@ -7,6 +7,7 @@ import phss.feelsapp.data.models.Playlist
 import phss.feelsapp.data.models.Song
 import phss.feelsapp.player.listeners.ObservablePlayerListener
 import phss.feelsapp.player.listeners.PlayerStateChangeListener
+import kotlin.reflect.KClass
 
 class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener {
 
@@ -21,7 +22,7 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
             .build()
         )
     }
-    var playerStateChangeListener: PlayerStateChangeListener? = null
+    var playerStateChangeListeners = HashMap<KClass<*>, PlayerStateChangeListener>()
     var observablePlayerListener: ObservablePlayerListener? = null
 
     private var playingJob: Job? = null
@@ -30,7 +31,10 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
     private var currentPlaying: Int = 0
     var playingFromPlaylist: Playlist? = null
 
+    private var isStopped = false
+
     var repeatType: RepeatType = RepeatType.NONE
+
     var shuffle: Boolean = false
     var alreadyPlayed = ArrayList<Song>()
 
@@ -43,7 +47,7 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
     }
 
     fun getCurrentPlaying(): Song? {
-        return songs.getOrNull(currentPlaying)
+        return if (!isStopped()) songs.getOrNull(currentPlaying) else null
     }
 
     fun getPreviousSong(): Song? {
@@ -56,6 +60,8 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
     }
 
     fun playSong(song: Song) {
+        isStopped = false
+
         mediaPlayer.stop()
         mediaPlayer.reset()
         mediaPlayer.setDataSource(song.filePath)
@@ -103,17 +109,19 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
         mediaPlayer.start()
         startPlayingJob()
 
-        playerStateChangeListener?.onResume(songs[currentPlaying])
+        notifyPlayerStateChangeListenerResume(songs[currentPlaying])
     }
 
     fun pausePlayer() {
         mediaPlayer.pause()
         stopPlayingJob()
 
-        playerStateChangeListener?.onPause(songs[currentPlaying])
+        notifyPlayerStateChangeListenerPause(songs[currentPlaying])
     }
 
     fun stopPlayer() {
+        if (isStopped) return
+
         stopPlayingJob()
 
         mediaPlayer.stop()
@@ -122,8 +130,10 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
 
         getCurrentPlaying()?.isPlaying = false
 
-        playerStateChangeListener?.onStop()
         observablePlayerListener?.onStop(getCurrentPlaying()!!)
+        notifyPlayerStateChangeListenerStop()
+
+        isStopped = true
     }
 
     fun seekTo(position: Int) {
@@ -142,6 +152,10 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
         return mediaPlayer.isPlaying
     }
 
+    fun isStopped(): Boolean {
+        return isStopped
+    }
+
     override fun onCompletion(mediaPlayer: MediaPlayer) {
         if (!playNext()) stopPlayer()
     }
@@ -149,7 +163,7 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
     override fun onPrepared(mediaPlayer: MediaPlayer) {
         mediaPlayer.start()
 
-        playerStateChangeListener?.onPlaying(
+        notifyPlayerStateChangeListenerPlaying(
             songs[currentPlaying],
             mediaPlayer.duration
         )
@@ -157,12 +171,50 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
         startPlayingJob()
     }
 
+    fun registerPlayerStateChangeListener(clazz: KClass<*>, playerStateChangeListener: PlayerStateChangeListener) {
+        playerStateChangeListeners[clazz] = playerStateChangeListener
+    }
+
+    fun unregisterPlayerStateChangeListener(clazz: KClass<*>) {
+        playerStateChangeListeners.remove(clazz)
+    }
+
+    private fun notifyPlayerStateChangeListenerPlaying(song: Song, duration: Int) {
+        playerStateChangeListeners.forEach {
+            it.value.onPlaying(song, duration)
+        }
+    }
+
+    private fun notifyPlayerStateChangeListenerTimeChange(song: Song, timePercent: Int) {
+        playerStateChangeListeners.forEach {
+            it.value.onTimeChange(song, timePercent)
+        }
+    }
+
+    private fun notifyPlayerStateChangeListenerResume(song: Song) {
+        playerStateChangeListeners.forEach {
+            it.value.onResume(song)
+        }
+    }
+
+    private fun notifyPlayerStateChangeListenerPause(song: Song) {
+        playerStateChangeListeners.forEach {
+            it.value.onPause(song)
+        }
+    }
+
+    private fun notifyPlayerStateChangeListenerStop() {
+        playerStateChangeListeners.forEach {
+            it.value.onStop()
+        }
+    }
+
     private fun startPlayingJob() {
         if (playingJob != null) stopPlayingJob()
 
         playingJob = GlobalScope.launch(Dispatchers.IO) {
             while (isPlaying()) {
-                playerStateChangeListener?.onTimeChange(
+                notifyPlayerStateChangeListenerTimeChange(
                     songs[currentPlaying],
                     getProgressPercentage(getProgress(), getSongDuration())
                 )
