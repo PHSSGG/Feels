@@ -11,11 +11,14 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import androidx.transition.AutoTransition
+import androidx.transition.TransitionManager
 import com.dmitrymalkovich.android.ProgressFloatingActionButton
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -32,6 +35,7 @@ import phss.feelsapp.ui.library.LibraryFragment
 import phss.feelsapp.ui.search.SearchFragment
 import phss.feelsapp.utils.CircleTransform
 import java.io.File
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -77,28 +81,29 @@ class MainActivity : AppCompatActivity() {
             setupBottomSheetSeekBar()
         }
 
-        findViewById<BottomNavigationView>(R.id.bottom_navigation).setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.homeButton -> {
-                    val transaction = supportFragmentManager.beginTransaction()
-                    transaction.replace(R.id.nav_host_fragment_content, HomeFragment())
-                    transaction.commit()
-                    true
-                }
-                R.id.searchButton -> {
-                    val transaction = supportFragmentManager.beginTransaction()
-                    transaction.replace(R.id.nav_host_fragment_content, SearchFragment())
-                    transaction.commit()
-                    true
-                }
-                R.id.libraryButton -> {
-                    val transaction = supportFragmentManager.beginTransaction()
-                    transaction.replace(R.id.nav_host_fragment_content, LibraryFragment())
-                    transaction.commit()
-                    true
-                }
-                else -> false
+        setupPlayerFloatingActionButton()
+        setupBottomNavigationButtons()
+    }
+
+    private fun setupPlayerFloatingActionButton() {
+        findViewById<ProgressFloatingActionButton>(R.id.playingSongFabHolder).setOnLongClickListener { view ->
+            val layoutParams = view.layoutParams as ConstraintLayout.LayoutParams
+
+            if (layoutParams.startToStart == ConstraintLayout.LayoutParams.UNSET) {
+                layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                layoutParams.endToEnd = ConstraintLayout.LayoutParams.UNSET
+            } else {
+                layoutParams.startToStart = ConstraintLayout.LayoutParams.UNSET
+                layoutParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
             }
+
+            val transition = AutoTransition()
+            transition.duration = 500
+            TransitionManager.beginDelayedTransition(view.parent as ConstraintLayout, transition)
+
+            view.layoutParams = layoutParams
+            view.requestLayout()
+            true
         }
     }
 
@@ -272,6 +277,32 @@ class MainActivity : AppCompatActivity() {
         val shuffleButton: ImageButton = findViewById(R.id.playerShuffleButton)
         if (playerService.playerManager.shuffle) shuffleButton.setColorFilter(ContextCompat.getColor(baseContext, R.color.green))
         else shuffleButton.setColorFilter(ContextCompat.getColor(baseContext, R.color.gray))
+    }
+
+    private fun setupBottomNavigationButtons() {
+        findViewById<BottomNavigationView>(R.id.bottom_navigation).setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.homeButton -> {
+                    val transaction = supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.nav_host_fragment_content, HomeFragment())
+                    transaction.commit()
+                    true
+                }
+                R.id.searchButton -> {
+                    val transaction = supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.nav_host_fragment_content, SearchFragment())
+                    transaction.commit()
+                    true
+                }
+                R.id.libraryButton -> {
+                    val transaction = supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.nav_host_fragment_content, LibraryFragment())
+                    transaction.commit()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
