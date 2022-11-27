@@ -37,7 +37,7 @@ class SongsFragment : Fragment() {
 
     var currentListOfSongs: List<Song> = ArrayList()
         set(value) {
-            if (playerService.playerManager.getCurrentPlaying() != null) {
+            if (::playerService.isInitialized && playerService.playerManager.getCurrentPlaying() != null) {
                 val currentPlaying = playerService.playerManager.getCurrentPlaying()!!
                 val playingFromPlaylist = playerService.playerManager.playingFromPlaylist
                 value.forEach {
@@ -82,6 +82,19 @@ class SongsFragment : Fragment() {
         return binding.root
     }
 
+    override fun onPause() {
+        super.onPause()
+        playerService.playerManager.observablePlayerListener = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // update playing info
+        currentListOfSongs = currentListOfSongs
+        songsAdapter?.updateList(currentListOfSongs)
+        setupObservablePlayerListener()
+    }
+
     private val playerServiceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
             playerService.playerManager.observablePlayerListener = null
@@ -94,15 +107,21 @@ class SongsFragment : Fragment() {
             val currentPlaying = playerService.playerManager.getCurrentPlaying()
             if (currentPlaying != null) songsAdapter?.updateItems(currentPlaying)
 
-            playerService.playerManager.observablePlayerListener = object : ObservablePlayerListener {
-                override fun onPlay(song: Song, previous: Song?) { songsAdapter?.updateItems(song, previous) }
-                override fun onStop(song: Song) { songsAdapter?.updateItems(song) }
-            }
+            setupObservablePlayerListener()
         }
     }
     private fun bindPlayerService() {
         val playerServiceIntent = Intent(requireContext(), PlayerService::class.java)
         requireActivity().bindService(playerServiceIntent, playerServiceConnection, Context.BIND_AUTO_CREATE)
+    }
+
+    private fun setupObservablePlayerListener() {
+        if (!::playerService.isInitialized) return
+
+        playerService.playerManager.observablePlayerListener = object : ObservablePlayerListener {
+            override fun onPlay(song: Song, previous: Song?) { songsAdapter?.updateItems(song, previous) }
+            override fun onStop(song: Song) { songsAdapter?.updateItems(song) }
+        }
     }
 
     private fun setupSongsView() {
