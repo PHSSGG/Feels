@@ -33,6 +33,10 @@ class DownloadSongItemAdapter(
         holder.artist.text = song.item.authors?.firstOrNull()?.name ?: "Null"
         holder.songView.background = null
 
+        holder.downloadButton.isEnabled = true
+        holder.downloadCircleProgressBar.isEnabled = true
+        holder.deleteButton.isEnabled = true
+
         if (song.downloading) {
             if (song.downloadProgress == 0f) holder.downloadCircleProgressBar.progress = 0
 
@@ -56,12 +60,15 @@ class DownloadSongItemAdapter(
             adapterListener.onSongViewClick(song)
         }
         holder.downloadButton.setOnClickListener {
+            it.isEnabled = false
             adapterListener.onDownloadButtonClick(song)
         }
         holder.downloadCircleProgressBar.setOnClickListener {
+            it.isEnabled = false
             adapterListener.onDownloadButtonClick(song)
         }
         holder.deleteButton.setOnClickListener {
+            it.isEnabled = false
             adapterListener.onDeleteButtonClick(song)
         }
     }
@@ -85,17 +92,25 @@ class DownloadSongItemAdapter(
         notifyDataSetChanged()
     }
 
-    fun updateSong(song: RemoteSong) {
+    fun updateSong(remoteSong: RemoteSong) {
+        val song = songsList.find { it.item.key == remoteSong.item.key } ?: return
+        song.alreadyDownloaded = remoteSong.alreadyDownloaded
+
         notifyItemChanged(songsList.indexOf(song))
     }
 
-    fun updateDownloading(song: RemoteSong, isDownloading: Boolean) {
+    fun updateDownloading(remoteSong: RemoteSong, isDownloading: Boolean) {
+        val song = songsList.find { it.item.key == remoteSong.item.key } ?: return
         song.downloading = isDownloading
+        song.alreadyDownloaded = remoteSong.alreadyDownloaded
+
         notifyItemChanged(songsList.indexOf(song))
     }
 
-    fun updateDownloadProgress(song: RemoteSong, progress: Float) {
+    fun updateDownloadProgress(remoteSong: RemoteSong, progress: Float) {
+        val song = songsList.find { it.item.key == remoteSong.item.key } ?: return
         song.downloadProgress = progress
+
         notifyItemChanged(songsList.indexOf(song), Bundle().apply { putFloat("progress", progress) })
     }
 
