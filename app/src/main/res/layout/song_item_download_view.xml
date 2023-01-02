@@ -66,8 +66,8 @@
     <ProgressBar
         android:id="@+id/downloadCircleProgressBar"
         android:visibility="gone"
-        android:layout_width="@dimen/_31sdp"
-        android:layout_height="@dimen/_31sdp"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
         android:indeterminate="false"
         android:progressDrawable="@drawable/circular_progress_bar"
         android:background="@drawable/circle_shape"
