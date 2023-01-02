@@ -54,7 +54,8 @@ class SongsRepository(
         songsLocalDataSource.addSong(song)
     }
 
-    fun deleteSong(song: Song) {
+    fun deleteSong(song: Song?) {
+        if (song == null) return
         songsLocalDataSource.deleteSong(song)
     }
 
