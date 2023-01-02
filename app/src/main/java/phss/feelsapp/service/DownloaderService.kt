@@ -2,123 +2,151 @@ package phss.feelsapp.service
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
+import android.graphics.BitmapFactory
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.Picasso.LoadedFrom
-import com.squareup.picasso.Target
-import com.yausername.youtubedl_android.DownloadProgressCallback
+import android.widget.Toast
 import com.yausername.youtubedl_android.YoutubeDL
-import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.*
-import phss.feelsapp.constants.YOUTUBE_VIDEO_URL
 import phss.feelsapp.data.models.RemoteSong
 import phss.feelsapp.data.models.Song
 import phss.feelsapp.data.repository.SongsRepository
+import phss.feelsapp.download.listeners.DownloadUpdateListener
+import phss.feelsapp.download.listeners.DownloadWorkerListener
+import phss.feelsapp.download.DownloadManager
 import phss.feelsapp.utils.getSongArtists
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
+import kotlin.reflect.KClass
 
 class DownloaderService(
     private val songsRepository: SongsRepository,
     private val applicationContext: Context
 ) {
 
-    val downloading = HashMap<String, Job>()
+    private val downloadManager = DownloadManager(applicationContext)
 
-    fun downloadSong(song: RemoteSong, downloadProgressCallback: DownloadProgressCallback) {
+    val downloading = ArrayList<String>()
+    private val observables = HashMap<KClass<*>, DownloadUpdateListener>()
+
+    fun downloadSong(song: RemoteSong) {
         val directory = File(applicationContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)!!.absolutePath, "songs")
 
-        val request = YoutubeDLRequest(YOUTUBE_VIDEO_URL.replace("{id}", song.item.key))
-        request.addOption("-f", "m4a")
-        request.addOption("-o", "${directory.absolutePath}/${song.item.key}.%(ext)s")
-
-        val job = GlobalScope.launch (Dispatchers.IO) {
-            try {
-                YoutubeDL.getInstance().execute(request, song.item.key, downloadProgressCallback)
-
-                var thumbnailPath = ""
-                if (song.item.thumbnail != null) {
-                    val (target, path) = getThumbnailTarget(song.item.key ?: "Null")
-
-                    saveThumbnail(song, target)
-                    thumbnailPath = path
+        CoroutineScope(Dispatchers.IO).launch {
+            downloadManager.addToQueue(song, object : DownloadWorkerListener {
+                override fun onProgressUpdate(song: RemoteSong, progress: Float) {
+                    if (downloading.contains(song.item.key))
+                        observables.values.forEach { it.onDownloadProgressUpdate(song, progress) }
                 }
 
-                downloading.remove(song.item.key)
+                override fun onFinish(song: RemoteSong, success: Boolean, error: Boolean) {
+                    // prevent duplicates
+                    if (!downloading.contains(song.item.key)) return
+                    downloading.remove(song.item.key)
 
-                songsRepository.addSong(
-                    Song(
-                        songId = 0,
-                        name = song.item.info?.name ?: "Null",
-                        artist = song.item.getSongArtists(),
-                        album = song.item.album?.name ?: "Null",
-                        duration = song.item.durationText ?: "0:00",
-                        key = song.item.key,
-                        thumbnailPath = thumbnailPath,
-                        filePath = "${directory.absolutePath}/${song.item.key ?: "Null"}.m4a"
-                    )
-                )
-            } catch (ex: Exception) {
-                ex.printStackTrace()
-            }
+                    if (success) {
+                        var thumbnailPath = ""
+                        if (song.item.thumbnail != null) {
+                            val path = saveThumbnailImage(song)
+                            thumbnailPath = path
+                        }
 
-            this.cancel()
-            downloading.remove(song.item.key)
+                        downloading.remove(song.item.key)
+
+                        songsRepository.addSong(
+                            Song(
+                                songId = 0,
+                                name = song.item.info?.name ?: "Null",
+                                artist = song.item.getSongArtists(),
+                                album = song.item.album?.name ?: "Null",
+                                duration = song.item.durationText ?: "0:00",
+                                key = song.item.key,
+                                thumbnailPath = thumbnailPath,
+                                filePath = "${directory.absolutePath}/${song.item.key}.m4a"
+                            )
+                        )
+                    } else {
+                        // delete temp files
+                        File("${directory.absolutePath}/${song.item.key}.m4a.part").run {
+                            if (exists()) delete()
+                        }
+                        File("${directory.absolutePath}/${song.item.key}.m4a").run {
+                            if (exists()) delete()
+                        }
+
+                        if (error) Handler(Looper.getMainLooper()).post {
+                            Toast.makeText(applicationContext, "Couldn't download song ${song.item.info?.name ?: song.item.key}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    song.downloading = false
+                    song.alreadyDownloaded = success
+
+                    observables.values.forEach { it.onDownloadFinish(song, success) }
+                }
+            })
+
+            downloadManager.start()
         }
-        downloading[song.item.key] = job
+        song.downloading = true
+        song.downloadProgress = 0f
 
-        job.start()
+        downloading.add(song.item.key)
+        observables.values.forEach { it.onDownloadStart(song) }
     }
 
     fun cancelSongDownload(song: RemoteSong) {
-        if (downloading.containsKey(song.item.key)) {
+        if (downloading.contains(song.item.key)) {
+            song.downloading = false
+            song.alreadyDownloaded = false
+
+            downloadManager.removeFromQueue(song)
             YoutubeDL.getInstance().destroyProcessById(song.item.key)
-            downloading[song.item.key]!!.cancel("download cancelled")
 
             downloading.remove(song.item.key)
+            observables.values.forEach { it.onDownloadFinish(song, false) }
         }
     }
 
-    private fun saveThumbnail(song: RemoteSong, target: Target) {
-        val thumbnailHandler = Handler(Looper.getMainLooper())
-        thumbnailHandler.post {
-            Picasso.get().load(song.item.thumbnail!!.setSize(300)).into(target)
-        }
-    }
-
-    private fun getThumbnailTarget(name: String): Pair<Target, String> {
+    private fun saveThumbnailImage(song: RemoteSong): String {
         val directory = File(applicationContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)!!.absolutePath, "thumbnails").also {
             if (!it.exists()) it.mkdirs()
         }
-        val file = File("${directory.absolutePath}/$name.jpg")
-        val target = object : Target {
-            override fun onBitmapLoaded(bitmap: Bitmap, from: LoadedFrom) {
-                Thread {
-                    try {
-                        file.createNewFile()
+        val thumbnailFile = File("${directory.absolutePath}/${song.item.key}.jpg")
+        thumbnailFile.createNewFile()
 
-                        val outputStream = FileOutputStream(file)
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-                        outputStream.flush()
-                        outputStream.close()
-                    } catch (exception: IOException) {
-                        exception.localizedMessage?.let { Log.e("IOException", it) }
-                    }
-                }.start()
+        try {
+            val url = URL(song.item.thumbnail?.setSize(300))
+            val connection = (url.openConnection() as HttpURLConnection).also {
+                it.doInput = true
+                it.connect()
             }
 
-            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+            if (connection.responseCode == HttpURLConnection.HTTP_OK) {
+                val inputStream = connection.inputStream
+                val bitmap = BitmapFactory.decodeStream(inputStream).also { inputStream.close() }
+
+                val outputStream = FileOutputStream(thumbnailFile)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                outputStream.flush()
+                outputStream.close()
             }
-            override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
         }
 
-        return target to file.absolutePath
+        return thumbnailFile.absolutePath
+    }
+
+    fun registerDownloadUpdateListener(clazz: KClass<*>, downloadUpdateListener: DownloadUpdateListener) {
+        observables[clazz] = downloadUpdateListener
+    }
+
+    fun unregisterDownloadUpdateListener(clazz: KClass<*>) {
+        observables.remove(clazz)
     }
 
 }

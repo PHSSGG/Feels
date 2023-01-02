@@ -13,13 +13,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import koleton.api.hideSkeleton
 import koleton.api.loadSkeleton
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import phss.feelsapp.R
 import phss.feelsapp.data.models.RemoteSong
 import phss.feelsapp.databinding.FragmentSearchBinding
+import phss.feelsapp.download.listeners.DownloadUpdateListener
 import phss.feelsapp.service.DownloaderService
 import phss.feelsapp.ui.download.DownloadAdapterItemInteractListener
 import phss.feelsapp.ui.download.adapter.DownloadSongItemAdapter
@@ -49,11 +49,40 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupObservableDownloadUpdateListener()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        downloaderService.unregisterDownloadUpdateListener(this::class)
+    }
+
     private fun setupSearchResultView() {
         if (downloadAdapter == null) downloadAdapter = DownloadSongItemAdapter(listOf(), setupSearchResultViewClickListener())
 
         binding.searchResultRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.searchResultRecyclerView.adapter = downloadAdapter!!
+    }
+
+    private fun setupObservableDownloadUpdateListener() {
+        downloaderService.registerDownloadUpdateListener(this::class, object : DownloadUpdateListener {
+            override fun onDownloadStart(song: RemoteSong) {
+                requireActivity().runOnUiThread { downloadAdapter?.updateDownloading(song, song.downloading) }
+            }
+
+            override fun onDownloadFinish(song: RemoteSong, success: Boolean) {
+                lifecycleScope.launch {
+                    delay(1000L)
+                    requireActivity().runOnUiThread { downloadAdapter?.updateDownloading(song, song.downloading) }
+                }
+            }
+
+            override fun onDownloadProgressUpdate(song: RemoteSong, progress: Float) {
+                requireActivity().runOnUiThread { downloadAdapter?.updateDownloadProgress(song, progress) }
+            }
+        })
     }
 
     private fun setupSearchResultViewClickListener(): DownloadAdapterItemInteractListener {
@@ -63,24 +92,8 @@ class SearchFragment : Fragment() {
             }
 
             override fun onDownloadButtonClick(song: RemoteSong) {
-                song.downloading = !song.downloading
-                downloadAdapter?.updateDownloading(song, song.downloading)
-
-                downloadViewModel.downloadSong(
-                    song = song,
-                    onDownloadProgressUpdate = {
-                        requireActivity().runOnUiThread { downloadAdapter?.updateDownloadProgress(song, it) }
-                    },
-                    onDownloadFinish = {
-                        lifecycleScope.launch {
-                            delay(1000L)
-                            song.downloading = false
-                            song.alreadyDownloaded = it
-
-                            requireActivity().runOnUiThread { downloadAdapter?.updateDownloading(song, song.downloading) }
-                        }
-                    }
-                )
+                if (!song.downloading) downloadViewModel.downloadSong(song)
+                else downloadViewModel.cancelSongDownload(song)
             }
 
             override fun onDeleteButtonClick(song: RemoteSong) {
@@ -142,7 +155,7 @@ class SearchFragment : Fragment() {
 
         searchViewModel.getSongs(query) { songsList ->
             songsList.forEach {
-                if (downloaderService.downloading.containsKey(it.item.key)) it.downloading = true
+                if (downloaderService.downloading.contains(it.item.key)) it.downloading = true
             }
             requireActivity().runOnUiThread {
                 binding.searchResultRecyclerView.hideSkeleton()
