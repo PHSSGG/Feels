@@ -9,6 +9,7 @@ import android.os.IBinder
 import android.view.Menu
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -30,6 +31,7 @@ import phss.feelsapp.databinding.ActivityMainBinding
 import phss.feelsapp.player.PlayerManager
 import phss.feelsapp.player.listeners.PlayerStateChangeListener
 import phss.feelsapp.service.PlayerService
+import phss.feelsapp.ui.download.drawer.DownloadsDrawerFragment
 import phss.feelsapp.ui.home.HomeFragment
 import phss.feelsapp.ui.library.LibraryFragment
 import phss.feelsapp.ui.search.SearchFragment
@@ -81,8 +83,22 @@ class MainActivity : AppCompatActivity() {
             setupBottomSheetSeekBar()
         }
 
+        setupDownloadsDrawer()
         setupPlayerFloatingActionButton()
         setupBottomNavigationButtons()
+    }
+
+    private fun setupDownloadsDrawer() {
+        val downloadsDrawer = binding.downloadsDrawerLayout
+        val actionBarDrawerToggle = ActionBarDrawerToggle(this, downloadsDrawer, null, R.string.downloading_title, R.string.downloading_title)
+        downloadsDrawer.addDrawerListener(actionBarDrawerToggle)
+        actionBarDrawerToggle.syncState()
+
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.downloadsDrawerFrameLayout, DownloadsDrawerFragment(), "Downloads").commit();
+
+        findViewById<ConstraintLayout>(R.id.downloadingIndicator).visibility = View.GONE
     }
 
     private fun setupPlayerFloatingActionButton() {

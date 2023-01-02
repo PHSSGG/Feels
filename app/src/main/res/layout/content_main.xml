@@ -78,6 +78,26 @@
             app:layout_constraintTop_toTopOf="@+id/playingSongFabHolder"
             app:srcCompat="@drawable/ic_pause" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/downloadingIndicator"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_90sdp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/curve_shape_left"
+            android:elevation="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_arrow_left" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView

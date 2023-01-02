@@ -8,10 +8,25 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <include
-        android:id="@+id/app_bar_main"
-        layout="@layout/app_bar_main"
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/downloadsDrawerLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:openDrawer="start">
+
+        <include
+            android:id="@+id/app_bar_main"
+            layout="@layout/app_bar_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <FrameLayout
+            android:id="@+id/downloadsDrawerFrameLayout"
+            android:layout_width="@dimen/_280sdp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@android:color/white" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
