@@ -148,13 +148,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         return object : PlayerStateChangeListener {
-            override fun onPlaying(song: Song, duration: Int) {
+            override fun onPlaying(song: Song, duration: Int, progress: Int) {
                 findViewById<ImageView>(R.id.playingSongFabPaused).visibility = View.GONE
                 findViewById<ProgressFloatingActionButton>(R.id.playingSongFabHolder).visibility = View.VISIBLE
 
                 Picasso.get().load(File(song.thumbnailPath)).transform(CircleTransform()).into(findViewById<FloatingActionButton>(R.id.playingSongFab))
                 findViewById<ProgressBar>(R.id.playingSongFabProgress).apply {
-                    progress = 0
+                    this.progress = progress
                 }
 
                 val bottomSheet = BottomSheetBehavior.from(findViewById(R.id.playerBottomSheet))
@@ -183,7 +183,7 @@ class MainActivity : AppCompatActivity() {
                     isSelected = true
                 }
                 findViewById<SeekBar>(R.id.playerSeekBar).apply {
-                    progress = 0
+                    this.progress = progress
                     max = playerService.playerManager.getSongDuration()
                 }
                 findViewById<TextView>(R.id.playerSeekBarSongDurationPosition).text = playerService.playerManager.getProgressString()
@@ -210,6 +210,8 @@ class MainActivity : AppCompatActivity() {
 
             override fun onStop() {
                 findViewById<ProgressFloatingActionButton>(R.id.playingSongFabHolder).visibility = View.GONE
+                findViewById<ImageView>(R.id.playingSongFabPaused).visibility = View.GONE
+
                 BottomSheetBehavior.from(findViewById(R.id.playerBottomSheet)).apply {
                     isBottomSheetClosing = true
                     state = BottomSheetBehavior.STATE_HIDDEN

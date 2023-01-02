@@ -37,7 +37,7 @@ class PlayerService : Service() {
     }
 
     private fun setupPlayerStateChangeListener() = object : PlayerStateChangeListener {
-        override fun onPlaying(song: Song, duration: Int) { updateNotification() }
+        override fun onPlaying(song: Song, duration: Int, progress: Int) { updateNotification() }
         override fun onTimeChange(song: Song, timePercent: Int) { updateNotification() }
         override fun onResume(song: Song) { updateNotification() }
         override fun onPause(song: Song) { updateNotification() }
