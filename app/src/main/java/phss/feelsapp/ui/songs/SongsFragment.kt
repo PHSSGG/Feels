@@ -45,7 +45,7 @@ class SongsFragment : Fragment() {
                             && if (playingFromPlaylist != null) playingFromPlaylist.playlistId == playlist?.playlistId
                     else playlist == null
                 }
-            }
+            } else value.filter { it.isPlaying }.forEach { it.isPlaying = false }
 
             field = value
         }

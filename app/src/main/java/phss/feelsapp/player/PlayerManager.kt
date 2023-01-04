@@ -21,9 +21,9 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
 
         it.setAudioAttributes(
             AudioAttributes.Builder()
-            .setUsage(AudioAttributes.USAGE_MEDIA)
-            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-            .build()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .build()
         )
     }
     private var playerStateChangeObservers = HashMap<KClass<*>, PlayerStateChangeObserver>()
@@ -59,12 +59,20 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
             field = value
 
             if (getCurrentPlaying() != null) playerStateChangeObservers.values.forEach {
-                    it.onPlaying(getCurrentPlaying()!!, getSongDuration(), getProgress())
-                }
+                it.onPlaying(getCurrentPlaying()!!, getSongDuration(), getProgress())
+            }
             playerObservers.values.forEach { it.onShuffleStateChange(currentSongs) }
         }
 
     fun setupPlayer(songList: List<Song>, selected: Song, playlist: Playlist?) {
+        // prevent original songs list changing to a shuffled one
+        if (playlist == playingFromPlaylist && currentSongs.isNotEmpty()) {
+            // currentSongs.find { it.key == selected.key } ?: selected
+            // this is needed due to a bug when playing the last song of a list that is already being played
+            playSong(currentSongs.find { it.key == selected.key } ?: selected)
+            return
+        }
+
         songs = songList
         playingFromPlaylist = playlist
 
