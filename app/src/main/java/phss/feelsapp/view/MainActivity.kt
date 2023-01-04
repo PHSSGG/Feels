@@ -29,7 +29,7 @@ import phss.feelsapp.R
 import phss.feelsapp.data.models.Song
 import phss.feelsapp.databinding.ActivityMainBinding
 import phss.feelsapp.player.PlayerManager
-import phss.feelsapp.player.listeners.PlayerStateChangeListener
+import phss.feelsapp.player.observers.PlayerStateChangeObserver
 import phss.feelsapp.service.PlayerService
 import phss.feelsapp.ui.download.drawer.DownloadsDrawerFragment
 import phss.feelsapp.ui.home.HomeFragment
@@ -48,14 +48,14 @@ class MainActivity : AppCompatActivity() {
 
     private val playerServiceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
-            playerService.playerManager.unregisterPlayerStateChangeListener(this@MainActivity::class)
+            playerService.playerManager.unregisterPlayerStateChangeObserver(this@MainActivity::class)
         }
 
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as PlayerService.LocalBinder
             playerService = binder.getService()
 
-            playerService.playerManager.registerPlayerStateChangeListener(this@MainActivity::class, setupPlayerStateChangeListener())
+            playerService.playerManager.registerPlayerStateChangeObserver(this@MainActivity::class, setupPlayerStateChangeListener())
         }
     }
 
@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupPlayerStateChangeListener(): PlayerStateChangeListener {
+    private fun setupPlayerStateChangeListener(): PlayerStateChangeObserver {
         var isBottomSheetOpened = false
         var isBottomSheetClosing = false
 
@@ -147,47 +147,49 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        return object : PlayerStateChangeListener {
+        return object : PlayerStateChangeObserver {
             override fun onPlaying(song: Song, duration: Int, progress: Int) {
-                findViewById<ImageView>(R.id.playingSongFabPaused).visibility = View.GONE
-                findViewById<ProgressFloatingActionButton>(R.id.playingSongFabHolder).visibility = View.VISIBLE
+                runOnUiThread {
+                    findViewById<ImageView>(R.id.playingSongFabPaused).visibility = View.GONE
+                    findViewById<ProgressFloatingActionButton>(R.id.playingSongFabHolder).visibility = View.VISIBLE
 
-                Picasso.get().load(File(song.thumbnailPath)).transform(CircleTransform()).into(findViewById<FloatingActionButton>(R.id.playingSongFab))
-                findViewById<ProgressBar>(R.id.playingSongFabProgress).apply {
-                    this.progress = progress
+                    Picasso.get().load(File(song.thumbnailPath)).transform(CircleTransform()).into(findViewById<FloatingActionButton>(R.id.playingSongFab))
+                    findViewById<ProgressBar>(R.id.playingSongFabProgress).apply {
+                        this.progress = progress
+                    }
+
+                    val bottomSheet = BottomSheetBehavior.from(findViewById(R.id.playerBottomSheet))
+                    bottomSheet.addBottomSheetCallback(bottomSheetCallback)
+
+                    findViewById<ImageButton>(R.id.playerPauseResumeButton).setImageDrawable(AppCompatResources.getDrawable(baseContext, R.drawable.ic_pause))
+                    findViewById<ProgressFloatingActionButton>(R.id.playingSongFabHolder).setOnClickListener {
+                        isBottomSheetClosing = false
+                        bottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
+                    }
+
+                    setupBottomSheetImage(song, findViewById(R.id.playerCurrentPlayingThumb))
+                    setupBottomSheetImage(playerService.playerManager.getNextSong(), findViewById(R.id.playerNextPlayingThumb))
+                    setupBottomSheetImage(playerService.playerManager.getPreviousSong(), findViewById(R.id.playerPreviousPlayingThumb))
+
+                    findViewById<TextView>(R.id.playerCurrentPlayingTitle).apply {
+                        text = song.name
+
+                        setHorizontallyScrolling(true)
+                        isSelected = true
+                    }
+                    findViewById<TextView>(R.id.playerCurrentPlayingArtist).apply {
+                        text = song.artist
+
+                        setHorizontallyScrolling(true)
+                        isSelected = true
+                    }
+                    findViewById<SeekBar>(R.id.playerSeekBar).apply {
+                        this.progress = progress
+                        max = playerService.playerManager.getSongDuration()
+                    }
+                    findViewById<TextView>(R.id.playerSeekBarSongDurationPosition).text = playerService.playerManager.getProgressString()
+                    findViewById<TextView>(R.id.playerSeekBarSongDuration).text = song.duration
                 }
-
-                val bottomSheet = BottomSheetBehavior.from(findViewById(R.id.playerBottomSheet))
-                bottomSheet.addBottomSheetCallback(bottomSheetCallback)
-
-                findViewById<ImageButton>(R.id.playerPauseResumeButton).setImageDrawable(AppCompatResources.getDrawable(baseContext, R.drawable.ic_pause))
-                findViewById<ProgressFloatingActionButton>(R.id.playingSongFabHolder).setOnClickListener {
-                    isBottomSheetClosing = false
-                    bottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
-                }
-
-                setupBottomSheetImage(song, findViewById(R.id.playerCurrentPlayingThumb))
-                setupBottomSheetImage(playerService.playerManager.getNextSong(), findViewById(R.id.playerNextPlayingThumb))
-                setupBottomSheetImage(playerService.playerManager.getPreviousSong(), findViewById(R.id.playerPreviousPlayingThumb))
-
-                findViewById<TextView>(R.id.playerCurrentPlayingTitle).apply {
-                    text = song.name
-
-                    setHorizontallyScrolling(true)
-                    isSelected = true
-                }
-                findViewById<TextView>(R.id.playerCurrentPlayingArtist).apply {
-                    text = song.artist
-
-                    setHorizontallyScrolling(true)
-                    isSelected = true
-                }
-                findViewById<SeekBar>(R.id.playerSeekBar).apply {
-                    this.progress = progress
-                    max = playerService.playerManager.getSongDuration()
-                }
-                findViewById<TextView>(R.id.playerSeekBarSongDurationPosition).text = playerService.playerManager.getProgressString()
-                findViewById<TextView>(R.id.playerSeekBarSongDuration).text = song.duration
             }
 
             override fun onTimeChange(song: Song, timePercent: Int) {
@@ -209,13 +211,15 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onStop() {
-                findViewById<ProgressFloatingActionButton>(R.id.playingSongFabHolder).visibility = View.GONE
-                findViewById<ImageView>(R.id.playingSongFabPaused).visibility = View.GONE
+                runOnUiThread {
+                    findViewById<ProgressFloatingActionButton>(R.id.playingSongFabHolder).visibility = View.GONE
+                    findViewById<ImageView>(R.id.playingSongFabPaused).visibility = View.GONE
 
-                BottomSheetBehavior.from(findViewById(R.id.playerBottomSheet)).apply {
-                    isBottomSheetClosing = true
-                    state = BottomSheetBehavior.STATE_HIDDEN
-                    removeBottomSheetCallback(bottomSheetCallback)
+                    BottomSheetBehavior.from(findViewById(R.id.playerBottomSheet)).apply {
+                        isBottomSheetClosing = true
+                        state = BottomSheetBehavior.STATE_HIDDEN
+                        removeBottomSheetCallback(bottomSheetCallback)
+                    }
                 }
             }
         }

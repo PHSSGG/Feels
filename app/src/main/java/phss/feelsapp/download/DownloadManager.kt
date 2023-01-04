@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import phss.feelsapp.data.models.RemoteSong
-import phss.feelsapp.download.listeners.DownloadWorkerListener
+import phss.feelsapp.download.observers.DownloadWorkerObserver
 import phss.feelsapp.download.worker.DownloadWorker
 import java.io.File
 
@@ -16,7 +16,7 @@ class DownloadManager(
 
     var running = false
 
-    private val queue = mutableListOf<Pair<RemoteSong, DownloadWorkerListener>>()
+    private val queue = mutableListOf<Pair<RemoteSong, DownloadWorkerObserver>>()
     private val flow = flow {
         while (queue.isNotEmpty()) {
             emit(queue.removeAt(0))
@@ -40,7 +40,7 @@ class DownloadManager(
         }
     }
 
-    fun addToQueue(song: RemoteSong, callback: DownloadWorkerListener) {
+    fun addToQueue(song: RemoteSong, callback: DownloadWorkerObserver) {
         queue.add(song to callback)
     }
 

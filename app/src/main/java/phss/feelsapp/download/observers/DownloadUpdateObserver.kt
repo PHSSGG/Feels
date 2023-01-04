@@ -1,8 +1,8 @@
-package phss.feelsapp.download.listeners
+package phss.feelsapp.download.observers
 
 import phss.feelsapp.data.models.RemoteSong
 
-interface DownloadUpdateListener {
+interface DownloadUpdateObserver {
 
     fun onDownloadStart(song: RemoteSong)
     fun onDownloadFinish(song: RemoteSong, success: Boolean)

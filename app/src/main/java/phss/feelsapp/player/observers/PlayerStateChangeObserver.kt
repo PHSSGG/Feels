@@ -1,8 +1,8 @@
-package phss.feelsapp.player.listeners
+package phss.feelsapp.player.observers
 
 import phss.feelsapp.data.models.Song
 
-interface PlayerStateChangeListener {
+interface PlayerStateChangeObserver {
 
     fun onPlaying(song: Song, duration: Int, progress: Int = 0)
     fun onTimeChange(song: Song, timePercent: Int)

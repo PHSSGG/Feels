@@ -12,8 +12,8 @@ import kotlinx.coroutines.*
 import phss.feelsapp.data.models.RemoteSong
 import phss.feelsapp.data.models.Song
 import phss.feelsapp.data.repository.SongsRepository
-import phss.feelsapp.download.listeners.DownloadUpdateListener
-import phss.feelsapp.download.listeners.DownloadWorkerListener
+import phss.feelsapp.download.observers.DownloadUpdateObserver
+import phss.feelsapp.download.observers.DownloadWorkerObserver
 import phss.feelsapp.download.DownloadManager
 import phss.feelsapp.utils.getSongArtists
 import java.io.File
@@ -30,13 +30,13 @@ class DownloaderService(
     private val downloadManager = DownloadManager(applicationContext)
 
     val downloading = ArrayList<String>()
-    private val observables = HashMap<KClass<*>, DownloadUpdateListener>()
+    private val observables = HashMap<KClass<*>, DownloadUpdateObserver>()
 
     fun downloadSong(song: RemoteSong) {
         val directory = File(applicationContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)!!.absolutePath, "songs")
 
         CoroutineScope(Dispatchers.IO).launch {
-            downloadManager.addToQueue(song, object : DownloadWorkerListener {
+            downloadManager.addToQueue(song, object : DownloadWorkerObserver {
                 override fun onProgressUpdate(song: RemoteSong, progress: Float) {
                     if (downloading.contains(song.item.key))
                         observables.values.forEach { it.onDownloadProgressUpdate(song, progress) }
@@ -141,11 +141,11 @@ class DownloaderService(
         return thumbnailFile.absolutePath
     }
 
-    fun registerDownloadUpdateListener(clazz: KClass<*>, downloadUpdateListener: DownloadUpdateListener) {
-        observables[clazz] = downloadUpdateListener
+    fun registerDownloadUpdateObserver(clazz: KClass<*>, downloadUpdateObserver: DownloadUpdateObserver) {
+        observables[clazz] = downloadUpdateObserver
     }
 
-    fun unregisterDownloadUpdateListener(clazz: KClass<*>) {
+    fun unregisterDownloadUpdateObserver(clazz: KClass<*>) {
         observables.remove(clazz)
     }
 

@@ -19,7 +19,7 @@ import phss.feelsapp.R
 import phss.feelsapp.data.models.Playlist
 import phss.feelsapp.data.models.Song
 import phss.feelsapp.databinding.FragmentSongsBinding
-import phss.feelsapp.player.listeners.ObservablePlayerListener
+import phss.feelsapp.player.observers.PlayerObserver
 import phss.feelsapp.service.PlayerService
 import phss.feelsapp.ui.songs.adapters.songs.SongsAdapter
 import phss.feelsapp.ui.songs.adapters.songs.SongsAdapterItemInteractListener
@@ -41,7 +41,7 @@ class SongsFragment : Fragment() {
                 val currentPlaying = playerService.playerManager.getCurrentPlaying()!!
                 val playingFromPlaylist = playerService.playerManager.playingFromPlaylist
                 value.forEach {
-                    it.isPlaying = currentPlaying.songId == it.songId
+                    it.isPlaying = currentPlaying.key == it.key
                             && if (playingFromPlaylist != null) playingFromPlaylist.playlistId == playlist?.playlistId
                     else playlist == null
                 }
@@ -84,7 +84,7 @@ class SongsFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        playerService.playerManager.observablePlayerListener = null
+        playerService.playerManager.unregisterPlayerObserver(this::class)
     }
 
     override fun onResume() {
@@ -92,12 +92,12 @@ class SongsFragment : Fragment() {
         // update playing info
         currentListOfSongs = currentListOfSongs
         songsAdapter?.updateList(currentListOfSongs)
-        setupObservablePlayerListener()
+        setupPlayerObserver()
     }
 
     private val playerServiceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
-            playerService.playerManager.observablePlayerListener = null
+            playerService.playerManager.unregisterPlayerObserver(this::class)
         }
 
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -107,7 +107,7 @@ class SongsFragment : Fragment() {
             val currentPlaying = playerService.playerManager.getCurrentPlaying()
             if (currentPlaying != null) songsAdapter?.updateItems(currentPlaying)
 
-            setupObservablePlayerListener()
+            setupPlayerObserver()
         }
     }
     private fun bindPlayerService() {
@@ -115,13 +115,22 @@ class SongsFragment : Fragment() {
         requireActivity().bindService(playerServiceIntent, playerServiceConnection, Context.BIND_AUTO_CREATE)
     }
 
-    private fun setupObservablePlayerListener() {
+    private fun setupPlayerObserver() {
         if (!::playerService.isInitialized) return
 
-        playerService.playerManager.observablePlayerListener = object : ObservablePlayerListener {
-            override fun onPlay(song: Song, previous: Song?) { songsAdapter?.updateItems(song, previous) }
-            override fun onStop(song: Song) { songsAdapter?.updateItems(song) }
-        }
+        playerService.playerManager.registerPlayerObserver(this::class, object : PlayerObserver {
+            override fun onPlay(song: Song, previous: Song?) {
+                requireActivity().runOnUiThread { songsAdapter?.updateItems(song, previous) }
+            }
+            override fun onStop(song: Song) {
+                requireActivity().runOnUiThread { songsAdapter?.updateItems(song) }
+            }
+
+            override fun onShuffleStateChange(newSongsList: List<Song>) {
+                currentListOfSongs = newSongsList
+                requireActivity().runOnUiThread { songsAdapter?.updateList(currentListOfSongs) }
+            }
+        })
     }
 
     private fun setupSongsView() {
@@ -137,7 +146,7 @@ class SongsFragment : Fragment() {
         return object : SongsAdapterItemInteractListener {
             override fun onClick(song: Song) {
                 val previousSong = playerService.playerManager.getCurrentPlaying()
-                if (previousSong != null && previousSong.songId == song.songId && song.isPlaying) {
+                if (previousSong != null && previousSong.key == song.key && song.isPlaying) {
                     if (playerService.playerManager.isPlaying()) playerService.playerManager.pausePlayer()
                     else playerService.playerManager.resumePlayer()
                     return

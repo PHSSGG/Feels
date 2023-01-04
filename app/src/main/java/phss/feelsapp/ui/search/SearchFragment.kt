@@ -19,13 +19,13 @@ import org.koin.android.ext.android.inject
 import phss.feelsapp.R
 import phss.feelsapp.data.models.RemoteSong
 import phss.feelsapp.databinding.FragmentSearchBinding
-import phss.feelsapp.download.listeners.DownloadUpdateListener
+import phss.feelsapp.download.observers.DownloadUpdateObserver
 import phss.feelsapp.service.DownloaderService
 import phss.feelsapp.ui.download.DownloadAdapterItemInteractListener
 import phss.feelsapp.ui.download.adapter.DownloadSongItemAdapter
 import phss.feelsapp.ui.download.viewmodel.DownloadViewModel
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), DownloadUpdateObserver {
 
     private val searchViewModel: SearchViewModel by inject()
     private val downloadViewModel: DownloadViewModel by inject()
@@ -51,12 +51,27 @@ class SearchFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        setupObservableDownloadUpdateListener()
+        downloaderService.registerDownloadUpdateObserver(this::class, this)
     }
 
     override fun onPause() {
         super.onPause()
-        downloaderService.unregisterDownloadUpdateListener(this::class)
+        downloaderService.unregisterDownloadUpdateObserver(this::class)
+    }
+
+    override fun onDownloadStart(song: RemoteSong) {
+        requireActivity().runOnUiThread { downloadAdapter?.updateDownloading(song, song.downloading) }
+    }
+
+    override fun onDownloadFinish(song: RemoteSong, success: Boolean) {
+        lifecycleScope.launch {
+            delay(1000L)
+            requireActivity().runOnUiThread { downloadAdapter?.updateDownloading(song, song.downloading) }
+        }
+    }
+
+    override fun onDownloadProgressUpdate(song: RemoteSong, progress: Float) {
+        requireActivity().runOnUiThread { downloadAdapter?.updateDownloadProgress(song, progress) }
     }
 
     private fun setupSearchResultView() {
@@ -64,25 +79,6 @@ class SearchFragment : Fragment() {
 
         binding.searchResultRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.searchResultRecyclerView.adapter = downloadAdapter!!
-    }
-
-    private fun setupObservableDownloadUpdateListener() {
-        downloaderService.registerDownloadUpdateListener(this::class, object : DownloadUpdateListener {
-            override fun onDownloadStart(song: RemoteSong) {
-                requireActivity().runOnUiThread { downloadAdapter?.updateDownloading(song, song.downloading) }
-            }
-
-            override fun onDownloadFinish(song: RemoteSong, success: Boolean) {
-                lifecycleScope.launch {
-                    delay(1000L)
-                    requireActivity().runOnUiThread { downloadAdapter?.updateDownloading(song, song.downloading) }
-                }
-            }
-
-            override fun onDownloadProgressUpdate(song: RemoteSong, progress: Float) {
-                requireActivity().runOnUiThread { downloadAdapter?.updateDownloadProgress(song, progress) }
-            }
-        })
     }
 
     private fun setupSearchResultViewClickListener(): DownloadAdapterItemInteractListener {

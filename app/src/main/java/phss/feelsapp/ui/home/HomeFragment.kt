@@ -16,13 +16,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import phss.feelsapp.R
 import phss.feelsapp.data.models.RemoteSong
 import phss.feelsapp.databinding.FragmentHomeBinding
-import phss.feelsapp.download.listeners.DownloadUpdateListener
+import phss.feelsapp.download.observers.DownloadUpdateObserver
 import phss.feelsapp.service.DownloaderService
 import phss.feelsapp.ui.download.DownloadAdapterItemInteractListener
 import phss.feelsapp.ui.download.adapter.DownloadSongItemAdapter
 import phss.feelsapp.ui.download.viewmodel.DownloadViewModel
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), DownloadUpdateObserver {
 
     private val homeViewModel: HomeViewModel by viewModel()
     private val downloadViewModel: DownloadViewModel by inject()
@@ -40,7 +40,6 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        setupObservableDownloadUpdateListener()
         setupRecentlyPlayedView()
         setupRecommendationsView()
 
@@ -49,12 +48,12 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        setupObservableDownloadUpdateListener()
+        downloaderService.registerDownloadUpdateObserver(this::class, this)
     }
 
     override fun onPause() {
         super.onPause()
-        downloaderService.unregisterDownloadUpdateListener(this::class)
+        downloaderService.unregisterDownloadUpdateObserver(this::class)
     }
 
     override fun onDestroyView() {
@@ -62,24 +61,19 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    private fun setupObservableDownloadUpdateListener() {
-        downloaderService.registerDownloadUpdateListener(this::class, object :
-            DownloadUpdateListener {
-            override fun onDownloadStart(song: RemoteSong) {
-                requireActivity().runOnUiThread { downloadAdapter?.updateDownloading(song, song.downloading) }
-            }
+    override fun onDownloadStart(song: RemoteSong) {
+        requireActivity().runOnUiThread { downloadAdapter?.updateDownloading(song, song.downloading) }
+    }
 
-            override fun onDownloadFinish(song: RemoteSong, success: Boolean) {
-                lifecycleScope.launch {
-                    delay(1000L)
-                    requireActivity().runOnUiThread { downloadAdapter?.updateDownloading(song, song.downloading) }
-                }
-            }
+    override fun onDownloadFinish(song: RemoteSong, success: Boolean) {
+        lifecycleScope.launch {
+            delay(1000L)
+            requireActivity().runOnUiThread { downloadAdapter?.updateDownloading(song, song.downloading) }
+        }
+    }
 
-            override fun onDownloadProgressUpdate(song: RemoteSong, progress: Float) {
-                requireActivity().runOnUiThread { downloadAdapter?.updateDownloadProgress(song, progress) }
-            }
-        })
+    override fun onDownloadProgressUpdate(song: RemoteSong, progress: Float) {
+        requireActivity().runOnUiThread { downloadAdapter?.updateDownloadProgress(song, progress) }
     }
 
     private fun setupRecentlyPlayedView() {
@@ -123,6 +117,9 @@ class HomeFragment : Fragment() {
             songsList.forEach {
                 if (downloaderService.downloading.contains(it.item.key)) it.downloading = true
             }
+
+            if (!this.isResumed) return@getRecommendationsList
+
             requireActivity().runOnUiThread {
                 binding.recommendationsRecyclerView.hideSkeleton()
 

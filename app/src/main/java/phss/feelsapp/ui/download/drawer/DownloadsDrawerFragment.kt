@@ -16,14 +16,13 @@ import org.koin.android.ext.android.inject
 import phss.feelsapp.R
 import phss.feelsapp.data.models.RemoteSong
 import phss.feelsapp.databinding.FragmentDownloadsDrawerBinding
-import phss.feelsapp.download.listeners.DownloadUpdateListener
+import phss.feelsapp.download.observers.DownloadUpdateObserver
 import phss.feelsapp.service.DownloaderService
 import phss.feelsapp.ui.download.DownloadAdapterItemInteractListener
 import phss.feelsapp.ui.download.adapter.DownloadSongItemAdapter
 import phss.feelsapp.ui.download.viewmodel.DownloadViewModel
 
-
-class DownloadsDrawerFragment : Fragment() {
+class DownloadsDrawerFragment : Fragment(), DownloadUpdateObserver {
 
     private val downloadViewModel: DownloadViewModel by inject()
     private val downloaderService: DownloaderService by inject()
@@ -52,58 +51,12 @@ class DownloadsDrawerFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        setupObservableDownloadUpdateListener()
+        downloaderService.registerDownloadUpdateObserver(this::class, this)
     }
 
     override fun onPause() {
         super.onPause()
-        downloaderService.unregisterDownloadUpdateListener(this::class)
-    }
-
-    private fun setupObservableDownloadUpdateListener() {
-        downloaderService.registerDownloadUpdateListener(this::class, object :
-            DownloadUpdateListener {
-            override fun onDownloadStart(song: RemoteSong) {
-                if (downloading.isEmpty()) {
-                    requireActivity().findViewById<ConstraintLayout>(R.id.downloadingIndicator).run {
-                        visibility = View.VISIBLE
-                        val pulse: Animation = AnimationUtils.loadAnimation(requireContext(), R.anim.downloading_indicator_pulse)
-                        startAnimation(pulse)
-                    }
-                }
-
-                downloading.add(song)
-                requireActivity().runOnUiThread {
-                    binding.downloadsDrawerNothingDownloading.visibility = View.GONE
-
-                    downloadAdapter?.updateList(downloading)
-                    downloadAdapter?.updateDownloading(song, song.downloading)
-                }
-            }
-
-            override fun onDownloadFinish(song: RemoteSong, success: Boolean) {
-                downloading.remove(song)
-                lifecycleScope.launch {
-                    delay(1000L)
-                    requireActivity().runOnUiThread {
-                        if (downloading.isEmpty()) {
-                            binding.downloadsDrawerNothingDownloading.visibility = View.VISIBLE
-                            requireActivity().findViewById<ConstraintLayout>(R.id.downloadingIndicator).run {
-                                clearAnimation()
-                                visibility = View.GONE
-                            }
-                        }
-
-                        downloadAdapter?.updateDownloading(song, song.downloading)
-                        downloadAdapter?.updateList(downloading)
-                    }
-                }
-            }
-
-            override fun onDownloadProgressUpdate(song: RemoteSong, progress: Float) {
-                requireActivity().runOnUiThread { downloadAdapter?.updateDownloadProgress(song, progress) }
-            }
-        })
+        downloaderService.unregisterDownloadUpdateObserver(this::class)
     }
 
     private fun setupDownloadingItemClickListener(): DownloadAdapterItemInteractListener {
@@ -120,6 +73,47 @@ class DownloadsDrawerFragment : Fragment() {
                 downloadViewModel.cancelSongDownload(song)
             }
         }
+    }
+
+    override fun onDownloadStart(song: RemoteSong) {
+        if (downloading.isEmpty()) {
+            requireActivity().findViewById<ConstraintLayout>(R.id.downloadingIndicator).run {
+                visibility = View.VISIBLE
+                val pulse: Animation = AnimationUtils.loadAnimation(requireContext(), R.anim.downloading_indicator_pulse)
+                startAnimation(pulse)
+            }
+        }
+
+        downloading.add(song)
+        requireActivity().runOnUiThread {
+            binding.downloadsDrawerNothingDownloading.visibility = View.GONE
+
+            downloadAdapter?.updateList(downloading)
+            downloadAdapter?.updateDownloading(song, song.downloading)
+        }
+    }
+
+    override fun onDownloadFinish(song: RemoteSong, success: Boolean) {
+        downloading.remove(song)
+        lifecycleScope.launch {
+            delay(1000L)
+            requireActivity().runOnUiThread {
+                if (downloading.isEmpty()) {
+                    binding.downloadsDrawerNothingDownloading.visibility = View.VISIBLE
+                    requireActivity().findViewById<ConstraintLayout>(R.id.downloadingIndicator).run {
+                        clearAnimation()
+                        visibility = View.GONE
+                    }
+                }
+
+                downloadAdapter?.updateDownloading(song, song.downloading)
+                downloadAdapter?.updateList(downloading)
+            }
+        }
+    }
+
+    override fun onDownloadProgressUpdate(song: RemoteSong, progress: Float) {
+        requireActivity().runOnUiThread { downloadAdapter?.updateDownloadProgress(song, progress) }
     }
 
 }
