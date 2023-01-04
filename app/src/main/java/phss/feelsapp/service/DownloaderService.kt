@@ -64,6 +64,8 @@ class DownloaderService(
                                 album = song.item.album?.name ?: "Null",
                                 duration = song.item.durationText ?: "0:00",
                                 key = song.item.key,
+                                0L,
+                                null,
                                 thumbnailPath = thumbnailPath,
                                 filePath = "${directory.absolutePath}/${song.item.key}.m4a"
                             )

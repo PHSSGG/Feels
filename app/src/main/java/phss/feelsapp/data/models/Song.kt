@@ -3,6 +3,7 @@ package phss.feelsapp.data.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity
 data class Song(
@@ -12,6 +13,8 @@ data class Song(
     val album: String,
     val duration: String,
     val key: String,
+    @ColumnInfo(defaultValue = "0") var timesPlayed: Long,
+    @ColumnInfo(defaultValue = "null") var lastPlayed: Date?,
     val thumbnailPath: String,
     val filePath: String
 ) {
