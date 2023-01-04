@@ -101,6 +101,8 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
 
         getCurrentPlaying()?.isPlaying = false
         song.isPlaying = true
+        song.timesPlayed += 1
+        song.lastPlayed = Date.from(Instant.now())
 
         playerObservers.values.forEach { it.onPlay(song, getCurrentPlaying()) }
         currentPlaying = songs.indexOf(song)
@@ -130,8 +132,10 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
     }
 
     fun playPrevious() {
-        val previousSong = getPreviousSong() ?: return
-        playSong(previousSong)
+        if (getProgress() / 1000 <= 2) {
+            val previousSong = getPreviousSong() ?: return
+            playSong(previousSong)
+        } else seekTo(0)
     }
 
     fun resumePlayer() {
@@ -182,6 +186,29 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
 
     fun isStopped(): Boolean {
         return isStopped
+    }
+
+    fun addSongs(songList: List<Song>) {
+        songs = songs + songList
+        if (shuffledSongs.isNotEmpty()) (shuffledSongs as ArrayList).addAll(songList)
+
+        if (getCurrentPlaying() != null) playerStateChangeObservers.values.forEach {
+            it.onPlaying(getCurrentPlaying()!!, getSongDuration(), getProgress())
+        }
+    }
+
+    fun removeSongs(songList: List<Song>) {
+        if (songList.find { getCurrentPlaying()?.key == it.key } != null) {
+            if (getNextSong() == null) stopPlayer()
+            else playNext(true)
+        }
+
+        (songs as ArrayList).removeAll { current -> songList.find { it.key == current.key } != null }
+        if (shuffledSongs.isNotEmpty()) (shuffledSongs as ArrayList).removeAll { current -> songList.find { it.key == current.key } != null }
+
+        if (getCurrentPlaying() != null) playerStateChangeObservers.values.forEach {
+            it.onPlaying(getCurrentPlaying()!!, getSongDuration(), getProgress())
+        }
     }
 
     override fun onCompletion(mediaPlayer: MediaPlayer) {
