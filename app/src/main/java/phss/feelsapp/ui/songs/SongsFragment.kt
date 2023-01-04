@@ -7,6 +7,11 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import android.view.*
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.ImageButton
+import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.coroutineScope
@@ -48,6 +53,7 @@ class SongsFragment : Fragment() {
             } else value.filter { it.isPlaying }.forEach { it.isPlaying = false }
 
             field = value
+            binding.songsInfo.text = getString(R.string.songs_info).replace("{amount}", "${value.size}")
         }
     var playlist: Playlist? = null
     var songsAdapter: SongsAdapter? = null
@@ -59,9 +65,13 @@ class SongsFragment : Fragment() {
     ): View {
         _binding = FragmentSongsBinding.inflate(inflater, container, false)
 
+        binding.songsInfo.text = getString(R.string.songs_info).replace("{amount}", "0")
+
         bindPlayerService()
+
         songsAdapter = SongsAdapter(listOf(), setupSongItemInteractListener())
         setupSongsView()
+
         setFragmentResultListener("requestKey") { _, bundle ->
             val playlistId = bundle.getLong("playlistId", -1L)
             if (playlistId != -1L) songsViewModel.getPlaylistById(playlistId) {
@@ -77,6 +87,10 @@ class SongsFragment : Fragment() {
                 binding.songsAddButton.visibility = View.INVISIBLE
                 updateSongsView()
             }
+
+            setupPlayButton()
+            setupShuffleButton()
+            setupSearchEditText()
         }
 
         return binding.root
@@ -131,6 +145,48 @@ class SongsFragment : Fragment() {
                 requireActivity().runOnUiThread { songsAdapter?.updateList(currentListOfSongs) }
             }
         })
+    }
+
+    private fun playCurrentSongs() {
+        val song = currentListOfSongs.getOrNull(0) ?: return
+        val previousSong = playerService.playerManager.getCurrentPlaying()
+
+        playerService.playerManager.setupPlayer(currentListOfSongs, song, playlist)
+        songsAdapter?.updateItems(song, previousSong)
+    }
+
+    private fun setupPlayButton() = binding.songsPlayButton.setOnClickListener {
+        playCurrentSongs()
+    }
+
+    private fun setupShuffleButton() = binding.songsShuffleButton.setOnClickListener {
+        if (currentListOfSongs.isEmpty()) return@setOnClickListener
+        if (!playerService.playerManager.isPlaying() && !playerService.playerManager.shuffle) playCurrentSongs()
+
+        playerService.playerManager.shuffle = !playerService.playerManager.shuffle
+
+        val shuffleButton = it as ImageButton
+        if (playerService.playerManager.shuffle) shuffleButton.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
+        else shuffleButton.setColorFilter(ContextCompat.getColor(requireContext(), R.color.gray))
+    }
+
+    private fun setupSearchEditText() {
+        binding.songsLibrarySearch.setOnEditorActionListener { textView, actionId, _ ->
+            var handled = false
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+                handled = true
+
+                binding.songsLibrarySearch.clearFocus()
+                (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(binding.root.windowToken, 0)
+
+                songsAdapter?.filter?.filter(textView.text.toString())
+            }
+            handled
+        }
+        binding.songsLibrarySearch.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrBlank()) songsAdapter?.filter?.filter(null)
+            else songsAdapter?.filter?.filter(text.toString())
+        }
     }
 
     private fun setupSongsView() {

@@ -40,14 +40,79 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/songsLibraryText" />
 
+    <TextView
+        android:id="@+id/songsInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="@string/songs_info"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintStart_toStartOf="@+id/songsPlayButton"
+        app:layout_constraintTop_toBottomOf="@+id/songsLibraryIcon" />
+
+    <ImageButton
+        android:id="@+id/songsPlayButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:layout_marginBottom="@dimen/_25sdp"
+        android:background="@color/black"
+        android:src="@drawable/ic_library_play"
+        app:layout_constraintBottom_toBottomOf="@+id/songsDivider"
+        app:layout_constraintStart_toStartOf="@+id/songsDivider"
+        app:layout_constraintTop_toBottomOf="@+id/songsInfo" />
+
+    <ImageButton
+        android:id="@+id/songsShuffleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:background="@color/black"
+        android:src="@drawable/ic_library_shuffle"
+        app:layout_constraintBottom_toBottomOf="@+id/songsPlayButton"
+        app:layout_constraintStart_toEndOf="@+id/songsPlayButton"
+        app:layout_constraintTop_toTopOf="@+id/songsPlayButton" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/songsLibrarySearch"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_43sdp"
+        android:layout_marginStart="@dimen/_35sdp"
+        android:drawableStart="@drawable/ic_search_songs_edittext_icon"
+        android:drawablePadding="@dimen/_5sdp"
+        android:drawableTint="@color/gray"
+        android:ems="10"
+        android:hint="@string/search_song"
+        android:imeOptions="actionSend"
+        android:inputType="text"
+        android:textColor="@color/gray"
+        android:textColorHint="@color/gray"
+        android:textSize="@dimen/_12ssp"
+        app:backgroundTint="@color/purple_primary"
+        app:layout_constraintBottom_toBottomOf="@+id/songsShuffleButton"
+        app:layout_constraintEnd_toEndOf="@+id/songsAddButton"
+        app:layout_constraintStart_toEndOf="@+id/songsShuffleButton"
+        app:layout_constraintTop_toTopOf="@+id/songsShuffleButton" />
+
+    <View
+        android:id="@+id/songsDivider"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_marginTop="@dimen/_90sdp"
+        android:background="@color/gray"
+        app:layout_constraintEnd_toEndOf="@+id/songsAddButton"
+        app:layout_constraintStart_toStartOf="@+id/songsLibraryIcon"
+        app:layout_constraintTop_toBottomOf="@+id/songsAddButton" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/songsRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_31sdp"
+        android:layout_marginTop="@dimen/_20sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/songsAddButton"
         app:layout_constraintStart_toStartOf="@+id/songsLibraryIcon"
-        app:layout_constraintTop_toBottomOf="@+id/songsLibraryText" />
+        app:layout_constraintTop_toBottomOf="@+id/songsDivider" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

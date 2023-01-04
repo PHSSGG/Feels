@@ -4,6 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
@@ -16,7 +18,9 @@ import java.io.File
 class SongsAdapter(
     private var songsList: List<Song>,
     private var adapterListener: SongsAdapterItemInteractListener
-) : RecyclerView.Adapter<SongsAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<SongsAdapter.ViewHolder>(), Filterable {
+
+    private var songsListFiltered: List<Song> = songsList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.library_songs_view, parent, false)
@@ -24,7 +28,7 @@ class SongsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = songsList[position]
+        val item = getItem(position) ?: return
 
         Picasso.get().load(File(item.thumbnailPath)).into(holder.imageView)
         holder.title.text = item.name
@@ -48,15 +52,42 @@ class SongsAdapter(
         return songsList.size
     }
 
+    private fun getItemIndex(song: Song): Int {
+        return if (songsListFiltered.find { it.key == song.key } != null) songsListFiltered.indexOf(song) else songsList.indexOf(song)
+    }
+
+    private fun getItem(position: Int): Song? {
+        return songsListFiltered.getOrNull(position) ?: songsList.getOrNull(position)
+    }
+
     fun updateItems(vararg songs: Song?) {
         songs.filterNotNull().forEach {
-            notifyItemChanged(songsList.indexOf(it))
+            notifyItemChanged(getItemIndex(it))
         }
     }
 
     fun updateList(newList: List<Song>) {
         songsList = newList
+        songsListFiltered = songsList
         notifyDataSetChanged()
+    }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(query: CharSequence?): FilterResults {
+                val queryString = query?.toString()
+
+                val results = FilterResults()
+                results.values = if (queryString != null) songsList.filter { it.name.lowercase().contains(queryString) || it.artist.lowercase().contains(queryString) || it.album.lowercase().contains(queryString) } else songsList
+
+                return results
+            }
+
+            override fun publishResults(query: CharSequence?, results: FilterResults?) {
+                songsListFiltered = if (results?.values == null) listOf() else results.values as ArrayList<Song>
+                notifyDataSetChanged()
+            }
+        }
     }
 
     class ViewHolder(ItemView: View, private val context: Context) : RecyclerView.ViewHolder(ItemView) {
