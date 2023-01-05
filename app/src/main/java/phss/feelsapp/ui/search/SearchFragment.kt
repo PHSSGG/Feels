@@ -75,7 +75,7 @@ class SearchFragment : Fragment(), DownloadUpdateObserver {
     }
 
     private fun setupSearchResultView() {
-        if (downloadAdapter == null) downloadAdapter = DownloadSongItemAdapter(listOf(), setupSearchResultViewClickListener())
+        if (downloadAdapter == null) downloadAdapter = DownloadSongItemAdapter(arrayListOf(), setupSearchResultViewClickListener())
 
         binding.searchResultRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.searchResultRecyclerView.adapter = downloadAdapter!!
