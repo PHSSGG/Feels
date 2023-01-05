@@ -95,7 +95,8 @@ class PlayerService : Service(), PlaylistsDataChangeObserver, SongsDataChangeObs
                 previous?.let { songsRepository.updateSong(it) }
             }
         }
-        override fun onStop(song: Song) {
+        override fun onStop(song: Song?) {
+            if (song == null) return
             CoroutineScope(Dispatchers.IO).launch {
                 songsRepository.updateSong(song)
             }
