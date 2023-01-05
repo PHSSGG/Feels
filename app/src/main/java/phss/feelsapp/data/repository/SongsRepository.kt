@@ -28,18 +28,19 @@ class SongsRepository(
     suspend fun retrieveRecommendationList(user: User): List<RemoteSong> {
         val recommendations = ArrayList<RemoteSong>()
         user.interests.forEach {
-            recommendations.addAll(searchForSongsRemote(it).take(3))
+            recommendations.addAll(searchForSongsRemote(it, true).take(3))
         }
 
         return recommendations
     }
 
-    suspend fun searchForSongsRemote(query: String): List<RemoteSong> {
-        val result = songsRemoteDataSource.retrieveSongsBySearch(query)
+    suspend fun searchForSongsRemote(query: String, searchForPlaylist: Boolean = false): List<RemoteSong> {
+        val result = if (searchForPlaylist) songsRemoteDataSource.retrieveSongsByPlaylist(query) else songsRemoteDataSource.retrieveSongsBySearch(query)
 
         return if (result is DataResult.Success) result.data.map { songItem ->
             RemoteSong(songItem).also {
                 it.alreadyDownloaded = songsLocalDataSource.checkIfSongAlreadyExists(it.item.key)
+                it.isFromPlaylist = searchForPlaylist
             }
         }
         else listOf()
@@ -51,6 +52,10 @@ class SongsRepository(
 
     fun getRecentlyAdded(): Flow<List<Song>> {
         return songsLocalDataSource.getRecentlyAdded()
+    }
+
+    fun getRecentlyPlayed(limit: Int = 5): Flow<List<Song>> {
+        return songsLocalDataSource.getRecentlyPlayed(limit)
     }
 
     fun getLocalSongByKey(songKey: String): Song {

@@ -57,7 +57,7 @@
         android:textColor="#FFFFFF"
         android:textSize="@dimen/_19ssp"
         app:layout_constraintStart_toStartOf="@+id/recentlyPlayedText"
-        app:layout_constraintTop_toBottomOf="@+id/recentlyHorizontalRecyclerViewGuideline" />
+        app:layout_constraintTop_toBottomOf="@+id/recentlyHorizontalRecyclerView" />
 
     <TextView
         android:id="@+id/recommendationsNothingToShow"

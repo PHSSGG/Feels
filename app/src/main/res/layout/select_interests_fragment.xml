@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:fillViewport="true"
+    tools:context=".ui.home.interests.SelectInterestsFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/interestsSelectText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:text="Select 5 genres you like"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_20ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TableLayout
+            android:id="@+id/interestsTableLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_40sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/interestsSelectText">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/genre_1"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:background="@drawable/interests_genre_button_normal"
+                    android:text="@string/genre_1"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/genre_2"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:background="@drawable/interests_genre_button_normal"
+                    android:text="@string/genre_2"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/genre_3"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:background="@drawable/interests_genre_button_normal"
+                    android:text="@string/genre_3"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/genre_4"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:background="@drawable/interests_genre_button_normal"
+                    android:text="@string/genre_4"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/genre_5"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:background="@drawable/interests_genre_button_normal"
+                    android:text="@string/genre_5"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/genre_6"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:background="@drawable/interests_genre_button_normal"
+                    android:text="@string/genre_6"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/genre_7"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:background="@drawable/interests_genre_button_normal"
+                    android:text="@string/genre_7"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/genre_8"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:background="@drawable/interests_genre_button_normal"
+                    android:text="@string/genre_8"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/genre_9"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:background="@drawable/interests_genre_button_normal"
+                    android:text="@string/genre_9"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/genre_10"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:background="@drawable/interests_genre_button_normal"
+                    android:text="@string/genre_10"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/genre_11"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:background="@drawable/interests_genre_button_normal"
+                    android:text="@string/genre_11"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/genre_12"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:background="@drawable/interests_genre_button_normal"
+                    android:text="@string/genre_12"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/genre_13"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:background="@drawable/interests_genre_button_normal"
+                    android:text="@string/genre_13"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/genre_14"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:background="@drawable/interests_genre_button_normal"
+                    android:text="@string/genre_14"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/genre_15"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:background="@drawable/interests_genre_button_normal"
+                    android:text="@string/genre_15"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/genre_16"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:background="@drawable/interests_genre_button_normal"
+                    android:text="@string/genre_16"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/genre_17"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:background="@drawable/interests_genre_button_normal"
+                    android:text="@string/genre_17"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/genre_18"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:background="@drawable/interests_genre_button_normal"
+                    android:text="@string/genre_18"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white" />
+            </TableRow>
+
+        </TableLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

@@ -22,6 +22,10 @@ class SongsLocalDataSource(
         return songDao.loadRecentlyAdded()
     }
 
+    fun getRecentlyPlayed(limit: Int): Flow<List<Song>> {
+        return songDao.loadRecentlyPlayed(limit)
+    }
+
     fun getSongByKey(songKey: String): Song {
         return songDao.loadSongByKey(songKey)
     }

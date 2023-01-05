@@ -11,13 +11,16 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import phss.feelsapp.data.repository.PlaylistsRepository
 import phss.feelsapp.data.repository.SongsRepository
+import phss.feelsapp.data.repository.UserRepository
 import phss.feelsapp.data.source.local.SongsLocalDataSource
 import phss.feelsapp.data.source.remote.SongsRemoteDataSource
 import phss.feelsapp.database.AppDatabase
+import phss.feelsapp.database.DatabaseMigrations
 import phss.feelsapp.player.PlayerManager
 import phss.feelsapp.service.DownloaderService
 import phss.feelsapp.ui.download.viewmodel.DownloadViewModel
 import phss.feelsapp.ui.home.HomeViewModel
+import phss.feelsapp.ui.home.interests.SelectInterestsViewModel
 import phss.feelsapp.ui.library.LibraryViewModel
 import phss.feelsapp.ui.search.SearchViewModel
 import phss.feelsapp.ui.songs.SongsViewModel
@@ -28,7 +31,7 @@ val databaseModule = module {
         androidApplication(),
         AppDatabase::class.java,
         "FeelsDatabase.db"
-    ).build() }
+    ).addMigrations(DatabaseMigrations.MIGRATION_1_2).build() }
 
     single {
         val database = get<AppDatabase>()
@@ -38,6 +41,10 @@ val databaseModule = module {
         val database = get<AppDatabase>()
         database.playlistDao()
     }
+    single {
+        val database = get<AppDatabase>()
+        database.userDao()
+    }
 }
 
 val appModule = module {
@@ -46,10 +53,12 @@ val appModule = module {
         SongsRemoteDataSource(YTMusicAPIWrapper(""))
     ) }
     single { PlaylistsRepository(get()) }
+    single { UserRepository(get()) }
     single { DownloaderService(get(), get()) }
     single { PlayerManager() }
 
-    viewModel { HomeViewModel(get()) }
+    viewModel { HomeViewModel(get(), get()) }
+    viewModel { SelectInterestsViewModel(get()) }
     viewModel { SearchViewModel(get()) }
     viewModel { DownloadViewModel(get(), get()) }
     viewModel { LibraryViewModel(get(), get()) }

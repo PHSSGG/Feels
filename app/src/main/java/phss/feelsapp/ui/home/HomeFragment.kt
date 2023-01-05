@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import koleton.api.hideSkeleton
 import koleton.api.loadSkeleton
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,11 +23,15 @@ import phss.feelsapp.service.DownloaderService
 import phss.feelsapp.ui.download.DownloadAdapterItemInteractListener
 import phss.feelsapp.ui.download.adapter.DownloadSongItemAdapter
 import phss.feelsapp.ui.download.viewmodel.DownloadViewModel
+import phss.feelsapp.ui.home.interests.SelectInterestsFragment
+import phss.feelsapp.ui.home.interests.SelectInterestsViewModel
+import phss.feelsapp.ui.recently.RecentlyAdapter
 
 class HomeFragment : Fragment(), DownloadUpdateObserver {
 
     private val homeViewModel: HomeViewModel by viewModel()
     private val downloadViewModel: DownloadViewModel by inject()
+    private val selectInterestsViewModel: SelectInterestsViewModel by inject()
     private val downloaderService: DownloaderService by inject()
 
     private var _binding: FragmentHomeBinding? = null
@@ -39,6 +45,14 @@ class HomeFragment : Fragment(), DownloadUpdateObserver {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        selectInterestsViewModel.getUser {
+            if (this == null) requireActivity().runOnUiThread {
+                val transaction = activity?.supportFragmentManager?.beginTransaction() ?: return@runOnUiThread
+                transaction.replace(R.id.nav_host_fragment_content, SelectInterestsFragment())
+                transaction.commit()
+            }
+        }
 
         setupRecentlyPlayedView()
         setupRecommendationsView()
@@ -77,12 +91,33 @@ class HomeFragment : Fragment(), DownloadUpdateObserver {
     }
 
     private fun setupRecentlyPlayedView() {
-        binding.recentlyNothingToShow.visibility = View.VISIBLE
         binding.recentlyHorizontalRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        updateRecentlyPlayedView()
+    }
+
+    private fun updateRecentlyPlayedView() {
+        val recentlyAdapter = RecentlyAdapter(listOf())
+        binding.recentlyHorizontalRecyclerView.adapter = recentlyAdapter
+
+        binding.recentlyHorizontalRecyclerView.loadSkeleton(R.layout.recently_song_view) {
+            itemCount(3)
+        }
+
+        lifecycle.coroutineScope.launchWhenStarted {
+            homeViewModel.getRecentlyPlayedList().collect { songsList ->
+                binding.recentlyHorizontalRecyclerView.hideSkeleton()
+
+                if (songsList.isEmpty()) binding.recentlyNothingToShow.visibility = View.VISIBLE
+                else {
+                    binding.recentlyNothingToShow.visibility = View.GONE
+                    recentlyAdapter.updateList(songsList)
+                }
+            }
+        }
     }
 
     private fun setupRecommendationsView() {
-        if (downloadAdapter == null) downloadAdapter = DownloadSongItemAdapter(listOf(), setupRecommendationsViewClickListener())
+        if (downloadAdapter == null) downloadAdapter = DownloadSongItemAdapter(arrayListOf(), setupRecommendationsViewClickListener())
 
         binding.recommendationsRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.recommendationsRecyclerView.adapter = downloadAdapter!!

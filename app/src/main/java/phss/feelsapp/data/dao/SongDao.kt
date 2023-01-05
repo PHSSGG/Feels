@@ -31,6 +31,10 @@ interface SongDao {
     fun loadRecentlyAdded(): Flow<List<Song>>
 
     @Transaction
+    @Query("SELECT * FROM Song WHERE lastPlayed IS NOT NULL ORDER BY lastPlayed DESC LIMIT :limit")
+    fun loadRecentlyPlayed(limit: Int): Flow<List<Song>>
+
+    @Transaction
     @Query("SELECT * FROM Song WHERE name=:songName")
     fun loadSongByName(songName: String): Song
 
