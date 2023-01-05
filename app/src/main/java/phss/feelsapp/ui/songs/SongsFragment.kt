@@ -52,7 +52,23 @@ class SongsFragment : Fragment() {
                 }
             } else value.filter { it.isPlaying }.forEach { it.isPlaying = false }
 
-            field = value
+            if (::playerService.isInitialized && playerService.playerManager.shuffle) {
+                field = playerService.playerManager.getCurrentSongsList()
+
+                value.forEach { updatedSong ->
+                    val fieldSong = field.find { it.key == updatedSong.key }
+                    if (fieldSong != null) with(fieldSong) {
+                        timesPlayed = updatedSong.timesPlayed
+                        lastPlayed = updatedSong.lastPlayed
+                    } else {
+                        val newList = ArrayList(field)
+                        newList.add(updatedSong)
+
+                        field = newList
+                    }
+                }
+            } else field = value
+
             binding.songsInfo.text = getString(R.string.songs_info).replace("{amount}", "${value.size}")
         }
     var playlist: Playlist? = null
@@ -136,13 +152,17 @@ class SongsFragment : Fragment() {
             override fun onPlay(song: Song, previous: Song?) {
                 requireActivity().runOnUiThread { songsAdapter?.updateItems(song, previous) }
             }
-            override fun onStop(song: Song) {
+            override fun onStop(song: Song?) {
+                if (song == null) return
                 requireActivity().runOnUiThread { songsAdapter?.updateItems(song) }
             }
 
             override fun onShuffleStateChange(newSongsList: List<Song>) {
                 currentListOfSongs = newSongsList
-                requireActivity().runOnUiThread { songsAdapter?.updateList(currentListOfSongs) }
+                requireActivity().runOnUiThread {
+                    songsAdapter?.updateList(currentListOfSongs)
+                    updateShuffleButton(binding.songsShuffleButton)
+                }
             }
         })
     }
@@ -161,11 +181,16 @@ class SongsFragment : Fragment() {
 
     private fun setupShuffleButton() = binding.songsShuffleButton.setOnClickListener {
         if (currentListOfSongs.isEmpty()) return@setOnClickListener
-        if (!playerService.playerManager.isPlaying() && !playerService.playerManager.shuffle) playCurrentSongs()
 
-        playerService.playerManager.shuffle = !playerService.playerManager.shuffle
+        if (!playerService.playerManager.isPlaying() && !playerService.playerManager.shuffle) {
+            playerService.playerManager.shuffleAndPlay = true
+            playCurrentSongs()
+        } else playerService.playerManager.shuffle = !playerService.playerManager.shuffle
 
-        val shuffleButton = it as ImageButton
+        updateShuffleButton(it as ImageButton)
+    }
+
+    private fun updateShuffleButton(shuffleButton: ImageButton) {
         if (playerService.playerManager.shuffle) shuffleButton.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
         else shuffleButton.setColorFilter(ContextCompat.getColor(requireContext(), R.color.gray))
     }
@@ -239,7 +264,7 @@ class SongsFragment : Fragment() {
                 currentListOfSongs = it
 
                 binding.songsRecyclerView.hideSkeleton()
-                songsAdapter?.updateList(it)
+                songsAdapter?.updateList(currentListOfSongs)
             }
         }
     }
@@ -253,7 +278,7 @@ class SongsFragment : Fragment() {
 
                 if (it != null && it.songs != null) {
                     currentListOfSongs = it.songs
-                    songsAdapter?.updateList(it.songs)
+                    songsAdapter?.updateList(currentListOfSongs)
                 }
             }
         }

@@ -161,10 +161,16 @@ class MainActivity : AppCompatActivity() {
                     val bottomSheet = BottomSheetBehavior.from(findViewById(R.id.playerBottomSheet))
                     bottomSheet.addBottomSheetCallback(bottomSheetCallback)
 
-                    findViewById<ImageButton>(R.id.playerPauseResumeButton).setImageDrawable(AppCompatResources.getDrawable(baseContext, R.drawable.ic_pause))
+                    findViewById<ImageButton>(R.id.playerPauseResumeButton).setImageDrawable(if (playerService.playerManager.isPlaying()) AppCompatResources.getDrawable(baseContext, R.drawable.ic_pause) else AppCompatResources.getDrawable(baseContext, R.drawable.ic_play))
                     findViewById<ProgressFloatingActionButton>(R.id.playingSongFabHolder).setOnClickListener {
                         isBottomSheetClosing = false
                         bottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
+                    }
+                    updateShuffleButtonStyle()
+
+                    findViewById<ImageView>(R.id.playingSongFabPaused).run {
+                        visibility = if (!playerService.playerManager.isPlaying()) View.VISIBLE
+                        else View.GONE
                     }
 
                     setupBottomSheetImage(song, findViewById(R.id.playerCurrentPlayingThumb))

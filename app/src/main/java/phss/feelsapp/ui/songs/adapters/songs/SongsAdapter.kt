@@ -68,7 +68,7 @@ class SongsAdapter(
 
     fun updateList(newList: List<Song>) {
         songsList = newList
-        songsListFiltered = songsList
+        songsListFiltered = newList
         notifyDataSetChanged()
     }
 
