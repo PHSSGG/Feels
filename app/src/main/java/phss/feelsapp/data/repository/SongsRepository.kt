@@ -58,7 +58,8 @@ class SongsRepository(
     }
 
     fun updateSong(song: Song) {
-        songsLocalDataSource.addSong(song)
+        if (!songsLocalDataSource.checkIfSongAlreadyExists(song.key)) return
+        songsLocalDataSource.updateSong(song)
     }
 
     fun addSong(song: Song) {

@@ -30,6 +30,12 @@ data class PlaylistSong(
     @ColumnInfo(index = true) val songId: Long
 )
 
+class SongUpdateReference(
+    val songId: Long,
+    var timesPlayed: Long,
+    var lastPlayed: Date?,
+)
+
 class PlaylistSongReference(
     val playlistId: Long,
     val songId: Long

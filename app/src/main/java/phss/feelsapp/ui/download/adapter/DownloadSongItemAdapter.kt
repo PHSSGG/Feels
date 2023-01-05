@@ -16,7 +16,7 @@ import phss.feelsapp.data.models.RemoteSong
 import phss.feelsapp.ui.download.DownloadAdapterItemInteractListener
 
 class DownloadSongItemAdapter(
-    private var songsList: List<RemoteSong>,
+    private var songsList: ArrayList<RemoteSong>,
     private val adapterListener: DownloadAdapterItemInteractListener
 ) : RecyclerView.Adapter<DownloadSongItemAdapter.ViewHolder>() {
 
@@ -88,7 +88,7 @@ class DownloadSongItemAdapter(
     }
 
     fun updateList(newList: List<RemoteSong>) {
-        songsList = newList
+        songsList = ArrayList(newList)
         notifyDataSetChanged()
     }
 

@@ -3,6 +3,7 @@ package phss.feelsapp.data.source.local
 import kotlinx.coroutines.flow.Flow
 import phss.feelsapp.data.dao.SongDao
 import phss.feelsapp.data.models.Song
+import phss.feelsapp.data.models.SongUpdateReference
 import java.io.File
 
 class SongsLocalDataSource(
@@ -23,6 +24,10 @@ class SongsLocalDataSource(
 
     fun getSongByKey(songKey: String): Song {
         return songDao.loadSongByKey(songKey)
+    }
+
+    fun updateSong(song: Song) {
+        songDao.updateSong(SongUpdateReference(song.songId, song.timesPlayed, song.lastPlayed))
     }
 
     fun addSong(song: Song) {

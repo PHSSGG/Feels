@@ -41,7 +41,7 @@ class DownloadsDrawerFragment : Fragment(), DownloadUpdateObserver {
     ): View {
         _binding = FragmentDownloadsDrawerBinding.inflate(inflater, container, false)
 
-        if (downloadAdapter == null) downloadAdapter = DownloadSongItemAdapter(listOf(), setupDownloadingItemClickListener())
+        if (downloadAdapter == null) downloadAdapter = DownloadSongItemAdapter(arrayListOf(), setupDownloadingItemClickListener())
 
         binding.downloadingRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.downloadingRecyclerView.adapter = downloadAdapter!!
