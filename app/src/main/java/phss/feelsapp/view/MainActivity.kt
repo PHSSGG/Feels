@@ -150,13 +150,12 @@ class MainActivity : AppCompatActivity() {
         return object : PlayerStateChangeObserver {
             override fun onPlaying(song: Song, duration: Int, progress: Int) {
                 runOnUiThread {
-                    findViewById<ImageView>(R.id.playingSongFabPaused).visibility = View.GONE
-                    findViewById<ProgressFloatingActionButton>(R.id.playingSongFabHolder).visibility = View.VISIBLE
+                    findViewById<ImageView>(R.id.playingSongFabPaused).run {
+                        visibility = if (!playerService.playerManager.isPlaying()) View.VISIBLE
+                        else View.GONE
+                    }
 
                     Picasso.get().load(File(song.thumbnailPath)).transform(CircleTransform()).into(findViewById<FloatingActionButton>(R.id.playingSongFab))
-                    findViewById<ProgressBar>(R.id.playingSongFabProgress).apply {
-                        this.progress = progress
-                    }
 
                     val bottomSheet = BottomSheetBehavior.from(findViewById(R.id.playerBottomSheet))
                     bottomSheet.addBottomSheetCallback(bottomSheetCallback)
@@ -168,9 +167,12 @@ class MainActivity : AppCompatActivity() {
                     }
                     updateShuffleButtonStyle()
 
-                    findViewById<ImageView>(R.id.playingSongFabPaused).run {
-                        visibility = if (!playerService.playerManager.isPlaying()) View.VISIBLE
-                        else View.GONE
+                    // sometimes the progress bar was not being showed
+                    // for some reason it works when I set the view visibility to gone before making it visible
+                    findViewById<ProgressFloatingActionButton>(R.id.playingSongFabHolder).run {
+                        visibility = View.GONE
+                        visibility = View.VISIBLE
+                        findViewById<ProgressBar>(R.id.playingSongFabProgress).progress = if (progress < 0) 0 else progress
                     }
 
                     setupBottomSheetImage(song, findViewById(R.id.playerCurrentPlayingThumb))
