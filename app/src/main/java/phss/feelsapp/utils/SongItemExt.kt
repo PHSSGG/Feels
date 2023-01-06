@@ -20,3 +20,15 @@ fun SongItem.getSongArtists(): String {
 
     return artists
 }
+
+fun SongItem.getOnlySongName(): String? {
+    return info?.name
+        ?.replace("(Official Video)", "", true)
+        ?.replace("(Official Music Video)", "", true)
+        ?.replace("(Lyric Video)", "", true)
+        ?.replace("(PERFORMANCE VIDEO)", "", true)
+        ?.replace("M/V", "", true)
+        ?.replace("MV", "", true)
+        ?.replace("music video", "", true)
+
+}

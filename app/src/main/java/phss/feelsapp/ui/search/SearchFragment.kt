@@ -100,25 +100,24 @@ class SearchFragment : Fragment(), DownloadUpdateObserver {
     }
 
     private fun setupSearchRows() {
-        // some genres are starting with the "genre" word because of search problems
-        binding.genre1.setOnClickListener { makeSearch("genre pop") }
-        binding.genre2.setOnClickListener { makeSearch("genre hip hop") }
-        binding.genre3.setOnClickListener { makeSearch("rock") }
-        binding.genre4.setOnClickListener { makeSearch("blues") }
-        binding.genre5.setOnClickListener { makeSearch("genre eletronic") }
-        binding.genre6.setOnClickListener { makeSearch("reggae") }
-        binding.genre7.setOnClickListener { makeSearch("country") }
-        binding.genre8.setOnClickListener { makeSearch("funk") }
-        binding.genre9.setOnClickListener { makeSearch("gospel") }
-        binding.genre10.setOnClickListener { makeSearch("jazz") }
-        binding.genre11.setOnClickListener { makeSearch("genre disco") }
-        binding.genre12.setOnClickListener { makeSearch("classical") }
-        binding.genre13.setOnClickListener { makeSearch("genre sertanejo") }
-        binding.genre14.setOnClickListener { makeSearch("samba") }
-        binding.genre15.setOnClickListener { makeSearch("pagode") }
-        binding.genre16.setOnClickListener { makeSearch("kpop") }
-        binding.genre17.setOnClickListener { makeSearch("j-pop") }
-        binding.genre18.setOnClickListener { makeSearch("c-pop") }
+        binding.genre1.setOnClickListener { makeSearch("pop", true) }
+        binding.genre2.setOnClickListener { makeSearch("hip hop", true) }
+        binding.genre3.setOnClickListener { makeSearch("rock", true) }
+        binding.genre4.setOnClickListener { makeSearch("blues", true) }
+        binding.genre5.setOnClickListener { makeSearch("eletronic", true) }
+        binding.genre6.setOnClickListener { makeSearch("reggae", true) }
+        binding.genre7.setOnClickListener { makeSearch("country", true) }
+        binding.genre8.setOnClickListener { makeSearch("funk", true) }
+        binding.genre9.setOnClickListener { makeSearch("gospel", true) }
+        binding.genre10.setOnClickListener { makeSearch("jazz", true) }
+        binding.genre11.setOnClickListener { makeSearch("disco", true) }
+        binding.genre12.setOnClickListener { makeSearch("classical", true) }
+        binding.genre13.setOnClickListener { makeSearch("sertanejo", true) }
+        binding.genre14.setOnClickListener { makeSearch("samba", true) }
+        binding.genre15.setOnClickListener { makeSearch("pagode", true) }
+        binding.genre16.setOnClickListener { makeSearch("kpop", true) }
+        binding.genre17.setOnClickListener { makeSearch("j-pop", true) }
+        binding.genre18.setOnClickListener { makeSearch("c-pop", true) }
     }
 
     private fun setupSearchEditText() {
@@ -142,14 +141,14 @@ class SearchFragment : Fragment(), DownloadUpdateObserver {
         }
     }
 
-    private fun makeSearch(query: String) {
+    private fun makeSearch(query: String, searchForPlaylist: Boolean = false) {
         binding.searchTableLayout.visibility = View.INVISIBLE
         binding.searchResultRecyclerView.visibility = View.VISIBLE
         binding.searchResultRecyclerView.loadSkeleton(R.layout.song_item_download_view) {
             itemCount(10)
         }
 
-        searchViewModel.getSongs(query) { songsList ->
+        searchViewModel.getSongs(query, searchForPlaylist) { songsList ->
             songsList.forEach {
                 if (downloaderService.downloading.contains(it.item.key)) it.downloading = true
             }

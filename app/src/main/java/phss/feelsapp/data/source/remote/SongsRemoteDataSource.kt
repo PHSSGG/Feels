@@ -1,5 +1,6 @@
 package phss.feelsapp.data.source.remote
 
+import phss.feelsapp.constants.GENRE_PLAYLISTS
 import phss.feelsapp.data.DataResult
 import phss.ytmusicwrapper.YTMusicAPIWrapper
 import phss.ytmusicwrapper.request.SearchBody
@@ -14,9 +15,18 @@ class SongsRemoteDataSource(
         val body = SearchBody(query = search)
         val response = wrapper.searchPage(body)
 
-        return if (response.isSuccess && response.getOrNull() != null) {
+        return if (response != null && response.isSuccess && response.getOrNull() != null) {
             DataResult.Success(response.getOrNull()?.items!!)
-        } else DataResult.Error(response.exceptionOrNull() ?: IOException("Not data found with the provided search parameter"))
+        } else DataResult.Error(response?.exceptionOrNull() ?: IOException("Not data found with the provided search parameter"))
+    }
+
+    suspend fun retrieveSongsByPlaylist(genre: String): DataResult<List<SongItem>> {
+        val response = wrapper.searchPlaylist(getPlaylistIdByGenre(genre))
+        return if (response != null) DataResult.Success(response) else DataResult.Error(IOException("Not data found with the provided playlist id"))
+    }
+
+    private fun getPlaylistIdByGenre(genre: String): String {
+        return GENRE_PLAYLISTS.getOrDefault(genre, "null")
     }
 
 }

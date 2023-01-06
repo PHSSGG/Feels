@@ -12,13 +12,13 @@ class SearchViewModel(
     private val songsRepository: SongsRepository
 ) : ViewModel() {
 
-    fun getSongs(query: String, onFinished: (List<RemoteSong>) -> Unit) {
+    fun getSongs(query: String, searchForPlaylist: Boolean = false, onFinished: (List<RemoteSong>) -> Unit) {
         if (query == "") {
             onFinished(listOf())
             return
         }
         GlobalScope.async {
-            onFinished(songsRepository.searchForSongsRemote(query))
+            onFinished(songsRepository.searchForSongsRemote(query, searchForPlaylist))
         }
     }
 
