@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.IBinder
 import android.view.Menu
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -25,6 +27,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import phss.feelsapp.R
 import phss.feelsapp.data.models.Song
 import phss.feelsapp.databinding.ActivityMainBinding
@@ -103,24 +107,30 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupPlayerFloatingActionButton() {
         findViewById<ProgressFloatingActionButton>(R.id.playingSongFabHolder).setOnLongClickListener { view ->
-            val layoutParams = view.layoutParams as ConstraintLayout.LayoutParams
-
-            if (layoutParams.startToStart == ConstraintLayout.LayoutParams.UNSET) {
-                layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-                layoutParams.endToEnd = ConstraintLayout.LayoutParams.UNSET
-            } else {
-                layoutParams.startToStart = ConstraintLayout.LayoutParams.UNSET
-                layoutParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-            }
-
-            val transition = AutoTransition()
-            transition.duration = 500
-            TransitionManager.beginDelayedTransition(view.parent as ConstraintLayout, transition)
-
-            view.layoutParams = layoutParams
-            view.requestLayout()
+            changePosition(view, 500)
             true
         }
+    }
+
+    private fun changePosition(view: View, transitionDuration: Long, isUpdateView: Boolean = false) {
+        val layoutParams = view.layoutParams as ConstraintLayout.LayoutParams
+
+        if (layoutParams.startToStart == ConstraintLayout.LayoutParams.UNSET) {
+            if (isUpdateView) return
+
+            layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+            layoutParams.endToEnd = ConstraintLayout.LayoutParams.UNSET
+        } else {
+            layoutParams.startToStart = ConstraintLayout.LayoutParams.UNSET
+            layoutParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+        }
+
+        val transition = AutoTransition()
+        transition.duration = transitionDuration
+        TransitionManager.beginDelayedTransition(view.parent as ConstraintLayout, transition)
+
+        view.layoutParams = layoutParams
+        view.requestLayout()
     }
 
     private fun setupPlayerStateChangeListener(): PlayerStateChangeObserver {
@@ -154,6 +164,13 @@ class MainActivity : AppCompatActivity() {
                         visibility = if (!playerService.playerManager.isPlaying()) View.VISIBLE
                         else View.GONE
                     }
+                    findViewById<ProgressBar>(R.id.playingSongFabProgress).progress = if (progress < 0) 0 else progress
+                    findViewById<ProgressFloatingActionButton>(R.id.playingSongFabHolder).visibility = View.VISIBLE
+
+                    lifecycleScope.launch {
+                        delay(500)
+                        changePosition(findViewById<ProgressFloatingActionButton>(R.id.playingSongFabHolder), 200, true)
+                    }
 
                     Picasso.get().load(File(song.thumbnailPath)).transform(CircleTransform()).into(findViewById<FloatingActionButton>(R.id.playingSongFab))
 
@@ -166,14 +183,6 @@ class MainActivity : AppCompatActivity() {
                         bottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
                     }
                     updateShuffleButtonStyle()
-
-                    // sometimes the progress bar was not being showed
-                    // for some reason it works when I set the view visibility to gone before making it visible
-                    findViewById<ProgressFloatingActionButton>(R.id.playingSongFabHolder).run {
-                        visibility = View.GONE
-                        visibility = View.VISIBLE
-                        findViewById<ProgressBar>(R.id.playingSongFabProgress).progress = if (progress < 0) 0 else progress
-                    }
 
                     setupBottomSheetImage(song, findViewById(R.id.playerCurrentPlayingThumb))
                     setupBottomSheetImage(playerService.playerManager.getNextSong(), findViewById(R.id.playerNextPlayingThumb))

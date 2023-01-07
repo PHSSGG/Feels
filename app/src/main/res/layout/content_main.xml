@@ -44,7 +44,7 @@
             android:layout_margin="@dimen/fab_margin"
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="@+id/nav_host_fragment_content"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/playingSongFab"
