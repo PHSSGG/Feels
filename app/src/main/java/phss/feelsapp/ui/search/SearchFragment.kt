@@ -88,7 +88,11 @@ class SearchFragment : Fragment(), DownloadUpdateObserver {
             }
 
             override fun onDownloadButtonClick(song: RemoteSong) {
-                if (!song.downloading) downloadViewModel.downloadSong(song)
+                if (!song.downloading) downloadViewModel.downloadSong(song) {
+                    requireActivity().runOnUiThread {
+                        downloadAdapter?.replaceSong(song, this)
+                    }
+                }
                 else downloadViewModel.cancelSongDownload(song)
             }
 

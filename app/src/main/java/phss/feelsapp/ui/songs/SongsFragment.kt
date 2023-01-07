@@ -42,34 +42,40 @@ class SongsFragment : Fragment() {
 
     var currentListOfSongs: List<Song> = ArrayList()
         set(value) {
-            if (::playerService.isInitialized && playerService.playerManager.getCurrentPlaying() != null) {
-                val currentPlaying = playerService.playerManager.getCurrentPlaying()!!
+            if (::playerService.isInitialized) {
+                val currentPlaying = playerService.playerManager.getCurrentPlaying()
                 val playingFromPlaylist = playerService.playerManager.playingFromPlaylist
-                value.forEach {
-                    it.isPlaying = currentPlaying.key == it.key
-                            && if (playingFromPlaylist != null) playingFromPlaylist.playlistId == playlist?.playlistId
-                    else playlist == null
-                }
-            } else value.filter { it.isPlaying }.forEach { it.isPlaying = false }
 
-            if (::playerService.isInitialized && playerService.playerManager.shuffle) {
-                field = playerService.playerManager.getCurrentSongsList()
+                if (playerService.playerManager.shuffle && playerService.playerManager.isSamePlaylist(playlist)) {
+                    field = playerService.playerManager.getCurrentSongsList()
 
-                value.forEach { updatedSong ->
-                    val fieldSong = field.find { it.key == updatedSong.key }
-                    if (fieldSong != null) with(fieldSong) {
-                        timesPlayed = updatedSong.timesPlayed
-                        lastPlayed = updatedSong.lastPlayed
-                    } else {
-                        val newList = ArrayList(field)
-                        newList.add(updatedSong)
+                    value.forEach { updatedSong ->
+                        val fieldSong = field.find { it.key == updatedSong.key }
+                        if (fieldSong != null) with(fieldSong) {
+                            timesPlayed = updatedSong.timesPlayed
+                            lastPlayed = updatedSong.lastPlayed
+                            isPlaying = currentPlaying?.key == updatedSong.key && playingFromPlaylist?.playlistId == playlist?.playlistId
+                        } else {
+                            val newList = ArrayList(field)
+                            newList.add(updatedSong)
 
-                        field = newList
+                            field = newList
+                        }
                     }
-                }
-            } else field = value
 
-            binding.songsInfo.text = getString(R.string.songs_info).replace("{amount}", "${value.size}")
+                    updateSongsAmount(field.size)
+                    songsAdapter?.updateList(field)
+                    return
+                }
+
+                value.forEach {
+                    it.isPlaying = currentPlaying?.key == it.key && playingFromPlaylist?.playlistId == playlist?.playlistId
+                }
+            } else value.forEach { it.isPlaying = false }
+
+            field = value
+            updateSongsAmount(value.size)
+            songsAdapter?.updateList(field)
         }
     var playlist: Playlist? = null
     var songsAdapter: SongsAdapter? = null
@@ -82,8 +88,6 @@ class SongsFragment : Fragment() {
         _binding = FragmentSongsBinding.inflate(inflater, container, false)
 
         binding.songsInfo.text = getString(R.string.songs_info).replace("{amount}", "0")
-
-        bindPlayerService()
 
         songsAdapter = SongsAdapter(listOf(), setupSongItemInteractListener())
         setupSongsView()
@@ -104,6 +108,7 @@ class SongsFragment : Fragment() {
                 updateSongsView()
             }
 
+            bindPlayerService()
             setupPlayButton()
             setupShuffleButton()
             setupSearchEditText()
@@ -121,7 +126,6 @@ class SongsFragment : Fragment() {
         super.onResume()
         // update playing info
         currentListOfSongs = currentListOfSongs
-        songsAdapter?.updateList(currentListOfSongs)
         setupPlayerObserver()
     }
 
@@ -148,6 +152,7 @@ class SongsFragment : Fragment() {
     private fun setupPlayerObserver() {
         if (!::playerService.isInitialized) return
 
+        updateShuffleButton(binding.songsShuffleButton)
         playerService.playerManager.registerPlayerObserver(this::class, object : PlayerObserver {
             override fun onPlay(song: Song, previous: Song?) {
                 requireActivity().runOnUiThread { songsAdapter?.updateItems(song, previous) }
@@ -158,9 +163,10 @@ class SongsFragment : Fragment() {
             }
 
             override fun onShuffleStateChange(newSongsList: List<Song>) {
+                if (!playerService.playerManager.isSamePlaylist(playlist)) return
+
                 currentListOfSongs = newSongsList
                 requireActivity().runOnUiThread {
-                    songsAdapter?.updateList(currentListOfSongs)
                     updateShuffleButton(binding.songsShuffleButton)
                 }
             }
@@ -182,7 +188,7 @@ class SongsFragment : Fragment() {
     private fun setupShuffleButton() = binding.songsShuffleButton.setOnClickListener {
         if (currentListOfSongs.isEmpty()) return@setOnClickListener
 
-        if (!playerService.playerManager.isPlaying() && !playerService.playerManager.shuffle) {
+        if (!playerService.playerManager.isSamePlaylist(playlist) || (!playerService.playerManager.isPlaying() && !playerService.playerManager.shuffle)) {
             playerService.playerManager.shuffleAndPlay = true
             playCurrentSongs()
         } else playerService.playerManager.shuffle = !playerService.playerManager.shuffle
@@ -191,7 +197,7 @@ class SongsFragment : Fragment() {
     }
 
     private fun updateShuffleButton(shuffleButton: ImageButton) {
-        if (playerService.playerManager.shuffle) shuffleButton.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
+        if (playerService.playerManager.shuffle && playerService.playerManager.isSamePlaylist(playlist)) shuffleButton.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
         else shuffleButton.setColorFilter(ContextCompat.getColor(requireContext(), R.color.gray))
     }
 
@@ -214,6 +220,10 @@ class SongsFragment : Fragment() {
         }
     }
 
+    private fun updateSongsAmount(amount: Int) {
+        binding.songsInfo.text = getString(R.string.songs_info).replace("{amount}", "$amount")
+    }
+
     private fun setupSongsView() {
         binding.songsRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.songsRecyclerView.adapter = songsAdapter
@@ -227,7 +237,7 @@ class SongsFragment : Fragment() {
         return object : SongsAdapterItemInteractListener {
             override fun onClick(song: Song) {
                 val previousSong = playerService.playerManager.getCurrentPlaying()
-                if (previousSong != null && previousSong.key == song.key && song.isPlaying) {
+                if (playerService.playerManager.isSamePlaylist(playlist) && previousSong != null && previousSong.key == song.key && song.isPlaying) {
                     if (playerService.playerManager.isPlaying()) playerService.playerManager.pausePlayer()
                     else playerService.playerManager.resumePlayer()
                     return
@@ -262,9 +272,7 @@ class SongsFragment : Fragment() {
         lifecycle.coroutineScope.launchWhenStarted {
             songsViewModel.loadAllSongs().collect {
                 currentListOfSongs = it
-
                 binding.songsRecyclerView.hideSkeleton()
-                songsAdapter?.updateList(currentListOfSongs)
             }
         }
     }
@@ -278,7 +286,6 @@ class SongsFragment : Fragment() {
 
                 if (it != null && it.songs != null) {
                     currentListOfSongs = it.songs
-                    songsAdapter?.updateList(currentListOfSongs)
                 }
             }
         }

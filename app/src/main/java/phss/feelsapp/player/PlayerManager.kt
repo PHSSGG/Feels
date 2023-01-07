@@ -49,15 +49,17 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
 
     var shuffle: Boolean = false
         set(value) {
+            shuffledSongs = listOf()
+
             if (value) {
+                if (field) field = false
+
                 shuffledSongs = currentSongs.shuffled()
                 currentPlaying = if (getCurrentPlaying() != null) shuffledSongs.indexOf(getCurrentPlaying()) else 0
             } else {
                 val currentPlayingOnShuffle = currentSongs.find { it.key == getCurrentPlaying()?.key }
                 field = false
                 currentPlaying = if (currentPlayingOnShuffle != null) currentSongs.indexOf(currentPlayingOnShuffle) else 0
-
-                shuffledSongs = listOf()
             }
 
             field = value
@@ -70,13 +72,16 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
 
     fun setupPlayer(songList: List<Song>, selected: Song, playlist: Playlist?) {
         // prevent original songs list changing to a shuffled one
-        if (playlist == playingFromPlaylist && currentSongs.isNotEmpty() && !shuffleAndPlay) {
+        if (isSamePlaylist(playlist) && currentSongs.isNotEmpty() && !shuffleAndPlay) {
             // currentSongs.find { it.key == selected.key } ?: selected
             // this is needed due to a bug when playing the last song of a list that is already being played
             playSong(currentSongs.find { it.key == selected.key } ?: selected)
             return
         }
 
+        if (!isStopped) stopPlayer()
+
+        if (shuffle && !isSamePlaylist(playlist)) shuffle = false
         songs = songList
         playingFromPlaylist = playlist
 
@@ -87,6 +92,8 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
             playSong(currentSongs.first())
         } else playSong(selected)
     }
+
+    fun isSamePlaylist(playlist: Playlist?) = playingFromPlaylist?.playlistId == playlist?.playlistId
 
     fun getCurrentPlaying(): Song? {
         return if (!isStopped()) currentSongs.getOrNull(currentPlaying) else null
@@ -328,12 +335,9 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
             withContext(Dispatchers.Main) {
                 notifyPlayerStateChangePlaying(
                     currentSongs[currentPlaying],
-                    mediaPlayer.duration
+                    mediaPlayer.duration,
+                    getProgress()
                 )
-
-                if (getCurrentPlaying() != null) playerStateChangeObservers.values.forEach {
-                    it.onPlaying(getCurrentPlaying()!!, getSongDuration(), getProgress())
-                }
             }
 
             while (isPlaying()) {
