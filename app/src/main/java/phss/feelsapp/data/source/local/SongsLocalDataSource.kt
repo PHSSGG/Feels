@@ -26,8 +26,8 @@ class SongsLocalDataSource(
         return songDao.loadRecentlyPlayed(limit)
     }
 
-    fun getSongByKey(songKey: String): Song {
-        return songDao.loadSongByKey(songKey)
+    fun getSongByKey(songKey: String): Song? {
+        return if (checkIfSongAlreadyExists(songKey)) songDao.loadSongByKey(songKey) else null
     }
 
     fun updateSong(song: Song) {

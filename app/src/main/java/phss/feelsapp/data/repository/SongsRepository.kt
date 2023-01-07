@@ -58,7 +58,7 @@ class SongsRepository(
         return songsLocalDataSource.getRecentlyPlayed(limit)
     }
 
-    fun getLocalSongByKey(songKey: String): Song {
+    fun getLocalSongByKey(songKey: String): Song? {
         return songsLocalDataSource.getSongByKey(songKey)
     }
 

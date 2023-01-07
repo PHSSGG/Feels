@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import phss.feelsapp.data.models.RemoteSong
 import phss.feelsapp.data.repository.SongsRepository
 import phss.feelsapp.service.DownloaderService
@@ -16,15 +17,22 @@ class DownloadViewModel(
     private val songsRepository: SongsRepository
 ) : ViewModel() {
 
-    fun downloadSong(remoteSong: RemoteSong?) {
+    fun downloadSong(remoteSong: RemoteSong?, onSongUpdate: RemoteSong.() -> Unit) {
         if (remoteSong == null) return
 
-        var songToDownload = remoteSong
+        var downloadInfo = remoteSong to false
         if (remoteSong.isFromPlaylist) {
-            songToDownload = runBlocking(Dispatchers.IO) {
-                songsRepository.searchForSongsRemote("${remoteSong.item.getSongArtists()} ${remoteSong.item.getOnlySongName()}").first()
+            downloadInfo = runBlocking(Dispatchers.IO) {
+                val newSong = songsRepository.searchForSongsRemote("${remoteSong.item.getSongArtists()} ${remoteSong.item.getOnlySongName()}").first()
+                onSongUpdate(newSong)
+
+                newSong to (songsRepository.getLocalSongByKey(newSong.item.key) != null)
             }
         }
+
+        val (songToDownload, alreadyExists) = downloadInfo
+        if (alreadyExists) return
+
         downloaderService.downloadSong(songToDownload)
     }
 

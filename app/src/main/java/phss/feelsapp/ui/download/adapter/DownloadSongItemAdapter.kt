@@ -92,6 +92,13 @@ class DownloadSongItemAdapter(
         notifyDataSetChanged()
     }
 
+    fun replaceSong(previous: RemoteSong, new: RemoteSong) {
+        val song = songsList.find { it.item.key == previous.item.key } ?: return
+        songsList[songsList.indexOf(song)] = new
+
+        notifyItemChanged(songsList.indexOf(new))
+    }
+
     fun updateSong(remoteSong: RemoteSong) {
         val song = songsList.find { it.item.key == remoteSong.item.key } ?: return
         song.alreadyDownloaded = remoteSong.alreadyDownloaded
