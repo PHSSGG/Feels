@@ -43,6 +43,11 @@ class PlayerService : Service(), PlaylistsDataChangeObserver, SongsDataChangeObs
     }
 
     override fun onUnbind(intent: Intent): Boolean {
+        if (playerNotificationManager.isMediaSessionInitialized) {
+            playerNotificationManager.mediaSession.isActive = false
+            playerNotificationManager.mediaSession.release()
+        }
+
         unregisterReceiver(playerNotificationManager)
 
         playerManager.stopPlayer()

@@ -40,7 +40,19 @@ class PlayerNotificationManager(
 
     lateinit var notificationManager: NotificationManager
     lateinit var mediaSession: MediaSessionCompat
+    val isMediaSessionInitialized = ::mediaSession.isInitialized
 
+    private var playbackStateBuilder = PlaybackStateCompat.Builder()
+        .setActions(
+                    PlaybackStateCompat.ACTION_PLAY
+                    or PlaybackStateCompat.ACTION_PAUSE
+                    or PlaybackStateCompat.ACTION_PLAY_PAUSE
+                    or PlaybackStateCompat.ACTION_STOP
+                    or PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
+                    or PlaybackStateCompat.ACTION_SKIP_TO_NEXT
+                    or PlaybackStateCompat.ACTION_SEEK_TO
+                    or PlaybackStateCompat.ACTION_REWIND
+        )
     private val mediaSessionCallback = object : MediaSessionCompat.Callback() {
         override fun onPlayFromMediaId(mediaId: String?, extras: Bundle?) {
             super.onPlayFromMediaId(mediaId, extras)
@@ -66,6 +78,14 @@ class PlayerNotificationManager(
 
         override fun onSkipToPrevious() {
             playerService.playerManager.playPrevious()
+        }
+
+        override fun onSeekTo(pos: Long) {
+            playerService.playerManager.seekTo(pos.toInt())
+        }
+
+        override fun onRewind() {
+            playerService.playerManager.seekTo(0)
         }
     }
 
@@ -141,7 +161,10 @@ class PlayerNotificationManager(
 
     private fun createMediaSession(): MediaSessionCompat {
         if (!::mediaSession.isInitialized) {
-            mediaSession = MediaSessionCompat(playerService.baseContext, "feels_player")
+            val pendingIntent = PendingIntent.getBroadcast(playerService, 0, Intent(Intent.ACTION_MEDIA_BUTTON), PendingIntent.FLAG_IMMUTABLE)
+            mediaSession = MediaSessionCompat(playerService.baseContext, "feels_player", null, pendingIntent)
+            mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS)
+            mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS)
             mediaSession.setCallback(mediaSessionCallback)
         }
 
@@ -159,6 +182,7 @@ class PlayerNotificationManager(
             result.await()
         }
 
+        mediaSession.isActive = true
         mediaSession.setMetadata(
             MediaMetadataCompat.Builder()
                 .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, songThumbnail)
@@ -168,7 +192,7 @@ class PlayerNotificationManager(
                 .build()
         )
         mediaSession.setPlaybackState(
-            PlaybackStateCompat.Builder()
+            playbackStateBuilder
                 .setState(if (playerService.playerManager.isPlaying()) PlaybackStateCompat.STATE_PLAYING else PlaybackStateCompat.STATE_PAUSED, playerService.playerManager.getProgress().toLong(), 1f)
                 .build()
         )

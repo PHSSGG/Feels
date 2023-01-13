@@ -15,6 +15,11 @@
         android:supportsRtl="true"
         android:extractNativeLibs="true"
         android:theme="@style/Theme.Feels">
+        <receiver android:name="androidx.media.session.MediaButtonReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".view.MainActivity"
             android:exported="true"
