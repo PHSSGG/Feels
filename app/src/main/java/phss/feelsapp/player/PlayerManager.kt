@@ -49,17 +49,17 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
 
     var shuffle: Boolean = false
         set(value) {
+            val currentPlayingSong = getCurrentPlaying()
             shuffledSongs = listOf()
 
             if (value) {
                 if (field) field = false
 
                 shuffledSongs = currentSongs.shuffled()
-                currentPlaying = if (getCurrentPlaying() != null) shuffledSongs.indexOf(getCurrentPlaying()) else 0
+                currentPlaying = if (currentPlayingSong != null) shuffledSongs.indexOf(currentPlayingSong) else 0
             } else {
-                val currentPlayingOnShuffle = currentSongs.find { it.key == getCurrentPlaying()?.key }
                 field = false
-                currentPlaying = if (currentPlayingOnShuffle != null) currentSongs.indexOf(currentPlayingOnShuffle) else 0
+                currentPlaying = if (currentPlayingSong != null) currentSongs.indexOf(currentPlayingSong) else 0
             }
 
             field = value
