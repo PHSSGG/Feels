@@ -47,7 +47,7 @@ An android music app
 ## Contributing and support
 Contact me by email at [pedrohddgd@gmail.com](mailto:pedrohddgd@gmail.com?subject=Feels)
 
-Did you find any bug? [Open an issue](https://github.com/PHSSGG/Feels/issues)
+Did you find any bug? [Open an issue](https://github.com/PHSSGG/Feels/issues).<br>
 All contributions are always welcome, make a PR or open an issue to do a suggestion.
 
 ## Acknowledgements
