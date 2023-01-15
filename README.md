@@ -1,10 +1,12 @@
 # Feels
 An android music app
 <div style="display: flex; flex-direction: row;">
+
 ![stars](https://img.shields.io/github/stars/PHSSGG/Feels)&nbsp;
 ![contributors](https://img.shields.io/github/contributors/PHSSGG/Feels) &nbsp;
 ![latest_release](https://img.shields.io/github/v/release/PHSSGG/Feels) &nbsp;
 ![latest_downloads](https://img.shields.io/github/downloads/PHSSGG/Feels/latest/total)
+
 </div>
 
 ## Download
@@ -20,26 +22,26 @@ An android music app
 - Player notification
 
 ## Screenshots
-<div align="center" style="width:100%;display:flex;justify-content:space-between;">
-<img width="32%" src="imgs/home.jpg" align="center" alt="screenshot" />
-<img width="32%" src="imgs/search-1.jpg" align="center" alt="screenshot" />
-<img width="32%" src="imgs/search-2.jpg" align="center" alt="screenshot" />
+<div style="width:100%;display:flex;justify-content:space-between;">
+<img width="25%" src="imgs/home.jpg" alt="screenshot" />
+<img width="25%" src="imgs/search-1.jpg" alt="screenshot" />
+<img width="25%" src="imgs/search-2.jpg" alt="screenshot" />
 </div>
 
 <br>
 
-<div align="center" style="width:100%;display:flex;justify-content:space-between;">
-<img width="32%" src="imgs/library.jpg" align="center" alt="screenshot" />
-<img width="32%" src="imgs/songs-1.jpg" align="center" alt="screenshot" />
-<img width="32%" src="imgs/songs-2.jpg" align="center" alt="screenshot" />
+<div style="width:100%;display:flex;justify-content:space-between;">
+<img width="25%" src="imgs/library.jpg" alt="screenshot" />
+<img width="25%" src="imgs/songs-1.jpg" alt="screenshot" />
+<img width="25%" src="imgs/songs-2.jpg" alt="screenshot" />
 </div>
 
 <br>
 
-<div align="center" style="width:100%;display:flex;justify-content:space-between;">
-<img width="32%" src="imgs/downloading.jpg" align="center" alt="screenshot" />
-<img width="32%" src="imgs/player.jpg" align="center" alt="screenshot" />
-<img width="32%" src="imgs/notification.jpg" align="center" alt="screenshot" />
+<div style="width:100%;display:flex;justify-content:space-between;">
+<img width="25%" src="imgs/downloading.jpg" alt="screenshot" />
+<img width="25%" src="imgs/player.jpg" alt="screenshot" />
+<img width="25%" src="imgs/notification.jpg" alt="screenshot" />
 </div>
 
 ## Contributing and support
@@ -55,5 +57,5 @@ All contributions are always welcome, make a PR or open an issue to do a suggest
 - [Koleton](https://github.com/ericktijerou/koleton)
 
 ## License
-This project is licensed under The `GNU General Public License v3.0`.
-Check [LICENSE.md](/LICENSE) for more info about.
+This project is licensed under The `GNU General Public License v3.0`.<br>
+Check [LICENSE.md](/LICENSE.md) for more info about.
