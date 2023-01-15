@@ -93,7 +93,7 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
         } else playSong(selected)
     }
 
-    fun isSamePlaylist(playlist: Playlist?) = playingFromPlaylist?.playlistId == playlist?.playlistId
+    fun isSamePlaylist(playlist: Playlist?) = playingFromPlaylist?.playlistId == playlist?.playlistId && playingFromPlaylist?.playlistName == playlist?.playlistName
 
     fun getCurrentPlaying(): Song? {
         return if (!isStopped()) currentSongs.getOrNull(currentPlaying) else null

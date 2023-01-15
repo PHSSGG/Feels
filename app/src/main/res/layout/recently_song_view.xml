@@ -8,40 +8,49 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <ImageView
-        android:id="@+id/recentlyThumbnail"
-        android:layout_width="@dimen/_115sdp"
-        android:layout_height="@dimen/_115sdp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/recentlySongItemView"
+        android:layout_width="@dimen/_128sdp"
+        android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/recentlyTitle"
-        android:layout_width="@dimen/_107sdp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:text="Title"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_14ssp"
-        android:maxLines="1"
-        android:maxLength="22"
-        android:ellipsize="end"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recentlyThumbnail" />
+        <ImageView
+            android:id="@+id/recentlyThumbnail"
+            android:layout_width="@dimen/_115sdp"
+            android:layout_height="@dimen/_115sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_launcher_background" />
 
-    <TextView
-        android:id="@+id/recentlyArtist"
-        android:layout_width="@dimen/_107sdp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_2sdp"
-        android:text="Artist"
-        android:textColor="@color/light_gray"
-        android:textSize="@dimen/_12ssp"
-        android:maxLines="1"
-        android:maxLength="22"
-        android:ellipsize="end"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recentlyTitle" />
+        <TextView
+            android:id="@+id/recentlyTitle"
+            android:layout_width="@dimen/_107sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:text="Title"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14ssp"
+            android:maxLines="1"
+            android:maxLength="22"
+            android:ellipsize="end"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recentlyThumbnail" />
+
+        <TextView
+            android:id="@+id/recentlyArtist"
+            android:layout_width="@dimen/_107sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="Artist"
+            android:textColor="@color/light_gray"
+            android:textSize="@dimen/_12ssp"
+            android:maxLines="1"
+            android:maxLength="22"
+            android:ellipsize="end"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recentlyTitle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

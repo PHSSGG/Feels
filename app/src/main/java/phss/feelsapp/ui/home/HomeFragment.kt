@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import koleton.api.hideSkeleton
 import koleton.api.loadSkeleton
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,6 +25,7 @@ import phss.feelsapp.ui.download.viewmodel.DownloadViewModel
 import phss.feelsapp.ui.home.interests.SelectInterestsFragment
 import phss.feelsapp.ui.home.interests.SelectInterestsViewModel
 import phss.feelsapp.ui.recently.RecentlyAdapter
+import phss.feelsapp.ui.recently.RecentlyPlayer
 
 class HomeFragment : Fragment(), DownloadUpdateObserver {
 
@@ -33,11 +33,13 @@ class HomeFragment : Fragment(), DownloadUpdateObserver {
     private val downloadViewModel: DownloadViewModel by inject()
     private val selectInterestsViewModel: SelectInterestsViewModel by inject()
     private val downloaderService: DownloaderService by inject()
+    private lateinit var recentlyPlayer: RecentlyPlayer
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     private var downloadAdapter: DownloadSongItemAdapter? = null
+    private var recentlyAdapter: RecentlyAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,6 +56,9 @@ class HomeFragment : Fragment(), DownloadUpdateObserver {
             }
         }
 
+        recentlyPlayer = RecentlyPlayer(requireContext(), requireActivity(), this)
+        recentlyPlayer.bindPlayerService()
+
         setupRecentlyPlayedView()
         setupRecommendationsView()
 
@@ -62,11 +67,15 @@ class HomeFragment : Fragment(), DownloadUpdateObserver {
 
     override fun onResume() {
         super.onResume()
+
+        recentlyPlayer.onResume()
         downloaderService.registerDownloadUpdateObserver(this::class, this)
     }
 
     override fun onPause() {
         super.onPause()
+
+        recentlyPlayer.onPause()
         downloaderService.unregisterDownloadUpdateObserver(this::class)
     }
 
@@ -92,11 +101,13 @@ class HomeFragment : Fragment(), DownloadUpdateObserver {
 
     private fun setupRecentlyPlayedView() {
         binding.recentlyHorizontalRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        recentlyAdapter = RecentlyAdapter(listOf(), recentlyPlayer.setupSongItemInteractListener())
+        recentlyPlayer.recentlyAdapter = recentlyAdapter
+
         updateRecentlyPlayedView()
     }
 
     private fun updateRecentlyPlayedView() {
-        val recentlyAdapter = RecentlyAdapter(listOf())
         binding.recentlyHorizontalRecyclerView.adapter = recentlyAdapter
 
         binding.recentlyHorizontalRecyclerView.loadSkeleton(R.layout.recently_song_view) {
@@ -105,13 +116,11 @@ class HomeFragment : Fragment(), DownloadUpdateObserver {
 
         lifecycle.coroutineScope.launchWhenStarted {
             homeViewModel.getRecentlyPlayedList().collect { songsList ->
+                recentlyPlayer.currentListOfSongs = songsList
                 binding.recentlyHorizontalRecyclerView.hideSkeleton()
 
-                if (songsList.isEmpty()) binding.recentlyNothingToShow.visibility = View.VISIBLE
-                else {
-                    binding.recentlyNothingToShow.visibility = View.GONE
-                    recentlyAdapter.updateList(songsList)
-                }
+                if (recentlyPlayer.currentListOfSongs.isEmpty()) binding.recentlyNothingToShow.visibility = View.VISIBLE
+                else binding.recentlyNothingToShow.visibility = View.GONE
             }
         }
     }

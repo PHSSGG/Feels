@@ -15,20 +15,26 @@ import koleton.api.loadSkeleton
 import org.koin.android.ext.android.inject
 import phss.feelsapp.R
 import phss.feelsapp.data.models.Playlist
+import phss.feelsapp.data.models.Song
 import phss.feelsapp.databinding.FragmentLibraryBinding
 import phss.feelsapp.ui.library.adapters.playlists.PlaylistAdapterItemInteractListener
 import phss.feelsapp.ui.library.adapters.playlists.PlaylistsAdapter
 import phss.feelsapp.ui.library.dialogs.CreatePlaylistDialog
 import phss.feelsapp.ui.library.dialogs.DeletePlaylistDialog
 import phss.feelsapp.ui.recently.RecentlyAdapter
+import phss.feelsapp.ui.recently.RecentlyPlayer
 import phss.feelsapp.ui.songs.SongsFragment
+import phss.feelsapp.ui.songs.adapters.songs.SongsAdapterItemInteractListener
 
 class LibraryFragment : Fragment() {
 
     private val libraryViewModel: LibraryViewModel by inject()
+    private lateinit var recentlyPlayer: RecentlyPlayer
 
     private var _binding: FragmentLibraryBinding? = null
     private val binding get() = _binding!!
+
+    private var recentlyAdapter: RecentlyAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,12 +42,25 @@ class LibraryFragment : Fragment() {
     ): View {
         _binding = FragmentLibraryBinding.inflate(inflater, container, false)
 
+        recentlyPlayer = RecentlyPlayer(requireContext(), requireActivity(), this)
+        recentlyPlayer.bindPlayerService()
+
         setupPlaylistsView()
         setupRecentlyAddedView()
         setupCreatePlaylistButton()
         setupAllSongsView()
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        recentlyPlayer.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        recentlyPlayer.onPause()
     }
 
     private fun setupPlaylistsView() {
@@ -80,11 +99,13 @@ class LibraryFragment : Fragment() {
 
     private fun setupRecentlyAddedView() {
         binding.libraryRecentlyRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        recentlyAdapter = RecentlyAdapter(listOf(), recentlyPlayer.setupSongItemInteractListener())
+        recentlyPlayer.recentlyAdapter = recentlyAdapter
+
         updateRecentlyAddedView()
     }
 
     private fun updateRecentlyAddedView() {
-        val recentlyAdapter = RecentlyAdapter(listOf())
         binding.libraryRecentlyRecyclerView.adapter = recentlyAdapter
 
         binding.libraryRecentlyRecyclerView.loadSkeleton(R.layout.recently_song_view) {
@@ -98,7 +119,7 @@ class LibraryFragment : Fragment() {
                 if (songsList.isEmpty()) binding.recentlyAddedNothingToShow.visibility = View.VISIBLE
                 else {
                     binding.recentlyAddedNothingToShow.visibility = View.GONE
-                    recentlyAdapter.updateList(songsList)
+                    recentlyPlayer.currentListOfSongs = songsList
                 }
             }
         }
