@@ -77,6 +77,10 @@ class FeelsApplication : Application() {
         }
 
         YoutubeDL.getInstance().init(applicationContext)
+
+        Thread {
+            YoutubeDL.getInstance().updateYoutubeDL(this)
+        }.start()
     }
 
 }
