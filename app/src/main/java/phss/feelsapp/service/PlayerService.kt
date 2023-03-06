@@ -51,6 +51,7 @@ class PlayerService : Service(), PlaylistsDataChangeObserver, SongsDataChangeObs
         unregisterReceiver(playerNotificationManager)
 
         playerManager.stopPlayer()
+        playerManager.mediaPlayer.release()
         playerManager.unregisterPlayerStateChangeObserver(this::class)
         playerManager.unregisterPlayerObserver(this::class)
 

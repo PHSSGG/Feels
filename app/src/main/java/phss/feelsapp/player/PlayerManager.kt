@@ -16,7 +16,7 @@ import kotlin.reflect.KClass
 
 class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener {
 
-    private val mediaPlayer = MediaPlayer().also {
+    val mediaPlayer = MediaPlayer().also {
         it.setOnCompletionListener(this)
         it.setOnPreparedListener(this)
         it.setOnErrorListener(this)
