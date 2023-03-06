@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Feels</string>
+    <string name="action_settings">设置</string>
+
+    <string name="menu_home">主页</string>
+    <string name="menu_search">搜索</string>
+    <string name="menu_library">库</string>
+
+    <string name="downloading_title">下载中</string>
+    <string name="downloading_empty">没有正在下载的内容</string>
+
+    <string name="recently_played">最近播放</string>
+    <string name="recommendations">推荐</string>
+
+    <string name="nothing_to_show_yet">暂无内容</string>
+
+    <string name="search_song">搜索歌曲</string>
+    <string name="genre_1">流行</string>
+    <string name="genre_2">嘻哈</string>
+    <string name="genre_3">摇滚</string>
+    <string name="genre_4">布鲁斯</string>
+    <string name="genre_5">电子</string>
+    <string name="genre_6">雷鬼</string>
+    <string name="genre_7">乡村</string>
+    <string name="genre_8">放克</string>
+    <string name="genre_9">福音</string>
+    <string name="genre_10">爵士</string>
+    <string name="genre_11">迪斯科</string>
+    <string name="genre_12">古典</string>
+    <string name="genre_13">塞尔塔内乔</string>
+    <string name="genre_14">桑巴</string>
+    <string name="genre_15">巴戈蒂</string>
+    <string name="genre_16">韩流</string>
+    <string name="genre_17">日流</string>
+    <string name="genre_18">华语流行</string>
+
+    <string name="your_library">你的库</string>
+    <string name="all_songs">所有歌曲</string>
+    <string name="recently_added">最近添加</string>
+    <string name="playlist_create">创建播放列表</string>
+    <string name="playlist_name">新的播放列表名称</string>
+    <string name="cancel_playlist_create">取消</string>
+    <string name="create_playlist">创建</string>
+    <string name="delete_playlist">确定要删除这个播放列表吗？</string>
+    <string name="playlist_info">{playlist} | {amount} 首歌曲</string>
+    <string name="songs_info">{amount} 首歌曲</string>
+    <string name="cancel_delete">取消</string>
+    <string name="delete_playlist_confirm">删除</string>
+
+    <string name="songs_library_name">所有歌曲</string>
+    <string name="songs_add_selection">选择你想要添加的曲目</string>
+    <string name="songs_add_done">添加</string>
+    <string name="songs_add_cancel">取消</string>
+    <string name="songs_empty">你还没有下载新歌曲</string>
+
+    <string name="add_to_playlist">添加到播放列表</string>
+    <string name="remove_from_playlist">从这个播放列表中移除</string>
+    <string name="song_delete">删除歌曲</string>
+    <string name="playlists_empty">您还没有创建任何播放列表</string>
+</resources>

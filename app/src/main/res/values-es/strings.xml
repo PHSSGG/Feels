@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Feels</string>
+    <string name="action_settings">Ajustes</string>
+
+    <string name="menu_home">Inicio</string>
+    <string name="menu_search">Búsqueda</string>
+    <string name="menu_library">Biblioteca</string>
+
+    <string name="downloading_title">Descargando</string>
+    <string name="downloading_empty">Nada se está descargando</string>
+
+    <string name="recently_played">Reproducidos recientemente</string>
+    <string name="recommendations">Recomendaciones</string>
+
+    <string name="nothing_to_show_yet">Aún no hay nada que mostrar</string>
+
+    <string name="search_song">Buscar canción</string>
+    <string name="genre_1">Pop</string>
+    <string name="genre_2">Hip hop</string>
+    <string name="genre_3">Rock</string>
+    <string name="genre_4">Blues</string>
+    <string name="genre_5">Electrónica</string>
+    <string name="genre_6">Reggae</string>
+    <string name="genre_7">Country</string>
+    <string name="genre_8">Funk</string>
+    <string name="genre_9">Gospel</string>
+    <string name="genre_10">Jazz</string>
+    <string name="genre_11">Disco</string>
+    <string name="genre_12">Clásica</string>
+    <string name="genre_13">Sertanejo</string>
+    <string name="genre_14">Samba</string>
+    <string name="genre_15">Pagode</string>
+    <string name="genre_16">K-pop</string>
+    <string name="genre_17">J-pop</string>
+    <string name="genre_18">C-Pop</string>
+
+    <string name="your_library">Tu biblioteca</string>
+    <string name="all_songs">Todas las canciones</string>
+    <string name="recently_added">Añadidas recientemente</string>
+    <string name="playlist_create">Crear lista de reproducción</string>
+    <string name="playlist_name">Nombre de la nueva lista de reproducción</string>
+    <string name="cancel_playlist_create">Cancelar</string>
+    <string name="create_playlist">Crear</string>
+    <string name="delete_playlist">¿Seguro que deseas eliminar esta lista de reproducción?</string>
+    <string name="playlist_info">{playlist} | {amount} canciones</string>
+    <string name="songs_info">{amount} canciones</string>
+    <string name="cancel_delete">Cancelar</string>
+    <string name="delete_playlist_confirm">Eliminar</string>
+
+    <string name="songs_library_name">Todas las canciones</string>
+    <string name="songs_add_selection">Selecciona las canciones que quieras añadir</string>
+    <string name="songs_add_done">Añadir</string>
+    <string name="songs_add_cancel">Cancelar</string>
+    <string name="songs_empty">Aún no has descargado nuevas canciones</string>
+
+    <string name="add_to_playlist">Añadir a la lista de reproducción</string>
+    <string name="remove_from_playlist">Eliminar de esta lista de reproducción</string>
+    <string name="song_delete">Eliminar canción</string>
+    <string name="playlists_empty">Aún no has creado ninguna lista de reproducción</string>
+</resources>

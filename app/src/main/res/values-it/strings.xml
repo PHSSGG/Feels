@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Feels</string>
+    <string name="action_settings">Impostazioni</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_search">Cerca</string>
+    <string name="menu_library">Libreria</string>
+
+    <string name="downloading_title">Download in corso</string>
+    <string name="downloading_empty">Nessun download in corso</string>
+
+    <string name="recently_played">Ascoltati di recente</string>
+    <string name="recommendations">Raccomandazioni</string>
+
+    <string name="nothing_to_show_yet">Niente da mostrare ancora</string>
+
+    <string name="search_song">Cerca brano</string>
+    <string name="genre_1">Pop</string>
+    <string name="genre_2">Hip hop</string>
+    <string name="genre_3">Rock</string>
+    <string name="genre_4">Blues</string>
+    <string name="genre_5">Elettronica</string>
+    <string name="genre_6">Reggae</string>
+    <string name="genre_7">Country</string>
+    <string name="genre_8">Funk</string>
+    <string name="genre_9">Gospel</string>
+    <string name="genre_10">Jazz</string>
+    <string name="genre_11">Disco</string>
+    <string name="genre_12">Classica</string>
+    <string name="genre_13">Sertanejo</string>
+    <string name="genre_14">Samba</string>
+    <string name="genre_15">Pagode</string>
+    <string name="genre_16">K-pop</string>
+    <string name="genre_17">J-pop</string>
+    <string name="genre_18">C-Pop</string>
+
+    <string name="your_library">La tua libreria</string>
+    <string name="all_songs">Tutti i brani</string>
+    <string name="recently_added">Aggiunti di recente</string>
+    <string name="playlist_create">Crea playlist</string>
+    <string name="playlist_name">Nome nuova playlist</string>
+    <string name="cancel_playlist_create">Annulla</string>
+    <string name="create_playlist">Crea</string>
+    <string name="delete_playlist">Sei sicuro di voler eliminare questa playlist?</string>
+    <string name="playlist_info">{playlist} | {amount} brani</string>
+    <string name="songs_info">{amount} brani</string>
+    <string name="cancel_delete">Annulla</string>
+    <string name="delete_playlist_confirm">Elimina</string>
+
+    <string name="songs_library_name">Tutti i brani</string>
+    <string name="songs_add_selection">Seleziona i brani che desideri aggiungere</string>
+    <string name="songs_add_done">Aggiungi</string>
+    <string name="songs_add_cancel">Annulla</string>
+    <string name="songs_empty">Non hai ancora scaricato nuovi brani</string>
+
+    <string name="add_to_playlist">Aggiungi alla playlist</string>
+    <string name="remove_from_playlist">Rimuovi da questa playlist</string>
+    <string name="song_delete">Elimina brano</string>
+    <string name="playlists_empty">Non hai ancora creato nessuna playlist</string>
+</resources>

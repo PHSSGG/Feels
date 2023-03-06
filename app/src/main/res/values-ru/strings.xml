@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Feels</string>
+    <string name="action_settings">Настройки</string>
+
+    <string name="menu_home">Главная</string>
+    <string name="menu_search">Поиск</string>
+    <string name="menu_library">Библиотека</string>
+
+    <string name="downloading_title">Загрузка</string>
+    <string name="downloading_empty">Ничего не загружается</string>
+
+    <string name="recently_played">Недавно воспроизведенные</string>
+    <string name="recommendations">Рекомендации</string>
+
+    <string name="nothing_to_show_yet">Пока ничего не показано</string>
+
+    <string name="search_song">Искать песню</string>
+    <string name="genre_1">Поп</string>
+    <string name="genre_2">Хип-хоп</string>
+    <string name="genre_3">Рок</string>
+    <string name="genre_4">Блюз</string>
+    <string name="genre_5">Электроника</string>
+    <string name="genre_6">Регги</string>
+    <string name="genre_7">Кантри</string>
+    <string name="genre_8">Фанк</string>
+    <string name="genre_9">Евангелие</string>
+    <string name="genre_10">Джаз</string>
+    <string name="genre_11">Диско</string>
+    <string name="genre_12">Классическая</string>
+    <string name="genre_13">Сертанехо</string>
+    <string name="genre_14">Самба</string>
+    <string name="genre_15">Пагоджи</string>
+    <string name="genre_16">К-поп</string>
+    <string name="genre_17">Джей-поп</string>
+    <string name="genre_18">Китайская поп-музыка</string>
+
+    <string name="your_library">Ваша библиотека</string>
+    <string name="all_songs">Все песни</string>
+    <string name="recently_added">Недавно добавленные</string>
+    <string name="playlist_create">Создать плейлист</string>
+    <string name="playlist_name">Название нового плейлиста</string>
+    <string name="cancel_playlist_create">Отменить</string>
+    <string name="create_playlist">Создать</string>
+    <string name="delete_playlist">Вы уверены, что хотите удалить этот плейлист?</string>
+    <string name="playlist_info">{playlist} | {amount} песен</string>
+    <string name="songs_info">{amount} песен</string>
+    <string name="cancel_delete">Отменить</string>
+    <string name="delete_playlist_confirm">Удалить</string>
+
+    <string name="songs_library_name">Все песни</string>
+    <string name="songs_add_selection">Выберите треки, которые хотите добавить</string>
+    <string name="songs_add_done">Добавить</string>
+    <string name="songs_add_cancel">Отменить</string>
+    <string name="songs_empty">Вы еще не загружали новые песни</string>
+
+    <string name="add_to_playlist">Добавить в плейлист</string>
+    <string name="remove_from_playlist">Удалить из этого плейлиста</string>
+    <string name="song_delete">Удалить песню</string>
+    <string name="playlists_empty">Вы еще не создали ни одного плейлиста</string>
+</resources>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Feels</string>
+    <string name="action_settings">Einstellungen</string>
+
+    <string name="menu_home">Startseite</string>
+    <string name="menu_search">Suche</string>
+    <string name="menu_library">Bibliothek</string>
+
+    <string name="downloading_title">Herunterladen</string>
+    <string name="downloading_empty">Es wird nichts heruntergeladen</string>
+
+    <string name="recently_played">Zuletzt abgespielt</string>
+    <string name="recommendations">Empfehlungen</string>
+
+    <string name="nothing_to_show_yet">Noch nichts zu zeigen</string>
+
+    <string name="search_song">Lied suchen</string>
+    <string name="genre_1">Pop</string>
+    <string name="genre_2">Hip-Hop</string>
+    <string name="genre_3">Rock</string>
+    <string name="genre_4">Blues</string>
+    <string name="genre_5">Elektronisch</string>
+    <string name="genre_6">Reggae</string>
+    <string name="genre_7">Country</string>
+    <string name="genre_8">Funk</string>
+    <string name="genre_9">Gospel</string>
+    <string name="genre_10">Jazz</string>
+    <string name="genre_11">Disco</string>
+    <string name="genre_12">Klassisch</string>
+    <string name="genre_13">Sertanejo</string>
+    <string name="genre_14">Samba</string>
+    <string name="genre_15">Pagode</string>
+    <string name="genre_16">K-Pop</string>
+    <string name="genre_17">J-Pop</string>
+    <string name="genre_18">C-Pop</string>
+
+    <string name="your_library">Deine Bibliothek</string>
+    <string name="all_songs">Alle Lieder</string>
+    <string name="recently_added">Zuletzt hinzugefügt</string>
+    <string name="playlist_create">Wiedergabeliste erstellen</string>
+    <string name="playlist_name">Name der neuen Wiedergabeliste</string>
+    <string name="cancel_playlist_create">Abbrechen</string>
+    <string name="create_playlist">Erstellen</string>
+    <string name="delete_playlist">Möchten Sie diese Wiedergabeliste wirklich löschen?</string>
+    <string name="playlist_info">{playlist} | {amount} Lieder</string>
+    <string name="songs_info">{amount} Lieder</string>
+    <string name="cancel_delete">Abbrechen</string>
+    <string name="delete_playlist_confirm">Löschen</string>
+
+    <string name="songs_library_name">Alle Lieder</string>
+    <string name="songs_add_selection">Wählen Sie die Lieder aus, die Sie hinzufügen möchten</string>
+    <string name="songs_add_done">Hinzufügen</string>
+    <string name="songs_add_cancel">Abbrechen</string>
+    <string name="songs_empty">Sie haben noch keine neuen Lieder heruntergeladen</string>
+
+    <string name="add_to_playlist">Zur Wiedergabeliste hinzufügen</string>
+    <string name="remove_from_playlist">Aus dieser Wiedergabeliste entfernen</string>
+    <string name="song_delete">Lied löschen</string>
+    <string name="playlists_empty">Sie haben noch keine Wiedergabeliste erstellt</string>
+</resources>

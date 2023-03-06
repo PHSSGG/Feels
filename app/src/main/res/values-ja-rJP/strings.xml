@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Feels</string>
+    <string name="action_settings">設定</string>
+
+    <string name="menu_home">ホーム</string>
+    <string name="menu_search">検索</string>
+    <string name="menu_library">ライブラリ</string>
+
+    <string name="downloading_title">ダウンロード中</string>
+    <string name="downloading_empty">ダウンロード中のものはありません</string>
+
+    <string name="recently_played">最近再生した曲</string>
+    <string name="recommendations">おすすめ</string>
+
+    <string name="nothing_to_show_yet">まだ表示するものはありません</string>
+
+    <string name="search_song">曲を検索</string>
+    <string name="genre_1">Pop</string>
+    <string name="genre_2">Hip hop</string>
+    <string name="genre_3">Rock</string>
+    <string name="genre_4">Blues</string>
+    <string name="genre_5">Electrónica</string>
+    <string name="genre_6">Reggae</string>
+    <string name="genre_7">Country</string>
+    <string name="genre_8">Funk</string>
+    <string name="genre_9">Gospel</string>
+    <string name="genre_10">Jazz</string>
+    <string name="genre_11">Disco</string>
+    <string name="genre_12">Clásica</string>
+    <string name="genre_13">Sertanejo</string>
+    <string name="genre_14">Samba</string>
+    <string name="genre_15">Pagode</string>
+    <string name="genre_16">K-pop</string>
+    <string name="genre_17">J-pop</string>
+    <string name="genre_18">C-Pop</string>
+
+    <string name="your_library">ライブラリ</string>
+    <string name="all_songs">すべての曲</string>
+    <string name="recently_added">最近追加した曲</string>
+    <string name="playlist_create">プレイリストを作成</string>
+    <string name="playlist_name">新しいプレイリスト名</string>
+    <string name="cancel_playlist_create">キャンセル</string>
+    <string name="create_playlist">作成</string>
+    <string name="delete_playlist">このプレイリストを削除してもよろしいですか？</string>
+    <string name="playlist_info">{playlist} | {amount} 曲</string>
+    <string name="songs_info">{amount} 曲</string>
+    <string name="cancel_delete">キャンセル</string>
+    <string name="delete_playlist_confirm">削除</string>
+
+    <string name="songs_library_name">すべての曲</string>
+    <string name="songs_add_selection">追加したい曲を選択</string>
+    <string name="songs_add_done">追加</string>
+    <string name="songs_add_cancel">キャンセル</string>
+    <string name="songs_empty">まだ新しい曲をダウンロードしていません</string>
+
+    <string name="add_to_playlist">プレイリストに追加</string>
+    <string name="remove_from_playlist">このプレイリストから削除</string>
+    <string name="song_delete">曲を削除</string>
+    <string name="playlists_empty">まだプレイリストを作成していません</string>
+</resources>

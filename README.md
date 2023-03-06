@@ -18,6 +18,7 @@ An android music app
 - Expandable bottom player controller
 - Player controls such as Shuffle and Repeat
 - Player notification
+- Support for English, Portuguese, Spanish, Italian, German, Russian, French, Chinese, Korean and Japanese
 
 ## Screenshots
 <div align="center" style="width:100%;display:flex;justify-content:space-between;">
