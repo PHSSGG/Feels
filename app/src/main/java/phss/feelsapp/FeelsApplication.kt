@@ -79,7 +79,9 @@ class FeelsApplication : Application() {
         YoutubeDL.getInstance().init(applicationContext)
 
         Thread {
-            YoutubeDL.getInstance().updateYoutubeDL(this)
+            try {
+                YoutubeDL.getInstance().updateYoutubeDL(this)
+            } catch (ignored: Exception) {}
         }.start()
     }
 
