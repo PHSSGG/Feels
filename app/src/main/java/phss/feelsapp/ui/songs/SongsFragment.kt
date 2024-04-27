@@ -10,6 +10,7 @@ import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -22,6 +23,7 @@ import koleton.api.loadSkeleton
 import org.koin.android.ext.android.inject
 import phss.feelsapp.R
 import phss.feelsapp.data.models.Playlist
+import phss.feelsapp.data.models.PlaylistWithSongs
 import phss.feelsapp.data.models.Song
 import phss.feelsapp.databinding.FragmentSongsBinding
 import phss.feelsapp.player.observers.PlayerObserver
@@ -42,6 +44,8 @@ class SongsFragment : Fragment() {
 
     var currentListOfSongs: List<Song> = ArrayList()
         set(value) {
+            var toSet = value
+
             if (::playerService.isInitialized) {
                 val currentPlaying = playerService.playerManager.getCurrentPlaying()
                 val playingFromPlaylist = playerService.playerManager.playingFromPlaylist
@@ -67,14 +71,19 @@ class SongsFragment : Fragment() {
                     songsAdapter?.updateList(field)
                     return
                 }
+                toSet = if (playerService.playerManager.sortByLatest && !playerService.playerManager.shuffle) {
+                    value.sortedByDescending { song -> song.songId }
+                } else {
+                    playerService.playerManager.originalSongs.ifEmpty { value }
+                }
 
-                value.forEach {
+                toSet.forEach {
                     it.isPlaying = currentPlaying?.key == it.key && playingFromPlaylist?.playlistId == playlist?.playlistId
                 }
-            } else value.forEach { it.isPlaying = false }
+            } else toSet.forEach { it.isPlaying = false }
 
-            field = value
-            updateSongsAmount(value.size)
+            field = toSet
+            updateSongsAmount(toSet.size)
             songsAdapter?.updateList(field)
         }
     var playlist: Playlist? = null
@@ -111,6 +120,7 @@ class SongsFragment : Fragment() {
             bindPlayerService()
             setupPlayButton()
             setupShuffleButton()
+            setupSortButton()
             setupSearchEditText()
         }
 
@@ -199,6 +209,25 @@ class SongsFragment : Fragment() {
     private fun updateShuffleButton(shuffleButton: ImageButton) {
         if (playerService.playerManager.shuffle && playerService.playerManager.isSamePlaylist(playlist)) shuffleButton.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
         else shuffleButton.setColorFilter(ContextCompat.getColor(requireContext(), R.color.gray))
+    }
+
+    private fun setupSortButton() = binding.songsSortButton.setOnClickListener {
+        if (currentListOfSongs.isEmpty()) return@setOnClickListener
+        playerService.playerManager.sortByLatest = !playerService.playerManager.sortByLatest
+
+        val sortButton = it as ImageButton
+        if (playerService.playerManager.sortByLatest) {
+            currentListOfSongs = currentListOfSongs
+            sortButton.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_sort_down))
+        } else {
+            currentListOfSongs = currentListOfSongs
+            sortButton.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_sort_up))
+        }
+
+        if (playerService.playerManager.isPlaying()) {
+            currentListOfSongs = playerService.playerManager.getCurrentSongsList()
+        }
+        songsAdapter?.updateList(currentListOfSongs)
     }
 
     private fun setupSearchEditText() {

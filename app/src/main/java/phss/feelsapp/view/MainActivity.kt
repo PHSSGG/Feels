@@ -4,11 +4,15 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.RoundRectShape
 import android.os.Bundle
 import android.os.IBinder
 import android.view.Menu
 import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -26,20 +30,28 @@ import com.dmitrymalkovich.android.ProgressFloatingActionButton
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.jagrosh.jlyrics.LyricsClient
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import phss.feelsapp.R
 import phss.feelsapp.data.models.Song
+import phss.feelsapp.data.repository.SongsRepository
 import phss.feelsapp.databinding.ActivityMainBinding
 import phss.feelsapp.player.PlayerManager
 import phss.feelsapp.player.observers.PlayerStateChangeObserver
+import phss.feelsapp.service.DownloaderService
 import phss.feelsapp.service.PlayerService
 import phss.feelsapp.ui.download.drawer.DownloadsDrawerFragment
 import phss.feelsapp.ui.home.HomeFragment
 import phss.feelsapp.ui.library.LibraryFragment
 import phss.feelsapp.ui.search.SearchFragment
 import phss.feelsapp.utils.CircleTransform
+import phss.feelsapp.utils.TopSheetBehavior
+import phss.musixmatchwrapper.MusixMatch
 import java.io.File
 
 
@@ -49,6 +61,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var playerService: PlayerService
+
+    private val songsRepository: SongsRepository by inject()
+    private val downloaderService: DownloaderService by inject()
 
     private val playerServiceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -66,6 +81,30 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        GlobalScope.launch {
+            val bugged = ArrayList<Song>()
+            songsRepository.loadAllSongsWithoutFlow().filter { song ->
+                song.artist.equals(
+                    "null",
+                    true
+                ) || song.artist.contains("info(") || song.artist.contains("Info(")
+            }.forEach { song ->
+                bugged.add(song)
+            }
+
+            delay(10000)
+            bugged.forEach {
+                songsRepository.searchForSongsRemote("${it.key}", false).firstOrNull { remoteSong ->
+                    remoteSong.item.key.equals(it.key)
+                }?.run {
+                    if (it.name == this.item.info!!.name) {
+                        songsRepository.deleteSong(it)
+                        downloaderService.downloadSong(this)
+                    }
+                }
+            }
+        }
+
         val playerServiceIntent = Intent(this, PlayerService::class.java)
         bindService(playerServiceIntent, playerServiceConnection, Context.BIND_AUTO_CREATE)
 
@@ -79,9 +118,9 @@ class MainActivity : AppCompatActivity() {
             ), drawerLayout
         )
 
-        BottomSheetBehavior.from(findViewById(R.id.playerBottomSheet)).apply {
-            peekHeight = maxHeight
-            state = BottomSheetBehavior.STATE_HIDDEN
+        TopSheetBehavior.from(findViewById(R.id.playerBottomSheet)).apply {
+            //peekHeight = maxHeight
+            state = TopSheetBehavior.STATE_HIDDEN
 
             setupBottomSheetButtons()
             setupBottomSheetSeekBar()
@@ -137,20 +176,20 @@ class MainActivity : AppCompatActivity() {
         var isBottomSheetOpened = false
         var isBottomSheetClosing = false
 
-        val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
+        val bottomSheetCallback = object : TopSheetBehavior.TopSheetCallback() {
             override fun onSlide(bottomSheetView: View, slideOffset: Float) {
                 if (!isBottomSheetOpened && !isBottomSheetClosing) {
                     if (slideOffset == 1f) {
                         isBottomSheetOpened = true
-                        BottomSheetBehavior.from(bottomSheetView).isDraggable = true
+                        //BottomSheetBehavior.from(bottomSheetView).isDraggable = true
                     }
                     return
                 }
                 if (slideOffset <= 0.1f) {
                     isBottomSheetOpened = false
                     isBottomSheetClosing = true
-                    BottomSheetBehavior.from(bottomSheetView).isDraggable = false
-                    BottomSheetBehavior.from(bottomSheetView).state = BottomSheetBehavior.STATE_HIDDEN
+                    //BottomSheetBehavior.from(bottomSheetView).isDraggable = false
+                    TopSheetBehavior.from(bottomSheetView).state = TopSheetBehavior.STATE_HIDDEN
                 }
             }
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -174,13 +213,17 @@ class MainActivity : AppCompatActivity() {
 
                     Picasso.get().load(File(song.thumbnailPath)).transform(CircleTransform()).into(findViewById<FloatingActionButton>(R.id.playingSongFab))
 
-                    val bottomSheet = BottomSheetBehavior.from(findViewById(R.id.playerBottomSheet))
-                    bottomSheet.addBottomSheetCallback(bottomSheetCallback)
+                    val bottomSheet = TopSheetBehavior.from(findViewById(R.id.playerBottomSheet))
+                    bottomSheet.setTopSheetCallback(bottomSheetCallback)
 
                     findViewById<ImageButton>(R.id.playerPauseResumeButton).setImageDrawable(if (playerService.playerManager.isPlaying()) AppCompatResources.getDrawable(baseContext, R.drawable.ic_pause) else AppCompatResources.getDrawable(baseContext, R.drawable.ic_play))
                     findViewById<ProgressFloatingActionButton>(R.id.playingSongFabHolder).setOnClickListener {
-                        isBottomSheetClosing = false
-                        bottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
+                        if (bottomSheet.state == TopSheetBehavior.STATE_EXPANDED) {
+                            bottomSheet.state = TopSheetBehavior.STATE_HIDDEN
+                        } else {
+                            isBottomSheetClosing = false
+                            bottomSheet.state = TopSheetBehavior.STATE_EXPANDED
+                        }
                     }
                     updateShuffleButtonStyle()
 
@@ -207,6 +250,24 @@ class MainActivity : AppCompatActivity() {
                     findViewById<TextView>(R.id.playerSeekBarSongDurationPosition).text = playerService.playerManager.getProgressString()
                     findViewById<TextView>(R.id.playerSeekBarSongDuration).text = song.duration
                 }
+
+                lifecycleScope.launch(Dispatchers.IO) {
+                    var lyrics = "Lyrics not found"
+
+                    val musixMatchLyrics = MusixMatch().searchLyrics(song.artist, song.name).get()
+                    if (musixMatchLyrics != null) {
+                        lyrics = musixMatchLyrics.content
+                    } else {
+                        val foundLyric = LyricsClient().getLyrics("${song.artist} ${song.name}").get()
+                        if (foundLyric != null) {
+                            lyrics = foundLyric.content
+                        }
+                    }
+
+                    runOnUiThread {
+                        findViewById<TextView>(R.id.lyricText).text = lyrics
+                    }
+                }
             }
 
             override fun onTimeChange(song: Song, timePercent: Int) {
@@ -232,10 +293,11 @@ class MainActivity : AppCompatActivity() {
                     findViewById<ProgressFloatingActionButton>(R.id.playingSongFabHolder).visibility = View.GONE
                     findViewById<ImageView>(R.id.playingSongFabPaused).visibility = View.GONE
 
-                    BottomSheetBehavior.from(findViewById(R.id.playerBottomSheet)).apply {
+                    TopSheetBehavior.from(findViewById(R.id.playerBottomSheet)).apply {
                         isBottomSheetClosing = true
-                        state = BottomSheetBehavior.STATE_HIDDEN
-                        removeBottomSheetCallback(bottomSheetCallback)
+                        state = TopSheetBehavior.STATE_HIDDEN
+                        setTopSheetCallback(null)
+                        //removeBottomSheetCallback(bottomSheetCallback)
                     }
                 }
             }
@@ -278,6 +340,26 @@ class MainActivity : AppCompatActivity() {
         }
         findViewById<ImageButton>(R.id.playerForwardButton).setOnClickListener {
             playerService.playerManager.forward5()
+        }
+        findViewById<ImageButton>(R.id.closePlayerViewButton).setOnClickListener {
+            handlePlayerViewCloseButtonClick()
+        }
+        findViewById<ConstraintLayout>(R.id.closePlayerViewButtonView).setOnClickListener {
+            handlePlayerViewCloseButtonClick()
+        }
+        findViewById<ImageButton>(R.id.lyricsButton).setOnClickListener {
+            findViewById<ConstraintLayout>(R.id.normalPlayerView).visibility = View.INVISIBLE
+            findViewById<ConstraintLayout>(R.id.lyricsPlayerView).visibility = View.VISIBLE
+        }
+    }
+
+    private fun handlePlayerViewCloseButtonClick() {
+        val normalPlayerView = findViewById<ConstraintLayout>(R.id.normalPlayerView)
+        if (normalPlayerView.visibility == View.INVISIBLE) {
+            findViewById<ConstraintLayout>(R.id.lyricsPlayerView).visibility = View.GONE
+            normalPlayerView.visibility = View.VISIBLE
+        } else {
+            TopSheetBehavior.from(findViewById(R.id.playerBottomSheet)).state = TopSheetBehavior.STATE_HIDDEN
         }
     }
 

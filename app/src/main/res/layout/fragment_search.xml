@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,10 +7,6 @@
     android:background="@color/black"
     android:fillViewport="true"
     tools:context=".ui.search.SearchFragment">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/startGuideline"
@@ -44,7 +40,7 @@
             android:id="@+id/searchSongEditText"
             android:layout_width="0dp"
             android:layout_height="@dimen/_54sdp"
-            android:layout_marginBottom="@dimen/_19sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:background="@drawable/edittext_state"
             android:drawableStart="@drawable/ic_search_edittext_icon"
             android:drawablePadding="@dimen/_11sdp"
@@ -57,7 +53,7 @@
             android:textColorHint="@color/gray"
             app:layout_constraintEnd_toStartOf="@+id/endGuideline"
             app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintBottom_toTopOf="@+id/topGuideline" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/searchResultRecyclerView"
@@ -70,220 +66,290 @@
             app:layout_constraintStart_toStartOf="@+id/startGuideline"
             app:layout_constraintTop_toBottomOf="@+id/searchSongEditText" />
 
-        <TableLayout
-            android:id="@+id/searchTableLayout"
+        <ScrollView
+            android:id="@+id/genres_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_27sdp"
-            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            android:layout_marginTop="@dimen/_30sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/endGuideline"
             app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/topGuideline">
+            app:layout_constraintTop_toBottomOf="@+id/searchSongEditText">
 
-            <TableRow
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <Button
-                    android:id="@+id/genre_1"
-                    android:layout_width="@dimen/_77sdp"
-                    android:layout_height="@dimen/_61sdp"
-                    android:background="@drawable/genre_block_style"
-                    android:text="@string/genre_1"
-                    android:textColor="@color/white" />
+                        <Button
+                            android:id="@+id/genre_1"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_61sdp"
+                            android:layout_marginStart="@dimen/_15sdp"
+                            android:background="@drawable/pop_search_button_gradient"
+                            android:gravity="center_vertical|start"
+                            android:padding="20dp"
+                            android:text="@string/genre_1"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
-                    android:id="@+id/genre_2"
-                    android:layout_width="@dimen/_77sdp"
-                    android:layout_height="@dimen/_61sdp"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:background="@drawable/genre_block_style"
-                    android:text="@string/genre_2"
-                    android:textColor="@color/white" />
+                        <Button
+                            android:id="@+id/genre_2"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_61sdp"
+                            android:layout_marginEnd="@dimen/_15sdp"
+                            android:background="@drawable/hiphop_search_button_gradient"
+                            android:gravity="center_vertical|start"
+                            android:padding="20dp"
+                            android:text="@string/genre_2"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
-                    android:id="@+id/genre_3"
-                    android:layout_width="@dimen/_77sdp"
-                    android:layout_height="@dimen/_61sdp"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:background="@drawable/genre_block_style"
-                    android:text="@string/genre_3"
-                    android:textColor="@color/white" />
-            </TableRow>
+                        <Button
+                            android:id="@+id/genre_3"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_61sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_15sdp"
+                            android:background="@drawable/rock_search_button_gradient"
+                            android:gravity="center_vertical|start"
+                            android:padding="20dp"
+                            android:text="@string/genre_3"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/genre_1" />
 
-            <TableRow
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/_8sdp" >
+                        <Button
+                            android:id="@+id/genre_4"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_61sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_15sdp"
+                            android:background="@drawable/blues_search_button_gradient"
+                            android:gravity="center_vertical|start"
+                            android:padding="20dp"
+                            android:text="@string/genre_4"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/genre_2" />
 
-                <Button
-                    android:id="@+id/genre_4"
-                    android:layout_width="@dimen/_77sdp"
-                    android:layout_height="@dimen/_61sdp"
-                    android:background="@drawable/genre_block_style"
-                    android:text="@string/genre_4"
-                    android:textColor="@color/white" />
+                        <Button
+                            android:id="@+id/genre_5"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_61sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_15sdp"
+                            android:background="@drawable/eletronic_search_button_gradient"
+                            android:gravity="center_vertical|start"
+                            android:padding="20dp"
+                            android:text="@string/genre_5"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/genre_3" />
 
-                <Button
-                    android:id="@+id/genre_5"
-                    android:layout_width="@dimen/_77sdp"
-                    android:layout_height="@dimen/_61sdp"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:background="@drawable/genre_block_style"
-                    android:text="@string/genre_5"
-                    android:textColor="@color/white" />
+                        <Button
+                            android:id="@+id/genre_6"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_61sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_15sdp"
+                            android:background="@drawable/reggae_search_button_gradient"
+                            android:gravity="center_vertical|start"
+                            android:padding="20dp"
+                            android:text="@string/genre_6"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/genre_4" />
 
-                <Button
-                    android:id="@+id/genre_6"
-                    android:layout_width="@dimen/_77sdp"
-                    android:layout_height="@dimen/_61sdp"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:background="@drawable/genre_block_style"
-                    android:text="@string/genre_6"
-                    android:textColor="@color/white" />
-            </TableRow>
+                        <Button
+                            android:id="@+id/genre_7"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_61sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_15sdp"
+                            android:background="@drawable/country_search_button_gradient"
+                            android:gravity="center_vertical|start"
+                            android:padding="20dp"
+                            android:text="@string/genre_7"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/genre_5" />
 
-            <TableRow
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/_8sdp" >
+                        <Button
+                            android:id="@+id/genre_8"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_61sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_15sdp"
+                            android:background="@drawable/funk_search_button_gradient"
+                            android:gravity="center_vertical|start"
+                            android:padding="20dp"
+                            android:text="@string/genre_8"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/genre_6" />
 
-                <Button
-                    android:id="@+id/genre_7"
-                    android:layout_width="@dimen/_77sdp"
-                    android:layout_height="@dimen/_61sdp"
-                    android:background="@drawable/genre_block_style"
-                    android:text="@string/genre_7"
-                    android:textColor="@color/white" />
+                        <Button
+                            android:id="@+id/genre_9"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_61sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_15sdp"
+                            android:background="@drawable/gospel_search_button_gradient"
+                            android:gravity="center_vertical|start"
+                            android:padding="20dp"
+                            android:text="@string/genre_9"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/genre_7" />
 
-                <Button
-                    android:id="@+id/genre_8"
-                    android:layout_width="@dimen/_77sdp"
-                    android:layout_height="@dimen/_61sdp"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:background="@drawable/genre_block_style"
-                    android:text="@string/genre_8"
-                    android:textColor="@color/white" />
+                        <Button
+                            android:id="@+id/genre_10"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_61sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_15sdp"
+                            android:background="@drawable/jazz_search_button_gradient"
+                            android:gravity="center_vertical|start"
+                            android:padding="20dp"
+                            android:text="@string/genre_10"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/genre_8" />
 
-                <Button
-                    android:id="@+id/genre_9"
-                    android:layout_width="@dimen/_77sdp"
-                    android:layout_height="@dimen/_61sdp"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:background="@drawable/genre_block_style"
-                    android:text="@string/genre_9"
-                    android:textColor="@color/white" />
-            </TableRow>
+                        <Button
+                            android:id="@+id/genre_11"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_61sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_15sdp"
+                            android:background="@drawable/disco_search_button_gradient"
+                            android:gravity="center_vertical|start"
+                            android:padding="20dp"
+                            android:text="@string/genre_11"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/genre_9" />
 
-            <TableRow
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/_8sdp" >
+                        <Button
+                            android:id="@+id/genre_12"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_61sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_15sdp"
+                            android:background="@drawable/classical_search_button_gradient"
+                            android:gravity="center_vertical|start"
+                            android:padding="20dp"
+                            android:text="@string/genre_12"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/genre_10" />
 
-                <Button
-                    android:id="@+id/genre_10"
-                    android:layout_width="@dimen/_77sdp"
-                    android:layout_height="@dimen/_61sdp"
-                    android:background="@drawable/genre_block_style"
-                    android:text="@string/genre_10"
-                    android:textColor="@color/white" />
+                        <Button
+                            android:id="@+id/genre_13"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_61sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_15sdp"
+                            android:background="@drawable/sertanejo_search_button_gradient"
+                            android:gravity="center_vertical|start"
+                            android:padding="20dp"
+                            android:text="@string/genre_13"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/genre_11" />
 
-                <Button
-                    android:id="@+id/genre_11"
-                    android:layout_width="@dimen/_77sdp"
-                    android:layout_height="@dimen/_61sdp"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:background="@drawable/genre_block_style"
-                    android:text="@string/genre_11"
-                    android:textColor="@color/white" />
+                        <Button
+                            android:id="@+id/genre_14"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_61sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_15sdp"
+                            android:background="@drawable/samba_search_button_gradient"
+                            android:gravity="center_vertical|start"
+                            android:padding="20dp"
+                            android:text="@string/genre_14"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/genre_12" />
 
-                <Button
-                    android:id="@+id/genre_12"
-                    android:layout_width="@dimen/_77sdp"
-                    android:layout_height="@dimen/_61sdp"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:background="@drawable/genre_block_style"
-                    android:text="@string/genre_12"
-                    android:textColor="@color/white" />
-            </TableRow>
+                        <Button
+                            android:id="@+id/genre_15"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_61sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_15sdp"
+                            android:background="@drawable/pagode_search_button_gradient"
+                            android:gravity="center_vertical|start"
+                            android:padding="20dp"
+                            android:text="@string/genre_15"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/genre_13" />
 
-            <TableRow
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/_8sdp" >
+                        <Button
+                            android:id="@+id/genre_16"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_61sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_15sdp"
+                            android:background="@drawable/kpop_search_button_gradient"
+                            android:gravity="center_vertical|start"
+                            android:padding="20dp"
+                            android:text="@string/genre_16"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/genre_14" />
 
-                <Button
-                    android:id="@+id/genre_13"
-                    android:layout_width="@dimen/_77sdp"
-                    android:layout_height="@dimen/_61sdp"
-                    android:background="@drawable/genre_block_style"
-                    android:text="@string/genre_13"
-                    android:textColor="@color/white" />
+                        <Button
+                            android:id="@+id/genre_17"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_61sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_15sdp"
+                            android:background="@drawable/jpop_search_button_gradient"
+                            android:gravity="center_vertical|start"
+                            android:padding="20dp"
+                            android:text="@string/genre_17"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/genre_15" />
 
-                <Button
-                    android:id="@+id/genre_14"
-                    android:layout_width="@dimen/_77sdp"
-                    android:layout_height="@dimen/_61sdp"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:background="@drawable/genre_block_style"
-                    android:text="@string/genre_14"
-                    android:textColor="@color/white" />
+                        <Button
+                            android:id="@+id/genre_18"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_61sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_15sdp"
+                            android:background="@drawable/cpop_search_button_gradient"
+                            android:gravity="center_vertical|start"
+                            android:padding="20dp"
+                            android:text="@string/genre_18"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/genre_16" />
 
-                <Button
-                    android:id="@+id/genre_15"
-                    android:layout_width="@dimen/_77sdp"
-                    android:layout_height="@dimen/_61sdp"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:background="@drawable/genre_block_style"
-                    android:text="@string/genre_15"
-                    android:textColor="@color/white" />
-            </TableRow>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TableRow
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/_8sdp" >
+        </ScrollView>
 
-                <Button
-                    android:id="@+id/genre_16"
-                    android:layout_width="@dimen/_77sdp"
-                    android:layout_height="@dimen/_61sdp"
-                    android:background="@drawable/genre_block_style"
-                    android:text="@string/genre_16"
-                    android:textColor="@color/white" />
-
-                <Button
-                    android:id="@+id/genre_17"
-                    android:layout_width="@dimen/_77sdp"
-                    android:layout_height="@dimen/_61sdp"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:background="@drawable/genre_block_style"
-                    android:text="@string/genre_17"
-                    android:textColor="@color/white" />
-
-                <Button
-                    android:id="@+id/genre_18"
-                    android:layout_width="@dimen/_77sdp"
-                    android:layout_height="@dimen/_61sdp"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:background="@drawable/genre_block_style"
-                    android:text="@string/genre_18"
-                    android:textColor="@color/white" />
-            </TableRow>
-
-        </TableLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

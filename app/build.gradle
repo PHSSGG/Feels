@@ -49,7 +49,9 @@ android {
 }
 
 dependencies {
-    implementation 'phss.ytmusicwrapper:ytmusic:1.0'
+    implementation 'phss.ytmusicwrapper:ytmusic:1.1.0'
+    implementation 'phss.musixmatchwrapper:wrapper:1.1.3'
+    implementation 'com.github.jagrosh:JLyrics:master-SNAPSHOT'
     implementation 'com.squareup.picasso:picasso:2.8'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'io.insert-koin:koin-android:3.2.2'
@@ -57,6 +59,9 @@ dependencies {
     implementation 'com.intuit.ssp:ssp-android:1.1.0'
     implementation 'com.ericktijerou.koleton:koleton:1.0.0-beta01'
     implementation 'com.github.yausername.youtubedl-android:library:-SNAPSHOT'
+    implementation 'com.github.yausername.youtubedl-android:aria2c:-SNAPSHOT'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.28'
+    implementation 'com.airbnb.android:lottie:6.4.0'
     implementation 'com.github.DmitryMalkovich:circular-with-floating-action-button:1.6'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -67,6 +72,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "androidx.room:room-runtime:2.4.3"
     implementation "androidx.room:room-ktx:2.4.3"
+    implementation "com.google.code.gson:gson:2.10.1"
     annotationProcessor "androidx.room:room-compiler:2.4.3"
     kapt "androidx.room:room-compiler:2.4.3"
     testImplementation 'junit:junit:4.13.2'

@@ -2,6 +2,7 @@ package phss.feelsapp
 
 import android.app.Application
 import androidx.room.Room
+import com.yausername.aria2c.Aria2c
 import com.yausername.youtubedl_android.YoutubeDL
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
@@ -77,6 +78,7 @@ class FeelsApplication : Application() {
         }
 
         YoutubeDL.getInstance().init(applicationContext)
+        Aria2c.getInstance().init(this);
 
         Thread {
             try {

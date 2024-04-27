@@ -91,7 +91,16 @@ class HomeFragment : Fragment(), DownloadUpdateObserver {
     override fun onDownloadFinish(song: RemoteSong, success: Boolean) {
         lifecycleScope.launch {
             delay(1000L)
-            requireActivity().runOnUiThread { downloadAdapter?.updateDownloading(song, song.downloading) }
+            requireActivity().runOnUiThread {
+                song.isPlayingAnimation = true
+                downloadAdapter?.updateDownloading(song, song.downloading)
+            }
+
+            delay(2200L)
+            requireActivity().runOnUiThread {
+                song.isPlayingAnimation = false
+                downloadAdapter?.updateDownloading(song, song.downloading)
+            }
         }
     }
 

@@ -4,7 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <corners
         android:topLeftRadius="40dp"
-        android:topRightRadius="40dp"/>
+        android:topRightRadius="40dp"
+        android:bottomLeftRadius="40dp"
+        android:bottomRightRadius="40dp"/>
     <solid
         android:color="@color/black"/>
 </shape>

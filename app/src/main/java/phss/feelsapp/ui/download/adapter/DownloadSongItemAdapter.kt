@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.squareup.picasso.Picasso
 import phss.feelsapp.R
 import phss.feelsapp.data.models.RemoteSong
@@ -38,22 +39,46 @@ class DownloadSongItemAdapter(
         holder.deleteButton.isEnabled = true
 
         if (song.downloading) {
-            if (song.downloadProgress == 0f) holder.downloadCircleProgressBar.progress = 0
+            if (song.downloadProgress == 0f) {
+                holder.downloadCircleProgressBar.progress = 0
 
+                holder.downloadCircleClickAnimation.visibility = View.VISIBLE
+                holder.downloadCircleClickAnimation.animate().startDelay = 0
+                holder.downloadCircleClickAnimation.playAnimation()
+            } else {
+                if (holder.downloadCircleClickAnimation.visibility == View.VISIBLE) {
+                    holder.downloadCircleClickAnimation.pauseAnimation()
+                    holder.downloadCircleClickAnimation.visibility = View.GONE
+                }
+            }
+
+            holder.downloadCircleProgressBar.visibility = View.VISIBLE
             holder.deleteButton.visibility = View.GONE
             holder.downloadButton.visibility = View.INVISIBLE
-            holder.downloadCircleProgressBar.visibility = View.VISIBLE
+
+            holder.songItemDownloadButtonAnimated.animate().startDelay = 0
+            holder.songItemDownloadButtonAnimated.playAnimation()
         } else {
             if (!song.alreadyDownloaded) {
                 holder.deleteButton.visibility = View.GONE
+                holder.songItemDownloadButtonAnimated.visibility = View.GONE
                 holder.downloadButton.visibility = View.VISIBLE
             }
             else {
                 holder.downloadButton.visibility = View.GONE
-                holder.deleteButton.visibility = View.VISIBLE
+
+                if (!song.isPlayingAnimation) {
+                    holder.deleteButton.visibility = View.VISIBLE
+                    holder.songItemDownloadButtonAnimated.visibility = View.GONE
+                } else {
+                    holder.songItemDownloadButtonAnimated.visibility = View.VISIBLE
+                    holder.songItemDownloadButtonAnimated.animate().startDelay = 0
+                    holder.songItemDownloadButtonAnimated.playAnimation()
+                }
             }
 
             holder.downloadCircleProgressBar.visibility = View.GONE
+            holder.downloadCircleClickAnimation.visibility = View.GONE
         }
 
         holder.songView.setOnClickListener {
@@ -127,7 +152,9 @@ class DownloadSongItemAdapter(
         val title: TextView = itemView.findViewById(R.id.songItemTitle)
         val artist: TextView = itemView.findViewById(R.id.songItemArtist)
         val downloadButton: ImageButton = itemView.findViewById(R.id.songItemDownloadButton)
+        val songItemDownloadButtonAnimated: LottieAnimationView = itemView.findViewById(R.id.songItemDownloadButtonAnimated)
         val downloadCircleProgressBar: ProgressBar = itemView.findViewById(R.id.downloadCircleProgressBar)
+        val downloadCircleClickAnimation: LottieAnimationView = itemView.findViewById(R.id.downloadCircleClickAnimation)
         val deleteButton: ImageButton = itemView.findViewById(R.id.songItemDeleteButton)
     }
 

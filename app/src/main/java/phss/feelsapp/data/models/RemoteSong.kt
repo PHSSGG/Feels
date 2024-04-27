@@ -14,4 +14,6 @@ class RemoteSong(
     var playing: Boolean = false
     var downloadProgress = 0f
 
+    var isPlayingAnimation = false
+
 }
