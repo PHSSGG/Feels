@@ -22,10 +22,10 @@
         android:id="@+id/recentlyNothingToShow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_18sdp"
         android:text="@string/nothing_to_show_yet"
         android:textColor="@color/light_gray"
-        android:textSize="@dimen/_17ssp"
+        android:textSize="@dimen/_22ssp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/recentlyPlayedText"
         app:layout_constraintTop_toBottomOf="@+id/recentlyPlayedText" />
