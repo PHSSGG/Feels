@@ -66,7 +66,16 @@ class SearchFragment : Fragment(), DownloadUpdateObserver {
     override fun onDownloadFinish(song: RemoteSong, success: Boolean) {
         lifecycleScope.launch {
             delay(1000L)
-            requireActivity().runOnUiThread { downloadAdapter?.updateDownloading(song, song.downloading) }
+            requireActivity().runOnUiThread {
+                song.isPlayingAnimation = true
+                downloadAdapter?.updateDownloading(song, song.downloading)
+            }
+
+            delay(2200L)
+            requireActivity().runOnUiThread {
+                song.isPlayingAnimation = false
+                downloadAdapter?.updateDownloading(song, song.downloading)
+            }
         }
     }
 
@@ -140,13 +149,13 @@ class SearchFragment : Fragment(), DownloadUpdateObserver {
         binding.searchSongEditText.doOnTextChanged { text, _, _, _ ->
             if (text.isNullOrBlank()) {
                 binding.searchResultRecyclerView.visibility = View.INVISIBLE
-                binding.searchTableLayout.visibility = View.VISIBLE
+                changeVisibility(false)
             }
         }
     }
 
     private fun makeSearch(query: String, searchForPlaylist: Boolean = false) {
-        binding.searchTableLayout.visibility = View.INVISIBLE
+        changeVisibility(true)
         binding.searchResultRecyclerView.visibility = View.VISIBLE
         binding.searchResultRecyclerView.loadSkeleton(R.layout.song_item_download_view) {
             itemCount(10)
@@ -161,7 +170,7 @@ class SearchFragment : Fragment(), DownloadUpdateObserver {
 
                 if (songsList.isEmpty()) {
                     binding.searchResultRecyclerView.visibility = View.INVISIBLE
-                    binding.searchTableLayout.visibility = View.VISIBLE
+                    changeVisibility(false)
                 }
                 else {
                     downloadAdapter?.updateList(songsList)
@@ -169,6 +178,30 @@ class SearchFragment : Fragment(), DownloadUpdateObserver {
                 }
             }
         }
+    }
+
+    private fun changeVisibility(invisible: Boolean) {
+        binding.genresView.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        /**
+        binding.genre1.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        binding.genre2.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        binding.genre3.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        binding.genre4.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        binding.genre5.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        binding.genre6.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        binding.genre7.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        binding.genre8.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        binding.genre9.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        binding.genre10.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        binding.genre11.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        binding.genre12.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        binding.genre13.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        binding.genre14.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        binding.genre15.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        binding.genre16.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        binding.genre17.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        binding.genre18.visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+        **/
     }
 
 }

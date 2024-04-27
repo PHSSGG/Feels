@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso
 import phss.feelsapp.R
 import phss.feelsapp.data.models.Song
 import java.io.File
+import java.util.*
 
 class SongsAdapter(
     private var songsList: List<Song>,
@@ -21,6 +22,7 @@ class SongsAdapter(
 ) : RecyclerView.Adapter<SongsAdapter.ViewHolder>(), Filterable {
 
     private var songsListFiltered: List<Song> = songsList
+    private var isFiltering = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.library_songs_view, parent, false)
@@ -49,15 +51,21 @@ class SongsAdapter(
     }
 
     override fun getItemCount(): Int {
-        return songsList.size
+        return if (isFiltering) songsListFiltered.size else songsList.size
     }
 
     private fun getItemIndex(song: Song): Int {
-        return if (songsListFiltered.find { it.key == song.key } != null) songsListFiltered.indexOf(song) else songsList.indexOf(song)
+        println(songsListFiltered)
+        if (isFiltering) {
+            if (songsListFiltered.find { it.key == song.key } != null) return songsListFiltered.indexOf(song)
+        }
+        return songsList.indexOf(song)
     }
 
     private fun getItem(position: Int): Song? {
-        return songsListFiltered.getOrNull(position) ?: songsList.getOrNull(position)
+        println(songsListFiltered)
+        if (isFiltering) return songsListFiltered.getOrNull(position)
+        return songsList.getOrNull(position)
     }
 
     fun updateItems(vararg songs: Song?) {
@@ -69,6 +77,7 @@ class SongsAdapter(
     fun updateList(newList: List<Song>) {
         songsList = newList
         songsListFiltered = newList
+
         notifyDataSetChanged()
     }
 
@@ -78,13 +87,25 @@ class SongsAdapter(
                 val queryString = query?.toString()
 
                 val results = FilterResults()
-                results.values = if (queryString != null) songsList.filter { it.name.lowercase().contains(queryString) || it.artist.lowercase().contains(queryString) || it.album.lowercase().contains(queryString) } else songsList
+                if (queryString != null) {
+                    results.values = songsList
+                        .filter { it.name.lowercase().contains(queryString)
+                                || it.artist.lowercase().contains(queryString)
+                                || it.album.lowercase().contains(queryString) }
+                    isFiltering = true
+                } else {
+                    results.values = songsList
+                    isFiltering = false
+                }
 
                 return results
             }
 
             override fun publishResults(query: CharSequence?, results: FilterResults?) {
-                songsListFiltered = if (results?.values == null) listOf() else results.values as ArrayList<Song>
+                songsListFiltered = if (results?.values == null) listOf() else {
+                    if (results.values is List<*>) results.values as List<Song>
+                    else listOf()
+                }
                 notifyDataSetChanged()
             }
         }

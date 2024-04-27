@@ -1,6 +1,9 @@
 package phss.feelsapp.data.repository
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import phss.feelsapp.data.DataResult
 import phss.feelsapp.data.observers.SongsDataChangeObserver
 import phss.feelsapp.data.models.RemoteSong
@@ -48,6 +51,10 @@ class SongsRepository(
 
     fun loadAllSongs(): Flow<List<Song>> {
         return songsLocalDataSource.getAllSongs()
+    }
+
+    fun loadAllSongsWithoutFlow(): List<Song> {
+        return songsLocalDataSource.getAllSongsWithoutFlow()
     }
 
     fun getRecentlyAdded(): Flow<List<Song>> {

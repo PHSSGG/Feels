@@ -33,6 +33,7 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
 
     private var playingJob: Job? = null
 
+    var originalSongs: List<Song> = arrayListOf()
     private var songs: List<Song> = arrayListOf()
     private var shuffledSongs: List<Song> = arrayListOf()
 
@@ -47,6 +48,20 @@ class PlayerManager : MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedLi
 
     var repeatType: RepeatType = RepeatType.NONE
 
+    var sortByLatest: Boolean = false
+        set(value) {
+            field = value
+            if (value) {
+                originalSongs = ArrayList(this.songs)
+                this.songs = songs.sortedByDescending { it.songId }
+            }
+            else {
+                this.songs = originalSongs
+                originalSongs = songs
+            }
+
+            if (isPlaying()) currentPlaying = currentSongs.indexOf(currentSongs.find { it.isPlaying }!!)
+        }
     var shuffle: Boolean = false
         set(value) {
             val currentPlayingSong = getCurrentPlaying()

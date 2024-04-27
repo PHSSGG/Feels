@@ -4,7 +4,7 @@ import phss.ytmusicwrapper.response.models.SongItem
 
 fun SongItem.getSongArtists(): String {
     var artists = ""
-    val authorsList = authors?.filter { it.name != null } ?: listOf()
+    val authorsList = authors?.filter { it != null && it.name != null } ?: listOf()
 
     for (author in authorsList) {
         if (authorsList.getOrNull(authorsList.indexOf(author) + 1) == null) {
@@ -16,7 +16,7 @@ fun SongItem.getSongArtists(): String {
         artists += if (artists == "") author.name!! else ", $author"
     }
 
-    if (artists == "") artists = "Null"
+    if (artists == "") artists = "Unknown"
 
     return artists
 }

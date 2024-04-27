@@ -18,7 +18,9 @@ class DownloadWorker(
     ) {
         val request = YoutubeDLRequest(YOUTUBE_VIDEO_URL.replace("{id}", song.item.key))
         request.addOption("--no-check-certificate")
-        request.addOption("-f", "bestaudio[ext=m4a]/m4a/bestaudio[ext=mp4]/bestaudio[ext=mp3]/best")
+        request.addOption("--force-overwrites")
+        request.addOption("--no-continue")
+        request.addOption("-f", "bestaudio/m4a/bestaudio[ext=mp3]/best")
         request.addOption("-o", "${directory.absolutePath}/${song.item.key}.m4a")
 
         try {

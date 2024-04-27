@@ -18,6 +18,10 @@ class SongsLocalDataSource(
         return songDao.loadSongs()
     }
 
+    fun getAllSongsWithoutFlow(): List<Song> {
+        return songDao.getSongs()
+    }
+
     fun getRecentlyAdded(): Flow<List<Song>> {
         return songDao.loadRecentlyAdded()
     }
